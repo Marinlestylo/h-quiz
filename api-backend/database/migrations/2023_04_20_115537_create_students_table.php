@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
+            $table->string('orientation');
+            $table->enum('type', ['PT', 'TP']);
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

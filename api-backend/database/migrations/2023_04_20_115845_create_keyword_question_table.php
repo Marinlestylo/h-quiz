@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('keyword_question', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->foreignId('keyword_id')->constrained();
+            $table->foreignId('question_id')->constrained();
         });
     }
 

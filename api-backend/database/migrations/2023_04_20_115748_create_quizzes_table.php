@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('quizzess', function (Blueprint $table) {
+        Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }
@@ -22,6 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('quizzess');
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('quizzes');
     }
 };

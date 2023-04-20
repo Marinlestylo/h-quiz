@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('rosters', function (Blueprint $table) {
             $table->id();
+            $table->string('name'); // A, B, C, D...
+            $table->tinyInteger('semester'); // 0 : fall, 1 : spring
+            $table->year('year');
+            $table->foreignId('course_id')->constrained();
+            $table->foreignId('teacher_id')->constrained('users');
             $table->timestamps();
         });
     }
@@ -23,5 +28,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('rosters');
+        Schema::dropIfExists('classes');
     }
 };
