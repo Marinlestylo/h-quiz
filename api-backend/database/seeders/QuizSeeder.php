@@ -4,19 +4,18 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Quiz;
 
-use App\Models\Course;
-
-class CourseSeeder extends Seeder
+class QuizSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Course::create([
-            'name' => 'PlayGround',
-            'department' => 'TIN'
+        $quiz = Quiz::create([
+            'name' => 'Quiz-00 Mes Débuts',
+            'user_id' => 1
         ]);
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable()->default(null);
             $table->text('content'); // Markdown
 
             // ['A', 'B'] for multiple answers
@@ -22,7 +22,7 @@ return new class extends Migration
             // {'expression' : '$_ > 23 && $_ < 42'}
             $table->json('validation');
             $table->enum('type', ['short-answer', 'multiple-choice', 'code', 'fill-in-the-gaps'])->default('short-answer');
-            $table->json('options');
+            $table->json('options')->nullable();
             $table->enum('difficulty', ['easy', 'medium', 'hard', 'insane'])->default('easy');
             $table->text('explanation')->nullable()->default(null); // Markdown
             $table->timestamps();

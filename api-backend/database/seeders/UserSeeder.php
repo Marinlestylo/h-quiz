@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
+use App\Models\Student;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -62,16 +63,22 @@ class UserSeeder extends Seeder
             'api_token' => Str::random(60),
         ]);
 
-        // Student::create([
-        //     'orientation' => 'EAI',
-        //     'type' => 'TP',
-        //     'user_id' => $bob->id
-        // ]);
+        Student::create([
+            'orientation' => 'EAI',
+            'type' => 'TP',
+            'user_id' => $bob->id
+        ]);
 
-        // Student::create([
-        //     'orientation' => 'EAI',
-        //     'type' => 'TP',
-        //     'user_id' => $alice->id
-        // ]);
+        Student::create([
+            'orientation' => 'EAI',
+            'type' => 'TP',
+            'user_id' => $alice->id
+        ]);
+
+        User::factory()->count(50)->create()->each(function ($user) {
+            if ($user->affiliation == 'member;student') {
+                $user->student()->save(Student::factory()->make());
+            }
+        });
     }
 }
