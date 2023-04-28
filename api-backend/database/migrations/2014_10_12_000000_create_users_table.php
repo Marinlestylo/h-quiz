@@ -17,12 +17,10 @@ return new class extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->string('email')->unique();
-            $table->string('name');
-            $table->string('password')->comment('Always `shibboleth` for AAI authentication');
+            $table->string('keycloak_id')->nullable();
             $table->tinyInteger('gender');
             $table->string('affiliation')->comment('Usually `member;staff` or `member;student`');
             $table->rememberToken();
-            $table->string('api_token', 80)->unique()->nullable()->default(null);
             $table->timestamps();
         });
     }
