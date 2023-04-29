@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeycloakController;
 
@@ -17,6 +18,10 @@ use App\Http\Controllers\KeycloakController;
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return view('welcome');
+    });
+    Route::get('/random', function(Request $request) {
+        dump($request->user());
+        return 'Hello';
     });
 });
 

@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers;
+use App\Http\Controllers\Api\KeywordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +15,17 @@ use App\Http\Controllers;
 |
 */
 
-Route::namespace('App\Http\Controllers\Api')->group(function () {
-    Route::apiResource('/keywords', KeywordController::class);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/keywords', function () {
+        return view('welcome');
+    });
 });
 
+Route::get('/use', function (Request $request) {
+    dump($request->user());
+    return;
+});
 
 
 // Route::apiResource('/keywords', KeywordController::class);

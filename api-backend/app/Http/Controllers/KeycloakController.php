@@ -18,21 +18,25 @@ class KeyCloakController extends Controller
     public function callback()
     {
         $remote_user = Socialite::driver('keycloak')->user();
-        var_dump($remote_user);
+        dump($remote_user);
+        // \Log::info($remote_user);
         // die();
         $user = User::updateOrCreate([
             'keycloak_id' => $remote_user->id,
         ], [
-            'firstname' => $remote_user->given_name,
-            'lastname' => $remote_user->family_name,
+            'firstname' => $remote_user->user['given_name'],
+            'lastname' => $remote_user->user['family_name'],
             'email' => $remote_user->email,
-            'gender'=>$remote_user->gender,
+            'gender'=>$remote_user->user['gender'],
             'affiliation'=>'member;staff',
-            'refresh_token' => $remote_user->refreshToken,
+            'unique_id'=> 3252355,
+            'remember_token' => $remote_user->refreshToken,
         ]);
 
         Auth::login($user, $remember = true);
+        // dump($user);
+        // die();
 
-        return redirect('/');
+        return redirect('/api/keywords');
     }
 }
