@@ -17,15 +17,15 @@ use App\Http\Controllers\Api\KeywordController;
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/keywords', function () {
-        return view('welcome');
-    });
+    Route::get('/keywords', [KeywordController::class, 'index']);
 });
 
 Route::get('/use', function (Request $request) {
     dump($request->user());
     return;
 });
+
+
 
 
 // Route::apiResource('/keywords', KeywordController::class);

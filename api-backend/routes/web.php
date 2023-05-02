@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeycloakController;
+use App\Http\Controllers\Api\KeywordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,8 @@ use App\Http\Controllers\KeycloakController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('auth/redirect', [KeycloakController::class, 'redirect'])->name('login');
+Route::get('auth/callback', [KeycloakController::class, 'callback']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
@@ -25,7 +28,11 @@ Route::middleware('auth')->group(function () {
     });
 });
 
+Route::middleware('auth')->group(function () {
+    Route::get('/keywords', [KeywordController::class, 'index']);
+});
 
-Route::get('auth/redirect', [KeycloakController::class, 'redirect'])->name('login');
-Route::get('auth/callback', [KeycloakController::class, 'callback']);
-
+Route::get('/not', function (Request $request) {
+    dump($request->user());
+    return;
+});
