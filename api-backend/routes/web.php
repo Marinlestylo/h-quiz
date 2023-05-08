@@ -15,24 +15,4 @@ use App\Http\Controllers\Api\KeywordController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('auth/redirect', [KeycloakController::class, 'redirect'])->name('login');
-Route::get('auth/callback', [KeycloakController::class, 'callback']);
 
-Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return view('welcome');
-    });
-    Route::get('/random', function(Request $request) {
-        dump($request->user());
-        return 'Hello';
-    });
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/keywords', [KeywordController::class, 'index']);
-});
-
-Route::get('/not', function (Request $request) {
-    dump($request->user());
-    return;
-});

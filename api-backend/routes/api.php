@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KeycloakController;
 use App\Http\Controllers\Api\KeywordController;
 
 /*
@@ -14,24 +15,15 @@ use App\Http\Controllers\Api\KeywordController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
+Route::get('auth/redirect', [KeycloakController::class, 'redirect'])->name('login');
+Route::get('auth/callback', [KeycloakController::class, 'callback']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/keywords', [KeywordController::class, 'index']);
 });
 
-Route::get('/use', function (Request $request) {
-    dump($request->user());
-    return;
-});
 
-
-
-
-// Route::apiResource('/keywords', KeywordController::class);
-
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
