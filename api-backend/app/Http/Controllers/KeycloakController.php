@@ -33,7 +33,12 @@ class KeyCloakController extends Controller
         ]);
 
         Auth::login($user);
-        
+
         return redirect('/api/keywords');
+    }
+
+    public function login()
+    {
+        return Socialite::driver('keycloak')->redirect();
     }
 }

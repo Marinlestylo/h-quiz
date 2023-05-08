@@ -13,7 +13,6 @@ async function getData() {
     const res = await fetch("http://localhost:8000/api/keys");
     const finalRes = await res.json();
     listItems.value = finalRes;
-    console.log(finalRes);
 }
 
 getData()

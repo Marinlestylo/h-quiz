@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\KeywordController;
 */
 Route::get('auth/redirect', [KeycloakController::class, 'redirect'])->name('login');
 Route::get('auth/callback', [KeycloakController::class, 'callback']);
+Route::get('login', [KeycloakController::class, 'login']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/keywords', [KeywordController::class, 'index']);
