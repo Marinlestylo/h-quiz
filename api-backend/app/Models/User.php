@@ -31,6 +31,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'keycloak_id'
     ];
 
     /**
@@ -52,6 +53,10 @@ class User extends Authenticatable
 
     function rosters() {
         return $this->hasMany(Roster::class, 'teacher_id');
+    }
+
+    function getFullName() {
+        return $this->firstname . ' ' . $this->lastname;
     }
     
       /**

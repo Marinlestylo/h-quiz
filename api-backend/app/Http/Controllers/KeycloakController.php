@@ -17,7 +17,7 @@ class KeyCloakController extends Controller
 
     public function callback()
     {
-        $remote_user = Socialite::driver('keycloak')->user();
+        $remote_user = Socialite::driver('keycloak')->stateless()->user();
         // dump($remote_user);
         // die();
         $user = User::updateOrCreate([
@@ -34,11 +34,20 @@ class KeyCloakController extends Controller
 
         Auth::login($user);
 
-        return redirect('/api/keywords');
+        // return redirect('/api/keywords');
+        return redirect(session()->get('url.intended', '/api/keywords'));
     }
 
-    public function login()
+    public function login(Request $request)
     {
+        $url = $request->input('redirect');
+        session()->put('url.intended', $url);
         return Socialite::driver('keycloak')->redirect();
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect(Socialite::driver('keycloak')->getLogoutUrl());
     }
 }

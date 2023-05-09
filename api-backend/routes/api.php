@@ -21,9 +21,20 @@ Route::get('login', [KeycloakController::class, 'login']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/keywords', [KeywordController::class, 'index']);
+    Route::get('/user', function (Request $request) {
+        $name = $request->user()->getFullName();
+        return response()->json([
+            'name' => $name,
+        ]);
+    });
+    Route::get('logout',[KeycloakController::class, 'logout']); 
 });
 
-Route::get('/keys', [KeywordController::class, 'index']);
+Route::get('/', function () {
+    return response()->json([
+        'message' => 'Welcome to our API',
+    ]);
+});
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
