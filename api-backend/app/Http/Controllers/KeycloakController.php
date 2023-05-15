@@ -35,7 +35,7 @@ class KeyCloakController extends Controller
         Auth::login($user);
 
         // return redirect('/api/keywords');
-        return redirect(session()->get('url.intended', '/api/keywords'));
+        return redirect(session()->get('url.intended', '/api'));
     }
 
     public function login(Request $request)
@@ -48,6 +48,12 @@ class KeyCloakController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect(Socialite::driver('keycloak')->getLogoutUrl());
+        $redirectUri = "http://localhost:8000/api/after";
+        return redirect(Socialite::driver('keycloak')->getLogoutUrl($redirectUri, env('KEYCLOAK_CLIENT_ID')));
+    }
+
+    public function afterLogout(request $request)
+    {
+        return redirect(session()->get('url.intended', '/api'));
     }
 }

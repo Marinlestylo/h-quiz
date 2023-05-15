@@ -31,6 +31,6 @@ function redirect() {
 }
 
 function logout() {
-    window.location.href = 'http://localhost:8000/api/logout';
+    window.location.href = 'http://localhost:8000/api/logout?redirect=http://localhost:5173';
 }
 </script>
