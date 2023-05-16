@@ -1,20 +1,31 @@
 <template>
+    
     <div v-for="item in listItems.keywords">
         {{ item.name }}
+    </div>
+    <div v-if="!isLoading">
+        <ErrorMessage :status="status" />
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import ErrorMessage from '@/components/StatusError.vue';
 
 const listItems = ref([]);
+let status = ref(0);
+const isLoading = ref(true);
 
 async function getData() {
     const res = await fetch("http://localhost:8000/api/keywords", {
         credentials: 'include',
     });
-    const finalRes = await res.json();
-    listItems.value = finalRes;
+    status.value = res.status;
+    if (res.status === 200) {
+        const finalRes = await res.json();
+        listItems.value = finalRes;
+    }
+    isLoading.value = false;
 }
 
 getData()
