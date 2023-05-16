@@ -10,13 +10,14 @@
 <script setup>
 import { ref } from 'vue';
 import ErrorMessage from '@/components/StatusError.vue';
+import { backUrl } from '@/stores/user';
 
 const listItems = ref([]);
 let status = ref(0);
 const isLoading = ref(true);
 
 async function getData() {
-    const res = await fetch("http://localhost:8000/api/keywords", {
+    const res = await fetch(`${backUrl}/api/keywords`, {
         credentials: 'include',
     });
     status.value = res.status;
