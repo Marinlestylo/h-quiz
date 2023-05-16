@@ -36,6 +36,8 @@ Route::get('/', function () {
         'message' => 'Welcome to our API',
     ]);
 });
+
+Route::get('/keys', [KeywordController::class, 'index']);
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
