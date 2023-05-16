@@ -1,10 +1,9 @@
 <template>
-    
-    <div v-for="item in listItems.keywords">
-        {{ item.name }}
-    </div>
     <div v-if="!isLoading">
         <ErrorMessage :status="status" />
+    </div>
+    <div v-for="item in listItems.keywords">
+        {{ item.name }}
     </div>
 </template>
 

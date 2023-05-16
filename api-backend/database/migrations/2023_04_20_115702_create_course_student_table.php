@@ -11,7 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('course_student', function (Blueprint $table) {
+        //TODO : Changer le nom du fichier ?? C'est pas le bon nom dans le projet de base
+        Schema::create('roster_student', function (Blueprint $table) {
             $table->foreignId('roster_id')->constrained();
             $table->foreignId('student_id')->constrained();
         });

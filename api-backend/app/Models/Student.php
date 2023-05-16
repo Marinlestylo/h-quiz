@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     use HasFactory;
+
+    function rosters() {
+        return $this->belongsToMany(Roster::class);
+    }
+
+    function user() {
+        return $this->belongsTo(User::class);
+    }
 }

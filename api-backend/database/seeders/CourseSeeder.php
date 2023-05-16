@@ -18,5 +18,7 @@ class CourseSeeder extends Seeder
             'name' => 'PlayGround',
             'department' => 'TIN'
         ]);
+
+        Course::factory()->count(10)->create();
     }
 }

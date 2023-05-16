@@ -20,13 +20,16 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             UserSeeder::class,
+
             CourseSeeder::class,
-            KeywordSeeder::class,
-            QuestionSeeder::class,
-            KeywordQuestionSeeder::class,
-            QuizSeeder::class,
             RosterSeeder::class,
-            ActivitySeeder::class,
+
+            KeywordSeeder::class,
+
+            // QuestionSeeder::class,
+            // KeywordQuestionSeeder::class,
+            // QuizSeeder::class,
+            // ActivitySeeder::class,
         ]);
     }
 }
