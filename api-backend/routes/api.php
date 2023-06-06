@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeycloakController;
 use App\Http\Controllers\Api\KeywordController;
+use App\Http\Controllers\Api\QuizController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
             'name' => $name,
         ]);
     });
+    Route::get('/quizzes', [QuizController::class, 'index']);
     Route::get('logout',[KeycloakController::class, 'logout']); 
 });
 
