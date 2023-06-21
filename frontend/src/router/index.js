@@ -8,6 +8,7 @@ import CreateQuizView from '@/views/CreateQuizView.vue'
 import UpdateQuizView from '@/views/UpdateQuizView.vue'
 import CreateRosterView from '@/views/CreateRosterView.vue'
 import RosterView from '@/views/RosterView.vue'
+import ActivityView from '@/views/ActivityView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,11 @@ const router = createRouter({
       path: '/quizzes',
       name: 'quizzes',
       component: QuizzesView
+    },
+    {
+      path: '/activities',
+      name: 'activities',
+      component: ActivityView
     },
     {
       path: '/sandbox',
@@ -61,7 +67,7 @@ const router = createRouter({
       component: CreateRosterView
     },
     {
-      path: '/roster',
+      path: '/rosters',
       name: 'roster',
       component: RosterView
     }

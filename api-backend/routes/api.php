@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeycloakController;
 use App\Http\Controllers\Api\KeywordController;
 use App\Http\Controllers\Api\QuizController;
+use App\Http\Controllers\Api\ActivityController;
+use App\Http\Controllers\Api\RosterController;
+use App\Models\Activity;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +33,11 @@ Route::middleware('auth')->group(function () {
         ]);
     });
     Route::get('/quizzes', [QuizController::class, 'index']);
+
+    Route::get('/activities', [ActivityController::class, 'index']);
+
+    Route::get('/rosters', [RosterController::class, 'index']);
+
     Route::get('logout',[KeycloakController::class, 'logout']); 
 });
 
