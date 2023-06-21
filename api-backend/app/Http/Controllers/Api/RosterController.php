@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 class RosterController extends Controller
 {
     function index(Request $request) {
-        // if ($request->owned)
-        //     $rosters = Roster::where('teacher_id', Auth::id())->get();
-        // else
+        if ($request->owned)
+            $rosters = Roster::where('teacher_id', Auth::id())->get();
+        else
             $rosters = Roster::all();
 
         return fractal($rosters, new RosterTransformer(true))->toArray();
