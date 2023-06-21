@@ -7,6 +7,7 @@ export const appUrl = import.meta.env.VITE_APP_URL;
 
 export const useUserStore = defineStore('user', () => {
   const user = ref(null)
+  const allUsers = ref(null)
   const fetchApi = (uri, settings) => {
     const url = new URL(uri, backUrl);
     return fetch(url, {...settings, credentials: 'include'}).then((response) => {
@@ -30,5 +31,13 @@ export const useUserStore = defineStore('user', () => {
     user.value = null;
     const response = await fetchApi('/api/logout');
   }
-  return { user, fetchUser, logout }
+
+  const fetchAllUsers = async () => {
+    const response = await fetchApi('/api/users');
+    const data = await response.json();
+    allUsers.value = data;
+    return response.status;
+  }
+
+  return { user, allUsers, fetchAllUsers, fetchUser, logout }
 });

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Roster;
 
 use App\Transformers\RosterTransformer;
+use App\Transformers\StudentTransformer;
 
 use Illuminate\Http\Request;
 
@@ -18,5 +19,15 @@ class RosterController extends Controller
             $rosters = Roster::all();
 
         return fractal($rosters, new RosterTransformer(true))->toArray();
+    }
+
+    function show($id) {
+        return Roster::with(['course','students','activities'])->find($id);
+    }
+
+    function students($id) {
+        $students = Roster::findOrFail($id)->students;
+
+        return fractal($students, new StudentTransformer())->toArray();
     }
 }
