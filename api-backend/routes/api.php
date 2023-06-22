@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/rosters', [RosterController::class, 'index']);
     Route::get('/rosters/{id}', [RosterController::class, 'show']);
     Route::get('/rosters/{id}/students', [RosterController::class, 'students']);
+    Route::delete('/rosters/delete-student', [RosterController::class, 'deleteStudent']);
 
     // Logout
     Route::get('logout',[KeycloakController::class, 'logout']); 

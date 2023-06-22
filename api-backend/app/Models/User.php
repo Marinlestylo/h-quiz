@@ -66,7 +66,9 @@ class User extends Authenticatable
      */
     public function getKey()
     {
-        return $this->email;
+        //TODO : si keycloak cassé, rechanger ça
+        // return $this->email;
+        return $this->id;
     }
 
     /**
@@ -76,7 +78,8 @@ class User extends Authenticatable
      */
     public function getAuthIdentifierName()
     {
-        return 'email';
+        // return 'email';
+        return 'id';
     }
 
     /**
@@ -86,6 +89,7 @@ class User extends Authenticatable
      */
     public function getAuthIdentifier()
     {
-        return $this->email;
+        // return $this->email;
+        return $this->id;
     }
 }

@@ -32,7 +32,7 @@ class RosterTransformer extends TransformerAbstract
             'has_running_activities' => $roster->has_running_activities,
             'teacher' => [
                 'id' => $roster->teacher->id,
-                'name' => $roster->teacher->name
+                'name' => $roster->teacher->getFullName(),
             ],
             'created_at' => $roster->created_at->timestamp,
         ];

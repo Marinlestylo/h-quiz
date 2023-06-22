@@ -11,7 +11,7 @@
         </div>
     </div>
     <div>
-        <select v-model="selected" @change="displayRosterInfo" id="id_roster"
+        <select v-model="selectedRoster" @change="displayRosterInfo" id="id_roster"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             <option disabled selected value="">Choisissez un roster</option>
             <option v-for="roster in rosters" :key="roster.id" v-bind:value="roster.id">{{ roster.name }} / {{
@@ -58,7 +58,7 @@
                                         class="border-b transition duration-300 ease-in-out hover:bg-neutral-200">
                                         <td class="whitespace-nowrap px-6 py-4 font-medium">{{ student.name }}</td>
                                         <td class="whitespace-nowrap px-6 py-4 font-medium">{{ student.orientation }}</td>
-                                        <td class="whitespace-nowrap px-6 py-4 font-medium">{{ student.id }}</td>
+                                        <td class="whitespace-nowrap px-6 py-4 font-medium"><button @click="deleteStudent(student.id)" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">Supprimer</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -82,16 +82,23 @@ const allUsers = computed(() => userStore.allUsers);
 const detailedRoster = ref([]);
 const showDetails = ref(false);
 
-let selected = ref('');
+let selectedRoster = ref('');
+let studentToDelete = ref('');
 
 onMounted(async () => {
     await store.fetchRosters();
 });
 
 async function displayRosterInfo() {
-    detailedRoster.value = await store.fetchStudentsFromRoster(selected.value);
+    detailedRoster.value = await store.fetchStudentsFromRoster(selectedRoster.value);
     await userStore.fetchAllUsers();
     showDetails.value = true;
 }
+
+async function deleteStudent(studentId) {
+    const res = await store.deleteStudentFromRoster(selectedRoster.value, studentId);
+    detailedRoster.value = res.students;
+}
+
 
 </script>

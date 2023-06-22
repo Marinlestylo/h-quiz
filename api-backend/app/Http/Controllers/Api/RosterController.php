@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Roster;
+use App\Models\Student;
 
 use App\Transformers\RosterTransformer;
 use App\Transformers\StudentTransformer;
 
 use Illuminate\Http\Request;
+use Auth;
+use Log;
+
 
 class RosterController extends Controller
 {
@@ -29,5 +33,30 @@ class RosterController extends Controller
         $students = Roster::findOrFail($id)->students;
 
         return fractal($students, new StudentTransformer())->toArray();
+    }
+
+    function deleteStudent(Request $request) {
+        Log::debug('Delete student to roster');
+
+        $r = Roster::findOrFail($request->roster_id);
+        
+        if ($r->teacher_id != Auth::id()) {
+            return response([
+                'message' => "Only the roster's teacher can delete a student",
+                'error' => "Bad Request",
+            ], 400);
+        }
+
+        $s = Student::findOrFail($request->student_id);
+
+        $r->students()->detach($s->id);
+
+        $students = Roster::findOrFail($request->roster_id)->students;
+        $s = fractal($students, new StudentTransformer())->toArray();
+        return response([
+            'message' => 'Studdent deleted',
+            'roster' => $r,
+            'students' => $s
+        ], 200);
     }
 }
