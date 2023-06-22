@@ -35,6 +35,23 @@ class RosterController extends Controller
         return fractal($students, new StudentTransformer())->toArray();
     }
 
+    function create(Request $request) {
+        Log::debug('Create roster');
+        // die("Create roster");
+        $data = $request->all();
+        $r = new Roster();
+       
+        // create the roster
+        $r->fill($data);
+        $r->teacher_id = Auth::id();
+        $r->save();
+
+        return response([
+            'message' => 'Roster added',
+            'roster' => $r
+        ], 200);
+    }
+
     function deleteStudent(Request $request) {
         Log::debug('Delete student to roster');
 

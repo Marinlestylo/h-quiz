@@ -73,8 +73,22 @@ export const useRosterStore = defineStore('rosters', () => {
         return [response.status, data];
     }
 
+    const createRoster = async (payload) => {
+        const url = new URL('/api/rosters', backUrl);
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload),
+            credentials: 'include'
+        });
+        const data = await response.json();
+        return [response.status, data];
+    }
+
     
         
 
-    return { rosters, addStudentToRoster, deleteStudentFromRoster, fetchStudentsFromRoster, fetchOneRoster, fetchRosters }
+    return { rosters, createRoster, addStudentToRoster, deleteStudentFromRoster, fetchStudentsFromRoster, fetchOneRoster, fetchRosters }
 });

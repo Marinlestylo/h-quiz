@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/rosters', [RosterController::class, 'index']);
     Route::get('/rosters/{id}', [RosterController::class, 'show']);
     Route::get('/rosters/{id}/students', [RosterController::class, 'students']);
+    Route::post('/rosters', [RosterController::class, 'create']);
     Route::post('/rosters/add-student', [RosterController::class, 'addStudent']);
     Route::delete('/rosters/delete-student', [RosterController::class, 'deleteStudent']);
 

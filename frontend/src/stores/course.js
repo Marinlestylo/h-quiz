@@ -20,7 +20,7 @@ export const useCourseStore = defineStore('course', () => {
   const fetchAllCourses = async () => {
     const response = await fetchApi('/api/courses');
     const data = await response.json();
-    allStudents.value = data;
+    allCourses.value = data;
     return response.status;
   }
 

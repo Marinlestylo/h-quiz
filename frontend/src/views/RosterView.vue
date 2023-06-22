@@ -129,7 +129,6 @@ async function deleteStudent(studentId) {
     } else {
         errorMessage.value = data.message;
     }
-
 }
 
 async function addStudent() {
