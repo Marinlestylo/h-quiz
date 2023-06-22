@@ -42,13 +42,6 @@ export const useRosterStore = defineStore('rosters', () => {
             'roster_id': id,
             'student_id': studentId
         };
-        // const response = await fetchApi(`/api/rosters/delete-student`, {
-        //     method: 'DELETE',
-        //     data: payload
-        // });
-        // const data = await response.json();
-        // console.log(data);
-        // return data;
         const url = new URL('/api/rosters/delete-student', backUrl);
         const response = await fetch(url, {
             method: 'DELETE',
@@ -62,8 +55,26 @@ export const useRosterStore = defineStore('rosters', () => {
         return data;
     }
 
+    const addStudentToRoster = async (id, studentId) => {
+        const payload = {
+            'roster_id': id,
+            'student_id': studentId
+        };
+        const url = new URL('/api/rosters/add-student', backUrl);
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload),
+            credentials: 'include'
+        });
+        const data = await response.json();
+        return data;
+    }
+
     
         
 
-    return { rosters, deleteStudentFromRoster, fetchStudentsFromRoster, fetchOneRoster, fetchRosters }
+    return { rosters, addStudentToRoster, deleteStudentFromRoster, fetchStudentsFromRoster, fetchOneRoster, fetchRosters }
 });

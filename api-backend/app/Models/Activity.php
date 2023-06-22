@@ -179,8 +179,8 @@ class Activity extends Model
         return round($mark, 1);
     }
 
-    protected $dispatchesEvents = [
-        'saved' => ActivityUpdated::class,
-        'deleted' => ActivityUpdated::class,
-    ];
+    // protected $dispatchesEvents = [
+    //     'saved' => ActivityUpdated::class,
+    //     'deleted' => ActivityUpdated::class,
+    // ];
 }

@@ -59,4 +59,28 @@ class RosterController extends Controller
             'students' => $s
         ], 200);
     }
+
+    function addStudent(Request $request) {
+        Log::debug('Add student to roster');
+
+        $r = Roster::findOrFail($request->roster_id);
+        if ($r->teacher_id != Auth::id()) {
+            return response([
+                'message' => "Only the roster's teacher can create an activity",
+                'error' => "Bad Request"
+            ], 400);
+        }
+
+        $s = Student::findOrFail($request->student_id);
+
+        $r->students()->attach($s->id);
+
+        $students = Roster::findOrFail($request->roster_id)->students;
+        $s = fractal($students, new StudentTransformer())->toArray();
+        return response([
+            'message' => 'Studdent added',
+            'roster' => $r,
+            'students' => $s
+        ], 200);
+    }
 }

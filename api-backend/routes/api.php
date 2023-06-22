@@ -8,7 +8,10 @@ use App\Http\Controllers\Api\QuizController;
 use App\Http\Controllers\Api\ActivityController;
 use App\Http\Controllers\Api\RosterController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\StudentController;
+
 use App\Models\Activity;
+use App\Models\Student;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +43,8 @@ Route::middleware('auth')->group(function () {
         ]);
     });
     Route::get('/users', [UserController::class, 'index']);
+    
+    Route::get('/students', [StudentController::class, 'index']);
 
     Route::get('/quizzes', [QuizController::class, 'index']);
 
@@ -49,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/rosters', [RosterController::class, 'index']);
     Route::get('/rosters/{id}', [RosterController::class, 'show']);
     Route::get('/rosters/{id}/students', [RosterController::class, 'students']);
+    Route::post('/rosters/add-student', [RosterController::class, 'addStudent']);
     Route::delete('/rosters/delete-student', [RosterController::class, 'deleteStudent']);
 
     // Logout
