@@ -115,10 +115,10 @@ onMounted(async () => {
 });
 
 async function displayRosterInfo() {
+    resetFields();
     detailedRoster.value = await store.fetchStudentsFromRoster(selectedRoster.value);
     await studentStore.fetchAllStudents();
     showDetails.value = true;
-    errorMessage.value = '';
 }
 
 async function deleteStudent(studentId) {
@@ -127,12 +127,16 @@ async function deleteStudent(studentId) {
         detailedRoster.value = data.students;
         errorMessage.value = '';
     } else {
-        errorMessage.value = "Vous devez être le professeur de ce roster pour pouvoir supprimer un étudiant.";
+        errorMessage.value = data.message;
     }
 
 }
 
 async function addStudent() {
+    if (!searchStudent.value) {
+        errorMessage.value = 'Veuillez entrer un nom d\'étudiant';
+        return;
+    }
     const id = allStudents.value.students.find(u => u.user.firstname + " " + u.user.lastname === searchStudent.value).id;
     const [status, data] = await store.addStudentToRoster(selectedRoster.value, id);
     if (status === 200) {
@@ -140,7 +144,12 @@ async function addStudent() {
         searchStudent.value = '';
         errorMessage.value = '';
     } else {
-        errorMessage.value = "Vous devez être le professeur de ce roster pour pouvoir ajouter un étudiant.";
+        errorMessage.value = data.message;
     }
+}
+
+const resetFields = () => {
+    searchStudent.value = '';
+    errorMessage.value = '';
 }
 </script>

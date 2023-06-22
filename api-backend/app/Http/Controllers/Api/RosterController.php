@@ -42,7 +42,7 @@ class RosterController extends Controller
         
         if ($r->teacher_id != Auth::id()) {
             return response([
-                'message' => "Only the roster's teacher can delete a student",
+                'message' => "Vous devez être le professeur de ce roster pour pouvoir supprimer un étudiant.",
                 'error' => "Bad Request",
             ], 400);
         }
@@ -66,12 +66,19 @@ class RosterController extends Controller
         $r = Roster::findOrFail($request->roster_id);
         if ($r->teacher_id != Auth::id()) {
             return response([
-                'message' => "Only the roster's teacher can create an activity",
+                'message' => "Vous devez être le professeur de ce roster pour pouvoir ajouter un étudiant.",
                 'error' => "Bad Request"
             ], 400);
         }
 
         $s = Student::findOrFail($request->student_id);
+
+        if ($r->students->contains($s->id)) {
+            return response([
+                'message' => "L'étudiant est déjà dans ce roster.",
+                'error' => "Bad Request"
+            ], 400);
+        }
 
         $r->students()->attach($s->id);
 
