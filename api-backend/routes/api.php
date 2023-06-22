@@ -9,8 +9,10 @@ use App\Http\Controllers\Api\ActivityController;
 use App\Http\Controllers\Api\RosterController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\StudentController;
+use App\Http\Controllers\Api\CourseController;
 
 use App\Models\Activity;
+use App\Models\Course;
 use App\Models\Student;
 
 /*
@@ -49,6 +51,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/quizzes', [QuizController::class, 'index']);
 
     Route::get('/activities', [ActivityController::class, 'index']);
+
+    Route::get('/courses', [CourseController::class, 'index']);
+    Route::get('/courses/{id}', [CourseController::class, 'show']);
 
     // Roster
     Route::get('/rosters', [RosterController::class, 'index']);

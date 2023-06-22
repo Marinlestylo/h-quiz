@@ -137,8 +137,12 @@ async function addStudent() {
         errorMessage.value = 'Veuillez entrer un nom d\'étudiant';
         return;
     }
-    const id = allStudents.value.students.find(u => u.user.firstname + " " + u.user.lastname === searchStudent.value).id;
-    const [status, data] = await store.addStudentToRoster(selectedRoster.value, id);
+    const student = allStudents.value.students.find(u => u.user.firstname + " " + u.user.lastname === searchStudent.value);
+    if (!student) {
+        errorMessage.value = 'Cet étudiant n\'existe pas';
+        return;
+    }
+    const [status, data] = await store.addStudentToRoster(selectedRoster.value, student.id);
     if (status === 200) {
         detailedRoster.value = data.students;
         searchStudent.value = '';
