@@ -40,16 +40,24 @@
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
-                <input v-model="searchStudent" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" list="students" name="student" id="student" placeholder="Entrez le nom d'un étudiant" autocomplete="off">
+                <input v-model="searchStudent"
+                    class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    list="students" name="student" id="student" placeholder="Entrez le nom d'un étudiant"
+                    autocomplete="off">
                 <datalist id="students" v-if="allStudents !== null">
-                    <option v-for="stud in allStudents.students" :key="stud.id">{{ stud.user.firstname }} {{ stud.user.lastname }}</option>
+                    <option v-for="stud in allStudents.students" :key="stud.id">{{ stud.user.firstname }} {{
+                        stud.user.lastname }}</option>
                 </datalist>
                 <button type="submit" @click="addStudent"
                     class="text-white absolute right-2.5 bottom-2.5 bg-gray-700 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2">Ajouter
                     l'étudiant</button>
             </div>
         </div>
-        
+
+        <div class="text-l text-red-500">
+            {{ errorMessage }}
+        </div>
+
         <!-- Table to display students -->
         <div v-if="showDetails && !detailedRoster.data.length" class="text-xl mt-6">Il n'y actuellement aucun étudiant dans
             ce roster.</div>
@@ -100,6 +108,7 @@ const showDetails = ref(false);
 
 let selectedRoster = ref('');
 let searchStudent = ref('');
+let errorMessage = ref('');
 
 onMounted(async () => {
     await store.fetchRosters();
@@ -109,17 +118,29 @@ async function displayRosterInfo() {
     detailedRoster.value = await store.fetchStudentsFromRoster(selectedRoster.value);
     await studentStore.fetchAllStudents();
     showDetails.value = true;
+    errorMessage.value = '';
 }
 
 async function deleteStudent(studentId) {
-    const res = await store.deleteStudentFromRoster(selectedRoster.value, studentId);
-    detailedRoster.value = res.students;
+    const [status, data] = await store.deleteStudentFromRoster(selectedRoster.value, studentId);
+    if (status === 200) {
+        detailedRoster.value = data.students;
+        errorMessage.value = '';
+    } else {
+        errorMessage.value = "Vous devez être le professeur de ce roster pour pouvoir supprimer un étudiant.";
+    }
+
 }
 
-async function addStudent(){
+async function addStudent() {
     const id = allStudents.value.students.find(u => u.user.firstname + " " + u.user.lastname === searchStudent.value).id;
-    const res = await store.addStudentToRoster(selectedRoster.value, id);
-    detailedRoster.value = res.students;
-    searchStudent.value = '';
+    const [status, data] = await store.addStudentToRoster(selectedRoster.value, id);
+    if (status === 200) {
+        detailedRoster.value = data.students;
+        searchStudent.value = '';
+        errorMessage.value = '';
+    } else {
+        errorMessage.value = "Vous devez être le professeur de ce roster pour pouvoir ajouter un étudiant.";
+    }
 }
 </script>

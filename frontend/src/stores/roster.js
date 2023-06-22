@@ -52,7 +52,7 @@ export const useRosterStore = defineStore('rosters', () => {
             credentials: 'include'
         });
         const data = await response.json();
-        return data;
+        return [response.status, data];
     }
 
     const addStudentToRoster = async (id, studentId) => {
@@ -70,7 +70,7 @@ export const useRosterStore = defineStore('rosters', () => {
             credentials: 'include'
         });
         const data = await response.json();
-        return data;
+        return [response.status, data];
     }
 
     
