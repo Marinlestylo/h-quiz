@@ -36,12 +36,14 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 placeholder="2023" autocomplete="off">
         </div>
-        <div class="text-sm text-red-500 text-center">
-            {{ errorMessage }}
-        </div>
+        
         <button @click="createRoster"
             class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto">Création du
-            roster</button>
+            roster
+        </button>
+
+        <AlertPopup v-model:message="errorMessage" alertType="error" class="mt-4"/>
+        <AlertPopup v-model:message="successMessage" alertType="success" class="mt-4"/>
 
     </div>
 </template>
@@ -50,6 +52,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRosterStore } from '../stores/roster';
 import { useCourseStore } from '../stores/course';
+import AlertPopup from '@/components/AlertPopup.vue';
 
 const store = useRosterStore();
 const courseStore = useCourseStore();
@@ -62,15 +65,15 @@ const roster = ref({
     year: null
 });
 const errorMessage = ref('');
+const successMessage = ref('');
 
 onMounted(async () => {
     await courseStore.fetchAllCourses();
 });
 
 async function createRoster() {
-    console.log(roster.value);
     if (!validateInpute()) {
-        errorMessage.value = "Veuillez remplir tous les champs correctement";
+        errorMessage.value = "Certains champs ne sont pas remplis correctement";
         return;
     }
 
@@ -80,13 +83,11 @@ async function createRoster() {
         'semester': roster.value.semester,
         'year': roster.value.year
     });
-    console.log(data);
-    console.log(status);
+
     if (status === 200) {
-        alert("Roster créé avec succès");
+        successMessage.value = `Le roster "${data.roster.name}" a bien été créé`;
         resetFields();
     } else {
-        console.log(data);
         errorMessage.value = "Une erreur est survenue lors de la création du roster";
     }
 }

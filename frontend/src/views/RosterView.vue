@@ -54,12 +54,11 @@
             </div>
         </div>
 
-        <div class="text-l text-red-500">
-            {{ errorMessage }}
-        </div>
+        <AlertPopup v-model:message="errorMessage" alertType="error"  class="my-4"/>
+        <AlertPopup v-model:message="successMessage" alertType="success"  class="my-4"/>
 
         <!-- Table to display students -->
-        <div v-if="showDetails && !detailedRoster.data.length" class="text-xl mt-6">Il n'y actuellement aucun étudiant dans
+        <div v-if="showDetails && !detailedRoster.data.length" class="text-xl">Il n'y actuellement aucun étudiant dans
             ce roster.</div>
         <div v-else class="max-w-5xl rounded overflow-hidden shadow-lg border border-gray-400 bg-white rounded-b px-4 my-6">
             <div class="flex flex-col">
@@ -98,6 +97,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRosterStore } from '../stores/roster';
 import { useStudentStore } from '../stores/student';
+import AlertPopup from '../components/AlertPopup.vue';
 
 const store = useRosterStore();
 const studentStore = useStudentStore();
@@ -109,6 +109,7 @@ const showDetails = ref(false);
 let selectedRoster = ref('');
 let searchStudent = ref('');
 let errorMessage = ref('');
+const successMessage = ref('');
 
 onMounted(async () => {
     await store.fetchRosters();
@@ -126,8 +127,12 @@ async function deleteStudent(studentId) {
     if (status === 200) {
         detailedRoster.value = data.students;
         errorMessage.value = '';
+        const student = allStudents.value.students.find(u => u.id === studentId).user;
+        const name = student.firstname + " " + student.lastname;
+        successMessage.value = `L\'étudiant(e) ${name} a bien été supprimé(e) du roster`;
     } else {
         errorMessage.value = data.message;
+        successMessage.value = '';
     }
 }
 
@@ -146,8 +151,11 @@ async function addStudent() {
         detailedRoster.value = data.students;
         searchStudent.value = '';
         errorMessage.value = '';
+        const name = student.user.firstname + " " + student.user.lastname;
+        successMessage.value = `L\'étudiant(e) ${name} a bien été ajouté(e) au roster`;
     } else {
         errorMessage.value = data.message;
+        successMessage.value = '';
     }
 }
 

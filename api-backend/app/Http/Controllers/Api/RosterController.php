@@ -37,7 +37,6 @@ class RosterController extends Controller
 
     function create(Request $request) {
         Log::debug('Create roster');
-        // die("Create roster");
         $data = $request->all();
         $r = new Roster();
        

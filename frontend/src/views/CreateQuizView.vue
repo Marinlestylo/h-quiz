@@ -18,15 +18,15 @@
             quiz
         </button>
 
-        <SuccessAlert v-model:message="successMessage" alertType="success" />
-        <SuccessAlert v-model:message="errorMessage" alertType="error" />
+        <AlertPopup v-model:message="successMessage" alertType="success" />
+        <AlertPopup v-model:message="errorMessage" alertType="error" />
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { useQuizStore } from '../stores/quiz';
-import SuccessAlert from '@/components/SuccessAlert.vue';
+import AlertPopup from '@/components/AlertPopup.vue';
 
 const quizStore = useQuizStore();
 
