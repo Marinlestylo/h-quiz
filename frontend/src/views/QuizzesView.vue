@@ -9,7 +9,7 @@
         <div>
             <RouterLink to="/create-quiz"
                 class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded ml-48">
-                Créer un quiz
+                Créer un nouveau quiz
             </RouterLink>
         </div>
     </div>

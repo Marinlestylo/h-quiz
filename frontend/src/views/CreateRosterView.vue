@@ -39,7 +39,7 @@
         <div class="text-sm text-red-500 text-center">
             {{ errorMessage }}
         </div>
-        <button @click="test"
+        <button @click="createRoster"
             class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto">Création du
             roster</button>
 
@@ -67,7 +67,7 @@ onMounted(async () => {
     await courseStore.fetchAllCourses();
 });
 
-async function test() {
+async function createRoster() {
     console.log(roster.value);
     if (!validateInpute()) {
         errorMessage.value = "Veuillez remplir tous les champs correctement";

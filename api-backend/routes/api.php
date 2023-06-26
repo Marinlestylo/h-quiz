@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/keywords', [KeywordController::class, 'index']);
 
     // User
+    // TODO : mettre dans userController
     Route::get('/user', function (Request $request) {
         $name = $request->user()->getFullName();
         return response()->json([
@@ -48,7 +49,9 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/students', [StudentController::class, 'index']);
 
+    // Quiz
     Route::get('/quizzes', [QuizController::class, 'index']);
+    Route::post('/quizzes', [QuizController::class, 'create']);
 
     Route::get('/activities', [ActivityController::class, 'index']);
 
