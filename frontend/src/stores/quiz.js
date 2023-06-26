@@ -1,20 +1,26 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-
-export const backUrl = import.meta.env.VITE_BACKEND_URL;
-export const appUrl = import.meta.env.VITE_APP_URL;
+import * as utils from '../utils.js';
 
 
 export const useQuizStore = defineStore('quiz', () => {
     const allQuizzes = ref(null)
-    const fetchApi = (uri, settings) => {
-        const url = new URL(uri, backUrl);
-        return fetch(url, { ...settings, credentials: 'include' }).then((response) => {
-            if (response.status === 401) {
-                user.value = null;
-            }
-            return response;
-        })
+
+    const fetchAllQuizzes = async () => {
+        const response = await utils.fetchApi('/api/quizzes');
+        const data = await response.json();
+        if (response.status === 401 || response.status === 403) {
+            allQuizzes.value = null;
+            return;
+        }
+        allQuizzes.value = data.quizzes;
+        return response.status;
+    }
+
+    const fetchQuestionsFromQuiz = async (id) => {
+        const response = await utils.fetchApi(`/api/quizzes/${id}/questions`);
+        const data = await response.json();
+        return data;
     }
 
     const createQuiz = async (name) => {
@@ -30,5 +36,5 @@ export const useQuizStore = defineStore('quiz', () => {
         return [response.status, data];
     }
 
-    return { allQuizzes, createQuiz }
+    return { allQuizzes, fetchQuestionsFromQuiz, fetchAllQuizzes, createQuiz }
 });

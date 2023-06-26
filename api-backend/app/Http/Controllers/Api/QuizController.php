@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
-    //
+    //TODO changer l'index
     function index()
     {
         $quizzes = Quiz::all();
@@ -26,10 +26,29 @@ class QuizController extends Controller
         foreach ($quizzes as $quiz) {
             $quiz->owner = $quiz->owner;
         }
-
+        
         return [
             'count' => count($quizzes),
             'quizzes' => $quizzes,
+        ];
+    }
+
+    function show($id) {
+        $quiz = Quiz::withCount('questions')->find($id);
+        $quiz['questions'] = url("/api/quizzes/{$quiz['id']}/questions");
+        $quiz['activities'] = url("/api/quizzes/{$quiz['id']}/activities");
+
+        $quiz['@create_activity'] = url("/api/activities/create");
+        return $quiz;
+    }
+
+    function questions($id) {
+        $questions = Quiz::find($id)->questions()->get()->each(function ($item, $key) {
+        });
+        return [
+            'count' => count($questions),
+            'quiz_id' => $id,
+            'questions' => $questions
         ];
     }
 

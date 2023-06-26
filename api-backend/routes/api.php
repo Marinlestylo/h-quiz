@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\RosterController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\QuestionController;
 
 use App\Models\Activity;
 use App\Models\Course;
@@ -34,7 +35,6 @@ Route::get('after', [KeycloakController::class, 'afterLogout']);
 
 // Authentification
 Route::middleware('auth')->group(function () {
-    Route::get('/keywords', [KeywordController::class, 'index']);
 
     // User
     // TODO : mettre dans userController
@@ -51,7 +51,16 @@ Route::middleware('auth')->group(function () {
 
     // Quiz
     Route::get('/quizzes', [QuizController::class, 'index']);
+    Route::get('/quizzes/{id}', [QuizController::class, 'show']);
+    Route::get('/quizzes/{id}/questions', [QuizController::class, 'questions']);
     Route::post('/quizzes', [QuizController::class, 'create']);
+
+    // Keyword
+    Route::get('/keywords', [KeywordController::class, 'index']);
+
+    // Question
+    Route::get('/questions', [QuestionController::class, 'index']);
+    Route::get('/questions/{keyword}', [QuestionController::class, 'getQuestions']);
 
     Route::get('/activities', [ActivityController::class, 'index']);
 
@@ -65,6 +74,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/rosters', [RosterController::class, 'create']);
     Route::post('/rosters/add-student', [RosterController::class, 'addStudent']);
     Route::delete('/rosters/delete-student', [RosterController::class, 'deleteStudent']);
+
+
 
     // Logout
     Route::get('logout',[KeycloakController::class, 'logout']); 
