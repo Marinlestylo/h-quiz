@@ -2,29 +2,11 @@
 
 namespace App\Transformers;
 
-use League\Fractal\TransformerAbstract;
+use League\Fractal;
 use App\Models\Quiz;
 
-class QuizTransformer extends TransformerAbstract
+class QuizTransformer extends Fractal\TransformerAbstract
 {
-    /**
-     * List of resources to automatically include
-     *
-     * @var array
-     */
-    protected array $defaultIncludes = [
-        //
-    ];
-    
-    /**
-     * List of resources possible to include
-     *
-     * @var array
-     */
-    protected array $availableIncludes = [
-        //
-    ];
-    
     /**
      * A Fractal transformer.
      *
@@ -40,7 +22,7 @@ class QuizTransformer extends TransformerAbstract
             'taken_times' => $quiz->taken,
             'owner' => [
                 'id' => $quiz->owner->id,
-                'name' => $quiz->owner->name
+                'name' => $quiz->owner->getFullName(),
             ],
             'keywords' => $quiz->keywords,
             'created_at' => $quiz->created_at->timestamp,

@@ -30,13 +30,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in listItems.quizzes"
+                                <tr v-for="quiz in quizzes"
                                     class="border-b transition duration-300 ease-in-out hover:bg-neutral-200">
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ item.id }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ item.name }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ item.question_count }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ item.owner.firstname + " " +
-                                        item.owner.lastname }}
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.id }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.name }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.questions }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.owner.name}}
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4 flex"><svg xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -64,25 +63,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { useQuizStore } from '../stores/quiz';
 import ErrorMessage from '@/components/StatusError.vue';
-import { backUrl } from '@/stores/user';
 
-const listItems = ref([]);
-let status = ref(0);
+const quizStore = useQuizStore();
+const quizzes = computed(() => quizStore.allQuizzes);
 const isLoading = ref(true);
+const status = ref(0);
 
-async function getData() {
-    const res = await fetch(`${backUrl}/api/quizzes`, {
-        credentials: 'include',
-    });
-    status.value = res.status;
-    if (res.status === 200) {
-        const finalRes = await res.json();
-        listItems.value = finalRes;
+onMounted(async () => {
+    const status = await quizStore.fetchAllQuizzes();
+    if (status === 200) {
+        isLoading.value = false;
     }
-    isLoading.value = false;
-}
 
-getData()
+});
+
 </script>

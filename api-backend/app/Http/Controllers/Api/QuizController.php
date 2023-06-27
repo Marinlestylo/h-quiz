@@ -16,23 +16,31 @@ use Illuminate\Http\Request;
 class QuizController extends Controller
 {
     //TODO changer l'index
-    function index()
-    {
-        $quizzes = Quiz::all();
-        //get number of questions
-        foreach ($quizzes as $quiz) {
-            $quiz->question_count = $quiz->questions()->count();
-        }
+    // function index()
+    // {
+    //     $quizzes = Quiz::all();
+    //     //get number of questions
+    //     foreach ($quizzes as $quiz) {
+    //         $quiz->question_count = $quiz->questions()->count();
+    //     }
 
-        // transform the user_id from the quiz to the user's full name
-        foreach ($quizzes as $quiz) {
-            $quiz->owner = $quiz->owner;
-        }
+    //     // transform the user_id from the quiz to the user's full name
+    //     foreach ($quizzes as $quiz) {
+    //         $quiz->owner = $quiz->owner;
+    //     }
         
-        return [
-            'count' => count($quizzes),
-            'quizzes' => $quizzes,
-        ];
+    //     return [
+    //         'count' => count($quizzes),
+    //         'quizzes' => $quizzes,
+    //     ];
+    // }
+    function index(Request $request) {
+        if ($request->owned)
+            $quiz = Quiz::where('user_id', Auth::id())->get();
+        else
+            $quiz = Quiz::all();
+
+        return fractal($quiz, new QuizTransformer())->toArray();
     }
 
     function show($id) {

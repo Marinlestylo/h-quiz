@@ -13,7 +13,7 @@ export const useQuizStore = defineStore('quiz', () => {
             allQuizzes.value = null;
             return;
         }
-        allQuizzes.value = data.quizzes;
+        allQuizzes.value = data.data;
         return response.status;
     }
 
