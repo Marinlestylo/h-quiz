@@ -1,6 +1,13 @@
 <template>
-    <div class="text-3xl mb-16 mx-48">
-        Création d'un roster
+    <div class="flex items-center mb-16 justify-between">
+        <div class="text-3xl">
+            Création d'un roster
+        </div>
+        <div>
+            <RouterLink to="/rosters" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded ml-64">
+                Retour vers tous les rosters
+            </RouterLink>
+        </div>
     </div>
 
     <div class="w-full">
