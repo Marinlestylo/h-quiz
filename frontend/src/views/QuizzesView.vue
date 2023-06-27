@@ -37,13 +37,13 @@
                                     <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.questions }}</td>
                                     <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.owner.name}}
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 flex"><svg xmlns="http://www.w3.org/2000/svg"
+                                    <td class="whitespace-nowrap px-6 py-4 flex"><svg xmlns="http://www.w3.org/2000/svg" v-tooltip="'Créer une activité à partir de ce quiz'"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                             class="w-10 h-10 hover:cursor-pointer">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <RouterLink to="/update-quiz">
+                                        <RouterLink to="/update-quiz" v-tooltip="'Cliquer ici pour modifier un quiz'"> 
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor"
                                                 class="w-9 h-9 hover:cursor-pointer ml-2">
