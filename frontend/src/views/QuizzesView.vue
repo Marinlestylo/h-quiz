@@ -47,7 +47,7 @@
                                     <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.questions }}</td>
                                     <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.owner.name }}</td>
                                     <td class="whitespace-nowrap px-6 py-4 font-medium"><DifficultyShower :difficultyLevel="quiz.difficulty"/></td>
-                                    <td class="whitespace-nowrap px-6 py-4 flex"><svg xmlns="http://www.w3.org/2000/svg"
+                                    <td class="whitespace-nowrap px-6 py-4 flex"><svg xmlns="http://www.w3.org/2000/svg" @click="openModal(quiz.name, quiz.id)"
                                             v-tooltip="'Créer une activité à partir de ce quiz'" fill="none"
                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                             class="w-10 h-10 hover:cursor-pointer">
@@ -71,19 +71,30 @@
             </div>
         </div>
     </div>
+    <ActivityModal v-model:isOpen="showModal" :quizId="selectedQuizId" :quizName="selectedQuizName" />
 </template>
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useQuizStore } from '../stores/quiz';
 import DifficultyShower from '@/components/DifficultyShower.vue';
+import ActivityModal from '../components/ActivityModal.vue';
 import ErrorMessage from '@/components/StatusError.vue';
-import Modal from '@/components/Modal.vue';
 
 const quizStore = useQuizStore();
 const quizzes = computed(() => quizStore.allQuizzes);
 const isLoading = ref(true);
 const status = ref(0);
+
+const showModal = ref(false);
+const selectedQuizId = ref(null);
+const selectedQuizName = ref('');
+
+const openModal = (quizName, quizId) => {
+    selectedQuizId.value = quizId;
+    selectedQuizName.value = quizName;
+    showModal.value = true;
+};
 
 onMounted(async () => {
     const status = await quizStore.fetchAllQuizzes();

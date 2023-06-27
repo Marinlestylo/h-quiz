@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
         return response()->json([
             'name' => $name,
             'role' => $request->user()->affiliation,
+            'id' => $request->user()->id,
         ]);
     });
     Route::get('/users', [UserController::class, 'index']);
@@ -65,6 +66,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/questions/{keyword}', [QuestionController::class, 'getQuestions']);
 
     Route::get('/activities', [ActivityController::class, 'index']);
+    Route::post('/activities', [ActivityController::class, 'create']);
 
     Route::get('/courses', [CourseController::class, 'index']);
     Route::get('/courses/{id}', [CourseController::class, 'show']);
