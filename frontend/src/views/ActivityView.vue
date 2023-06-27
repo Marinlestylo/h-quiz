@@ -28,14 +28,18 @@
                             <tbody>
                                 <tr v-for="activity in activities"
                                     class="border-b transition duration-300 ease-in-out hover:bg-neutral-200">
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ activity.quiz.name }}</td>
+                                    <td class="px-6 py-4 font-medium">{{ activity.quiz.name }}</td>
                                     <td class="whitespace-nowrap px-6 py-4 font-medium">{{ activity.quiz.questions }}</td>
                                     <td class="whitespace-nowrap px-6 py-4 font-medium">{{ activity.roster.data.name }}</td>
                                     <td class="whitespace-nowrap px-6 py-4 font-medium">{{
                                         secondsToMinutes(activity.duration) }}</td>
                                     <td class="whitespace-nowrap px-6 py-4 font-medium">{{
                                         timestampToDateAndHour(activity.updated_at) }} </td>
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">actions</td>
+                                    <td class="whitespace-nowrap px-6 py-6 h-full flex items-center space-x-1">
+                                        <ShowHideIcon/>
+                                        <ShowResultsIcon/>
+                                        <RealTimeProgressionIcon/>
+                                    </td>
 
                                 </tr>
                             </tbody>
@@ -49,6 +53,9 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+import ShowHideIcon from '@/components/icons/ShowHideIcon.vue';
+import ShowResultsIcon from '@/components/icons/ShowResultsIcon.vue';
+import RealTimeProgressionIcon from '@/components/icons/RealTimeProgressionIcon.vue';
 import ErrorMessage from '@/components/StatusError.vue';
 import { useActivityStore } from '../stores/activity';
 
