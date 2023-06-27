@@ -88,7 +88,7 @@ async function createRoster() {
         successMessage.value = `Le roster "${data.roster.name}" a bien été créé`;
         resetFields();
     } else {
-        errorMessage.value = "Une erreur est survenue lors de la création du roster";
+        errorMessage.value = data.message;
     }
 }
 

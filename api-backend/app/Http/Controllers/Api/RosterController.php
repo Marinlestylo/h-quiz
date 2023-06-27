@@ -39,6 +39,13 @@ class RosterController extends Controller
         Log::debug('Create roster');
         $data = $request->all();
         $r = new Roster();
+
+        if ($data['year'] > 2155 || $data['year'] < 1970) {
+            return response([
+                'message' => "L'année doit être comprise entre 1970 et 2155.",
+                'error' => "Bad Request"
+            ], 400);
+        }
        
         // create the roster
         $r->fill($data);
