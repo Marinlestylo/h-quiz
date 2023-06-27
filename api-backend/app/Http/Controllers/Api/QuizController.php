@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Quiz;
 use App\Models\User;
+use App\Models\Question;
 
+use App\Transformers\QuizTransformer;
 use Auth;
 use Log;
 
@@ -73,6 +75,65 @@ class QuizController extends Controller
         return response([
             'message' => 'Quiz created',
             'quiz' => $q->name
+        ], 200);
+    }
+
+    function addQuestion(Request $request) {
+        Log::debug('Add question to quiz');
+
+        $quiz = Quiz::findOrFail($request->quiz_id);
+        if ($quiz->user_id != Auth::id()) {
+            return response([
+                'message' => "Seul le créateur du quiz peut le modifier",
+                'error' => "Bad Request"
+            ], 400);
+        }
+
+        // Check if question is already in quiz
+        $questions = $quiz->questions;
+        foreach ($questions as $question) {
+            if ($question->id == $request->question_id) {
+                return response([
+                    'message' => "La question fait déjà partie du quiz",
+                    'error' => "Bad Request"
+                ], 400);
+            }
+        }
+
+        $question = Question::findOrFail($request->question_id);
+
+        $quiz->questions()->attach($question->id);
+
+        $questions = Quiz::findOrFail($request->quiz_id)->questions;
+        $quiz = fractal($quiz, new QuizTransformer())->toArray();
+        return response([
+            'message' => 'Question added',
+            'quiz' => $quiz,
+            'questions' => $questions
+        ], 200);
+    }
+
+    function deleteQuestion(Request $request) {
+        Log::debug('Delete question to quiz');
+
+        $quiz = Quiz::findOrFail($request->quiz_id);
+        if ($quiz->user_id != Auth::id()) {
+            return response([
+                'message' => "Seul le créateur du quiz peut le modifier",
+                'error' => "Bad Request"
+            ], 400);
+        }
+
+        $question = Question::findOrFail($request->question_id);
+
+        $quiz->questions()->detach($question->id);
+
+        $questions = Quiz::findOrFail($request->quiz_id)->questions;
+        $quiz = fractal($quiz, new QuizTransformer())->toArray();
+        return response([
+            'message' => 'Question deleted',
+            'quiz' => $quiz,
+            'questions' => $questions
         ], 200);
     }
 }

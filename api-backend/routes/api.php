@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/quizzes/{id}', [QuizController::class, 'show']);
     Route::get('/quizzes/{id}/questions', [QuizController::class, 'questions']);
     Route::post('/quizzes', [QuizController::class, 'create']);
+    Route::post('/quizzes/question', [QuizController::class, 'addQuestion']);
+    Route::delete('quizzes/question', [QuizController::class, 'deleteQuestion']);
 
     // Keyword
     Route::get('/keywords', [KeywordController::class, 'index']);
@@ -72,6 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/rosters/{id}', [RosterController::class, 'show']);
     Route::get('/rosters/{id}/students', [RosterController::class, 'students']);
     Route::post('/rosters', [RosterController::class, 'create']);
+    //TODO changer les routes pour les rendre plus REST
     Route::post('/rosters/add-student', [RosterController::class, 'addStudent']);
     Route::delete('/rosters/delete-student', [RosterController::class, 'deleteStudent']);
 

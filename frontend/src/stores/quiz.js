@@ -25,7 +25,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
     const createQuiz = async (name) => {
         const payload = { 'name': name };
-        const response = await fetchApi('/api/quizzes', {
+        const response = await utils.fetchApi('/api/quizzes', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -36,5 +36,37 @@ export const useQuizStore = defineStore('quiz', () => {
         return [response.status, data];
     }
 
-    return { allQuizzes, fetchQuestionsFromQuiz, fetchAllQuizzes, createQuiz }
+    const addQuestionToQuiz = async (id, questionId) => {
+        const payload = {
+            'quiz_id': id,
+            'question_id': questionId
+        };
+        const response = await utils.fetchApi('/api/quizzes/question', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        return [response.status, data];
+    }
+
+    const deleteQuestionFromQuiz = async (id, questionId) => {
+        const payload = {
+            'quiz_id': id,
+            'question_id': questionId
+        };
+        const response = await utils.fetchApi('/api/quizzes/question', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        return [response.status, data];
+    }
+
+    return { allQuizzes, addQuestionToQuiz, deleteQuestionFromQuiz, fetchQuestionsFromQuiz, fetchAllQuizzes, createQuiz }
 });
