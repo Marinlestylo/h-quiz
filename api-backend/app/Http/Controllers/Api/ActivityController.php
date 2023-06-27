@@ -15,16 +15,31 @@ use Arr;
 use Auth;
 use Log;
 
-use App\Transformer\ActivityTransformer;
-use App\Transformer\QuestionTransformer;
+use App\Transformers\ActivityTransformer;
+use App\Transformers\QuestionTransformer;
 
 class ActivityController extends Controller
 {
     //
-    function index(){
+    function index(Request $request)
+    {
+        $activities = Activity::query();
+
+        if ($request->user()->isStudent())
+            $activities = $request->user()->student->activities()->where('hidden', false);
+
+        if ($request->user()->isTeacher() && $request->owned)
+            $activities = $request->user()->activities();
+
+        if (($roster_id = $request->input('roster_id')))
+            $activities->where('roster_id', $roster_id);
+
+        return fractal(
+            $activities->orderBy('updated_at', 'desc')->get(), new ActivityTransformer)->toArray();
     }
 
-    function create(Request $request) {
+    function create(Request $request)
+    {
         Log::debug('Create Activity Request');
         $validator = Validator::make($request->all(), [
             'duration' => 'required|integer|min:60',
