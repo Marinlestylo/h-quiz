@@ -155,7 +155,6 @@ const successMessage = ref('');
 
 onMounted(async () => {
     await quizStore.fetchAllQuizzes();
-    console.log(quizzes.value);
 });
 
 async function displayQuizInfo() {

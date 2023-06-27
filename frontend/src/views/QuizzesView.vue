@@ -26,6 +26,7 @@
                                     <th scope="col" class="px-6 py-2">Quiz</th>
                                     <th scope="col" class="px-6 py-2">Questions</th>
                                     <th scope="col" class="px-6 py-2">Créateur</th>
+                                    <th scope="col" class="px-6 py-2">Difficulté</th>
                                     <th scope="col" class="px-6 py-2">Actions</th>
                                 </tr>
                             </thead>
@@ -33,17 +34,27 @@
                                 <tr v-for="quiz in quizzes"
                                     class="border-b transition duration-300 ease-in-out hover:bg-neutral-200">
                                     <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.id }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.name }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.questions }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.owner.name}}
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                        {{ quiz.name }}
+                                        <div class="flex items-center mt-1">
+                                            <div class="text-xs text-white mr-2 bg-gray-700 rounded-lg px-1 py-1 items-center"
+                                                v-for="keyword in quiz.keywords">
+                                                {{ keyword }}
+                                            </div>
+                                        </div>
+
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 flex"><svg xmlns="http://www.w3.org/2000/svg" v-tooltip="'Créer une activité à partir de ce quiz'"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.questions }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.owner.name }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium"><DifficultyShower :difficultyLevel="quiz.difficulty"/></td>
+                                    <td class="whitespace-nowrap px-6 py-4 flex"><svg xmlns="http://www.w3.org/2000/svg"
+                                            v-tooltip="'Créer une activité à partir de ce quiz'" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                             class="w-10 h-10 hover:cursor-pointer">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <RouterLink to="/update-quiz" v-tooltip="'Cliquer ici pour modifier un quiz'"> 
+                                        <RouterLink to="/update-quiz" v-tooltip="'Modifier un quiz'">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor"
                                                 class="w-9 h-9 hover:cursor-pointer ml-2">
@@ -65,7 +76,9 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useQuizStore } from '../stores/quiz';
+import DifficultyShower from '@/components/DifficultyShower.vue';
 import ErrorMessage from '@/components/StatusError.vue';
+import Modal from '@/components/Modal.vue';
 
 const quizStore = useQuizStore();
 const quizzes = computed(() => quizStore.allQuizzes);
@@ -77,7 +90,6 @@ onMounted(async () => {
     if (status === 200) {
         isLoading.value = false;
     }
-
 });
 
 </script>
