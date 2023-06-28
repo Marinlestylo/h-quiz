@@ -71,6 +71,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/activities', [ActivityController::class, 'create']);
 
     Route::delete('/activities/{id}', [ActivityController::class, 'delete']);
+    // Route to start, open, close, hide and show an activity
+    Route::patch('/activities/{id}', [ActivityController::class, 'edit']);
 
     // Course
     Route::get('/courses', [CourseController::class, 'index']);

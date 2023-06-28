@@ -37,6 +37,21 @@ export const useActivityStore = defineStore('activity', () => {
         return [response.status, data];
     }
 
+    const updateActivity = async (action) => {
+        const payload = {
+            'action': action
+        };
+        const response = await utils.fetchApi('/api/activities/' + activityId, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        return [response.status, data];
+    }
+
     const deleteActivity = async (activityId) => {
         const response = await utils.fetchApi('/api/activities/' + activityId, {
             method: 'DELETE',
@@ -51,5 +66,5 @@ export const useActivityStore = defineStore('activity', () => {
 
 
 
-    return { allActivities, deleteActivity, createActivity, fetchAllActivities }
+    return { allActivities, updateActivity, deleteActivity, createActivity, fetchAllActivities }
 });

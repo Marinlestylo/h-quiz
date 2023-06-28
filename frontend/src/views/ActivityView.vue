@@ -38,20 +38,23 @@
                                     <td class="whitespace-nowrap px-6 py-6 h-full">
                                         <div v-if="activity.status === 'idle'" class="flex items-center space-x-1">
                                             <TrashIcon :activityId="activity.id"/>
-                                            <OpenActivityIcon />
+                                            <ActivityIconAction :activityId=activity.id action="open"/>
                                         </div>
                                         <div v-else-if="activity.status === 'opened'" class="flex items-center space-x-1">
-                                            <PlayActivityIcon />
-                                            <CloseActivityIcon />
+                                            <ActivityIconAction :activityId=activity.id action="play"/>
+                                            <ActivityIconAction :activityId=activity.id action="close"/>
                                         </div>
                                         <div v-else-if="activity.status === 'running'" class="flex items-center space-x-1">
-                                            <RealTimeProgressionIcon />
+                                            <ActivityIconAction :activityId=activity.id action="realTime"/>
                                             Time
                                         </div>
                                         <div v-else class="flex items-center space-x-1">
-                                            <ShowHideIcon />
+                                            <!-- <ShowHideIcon />
                                             <ShowResultsIcon />
-                                            <RealTimeProgressionIcon />
+                                            <RealTimeProgressionIcon /> -->
+                                            <ActivityIconAction :activityId=activity.id action="show"/>
+                                            <ActivityIconAction :activityId=activity.id action="results"/>
+                                            <ActivityIconAction :activityId=activity.id action="realTime"/>
                                         </div>
                                     </td>
                                 </tr>
@@ -62,6 +65,7 @@
             </div>
         </div>
     </div>
+    
 </template>
 
 <script setup>
@@ -73,6 +77,7 @@ import PlayActivityIcon from '@/components/icons/PlayActivityIcon.vue';
 import OpenActivityIcon from '@/components/icons/OpenActivityIcon.vue';
 import CloseActivityIcon from '@/components/icons/CloseActivityIcon.vue';
 import TrashIcon from '@/components/icons/TrashIcon.vue';
+import ActivityIconAction from '../components/ActivityIconAction.vue';
 
 
 import ErrorMessage from '@/components/StatusError.vue';

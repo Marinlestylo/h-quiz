@@ -38,6 +38,14 @@ class ActivityController extends Controller
             $activities->orderBy('updated_at', 'desc')->get(), new ActivityTransformer)->toArray();
     }
 
+    function edit($id, Request $request){
+        $activity = Activity::findOrFail($id);
+        return response([
+            'message' => $request->input('action'),
+            'error' => "Bad Request"
+        ], 400);
+    } 
+
     function delete($id) {
         $activity = Activity::findOrFail($id);
 
