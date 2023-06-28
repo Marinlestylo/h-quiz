@@ -37,7 +37,19 @@ export const useActivityStore = defineStore('activity', () => {
         return [response.status, data];
     }
 
+    const deleteActivity = async (activityId) => {
+        const response = await utils.fetchApi('/api/activities/' + activityId, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        return [response.status, data];
+        // return response.status;
+    }
 
 
-    return { allActivities, createActivity, fetchAllActivities }
+
+    return { allActivities, deleteActivity, createActivity, fetchAllActivities }
 });

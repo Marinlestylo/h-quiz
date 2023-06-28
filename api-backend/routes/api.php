@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/users', [UserController::class, 'index']);
     
+    // Student
     Route::get('/students', [StudentController::class, 'index']);
 
     // Quiz
@@ -65,9 +66,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/questions', [QuestionController::class, 'index']);
     Route::get('/questions/{keyword}', [QuestionController::class, 'getQuestions']);
 
+    // Activity
     Route::get('/activities', [ActivityController::class, 'index']);
     Route::post('/activities', [ActivityController::class, 'create']);
 
+    Route::delete('/activities/{id}', [ActivityController::class, 'delete']);
+
+    // Course
     Route::get('/courses', [CourseController::class, 'index']);
     Route::get('/courses/{id}', [CourseController::class, 'show']);
 

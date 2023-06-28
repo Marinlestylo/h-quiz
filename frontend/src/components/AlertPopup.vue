@@ -3,7 +3,7 @@
         'bg-green-100 border-green-400 text-green-700': success,
         'bg-red-100 border-red-400 text-red-700': error
     }">
-        <span class="block sm:inline">{{ message }}</span>
+        <span class="block sm:inline pr-10">{{ message }}</span>
         <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
             <svg @click="$emit('update:message', '')" class="fill-current h-6 w-6"
                 :class="{ 'text-green-500': success, 'text-red-500': error }" role="button"
@@ -17,13 +17,15 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 const props = defineProps({
     message: String,
     alertType: String
 });
 
-const success = 'success' === props.alertType;
-const error = 'error' === props.alertType;
+const success = computed(() => 'success' === props.alertType);
+const error = computed(() => 'error' === props.alertType);
 
 defineEmits(['update:message']);
 </script>

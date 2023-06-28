@@ -37,7 +37,7 @@
                                         {{ timestampToDateAndHour(activity.updated_at) }} </td>
                                     <td class="whitespace-nowrap px-6 py-6 h-full">
                                         <div v-if="activity.status === 'idle'" class="flex items-center space-x-1">
-                                            <TrashIcon />
+                                            <TrashIcon :activityId="activity.id"/>
                                             <OpenActivityIcon />
                                         </div>
                                         <div v-else-if="activity.status === 'opened'" class="flex items-center space-x-1">
@@ -84,7 +84,6 @@ const activities = computed(() => activityStore.allActivities);
 
 onMounted(async () => {
     const status = await activityStore.fetchAllActivities();
-    console.log(activities.value);
 });
 
 const secondsToMinutes = (seconds) => {

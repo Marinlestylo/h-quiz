@@ -38,6 +38,29 @@ class ActivityController extends Controller
             $activities->orderBy('updated_at', 'desc')->get(), new ActivityTransformer)->toArray();
     }
 
+    function delete($id) {
+        $activity = Activity::findOrFail($id);
+
+        if ($activity->user_id != Auth::id()) {
+            return response([
+                'message' => "Seulement le professeur qui a créé l'activité peut la supprimer.",
+                'error' => "Unauthorized"
+            ], 403);
+        }
+
+        if ($activity->status != 'idle') {
+            return response([
+                'message' => "Vous ne pouvez pas supprimer une activité qui est déjà ouverte.",
+                'error' => "Bad Request"
+            ], 400);
+        }
+
+        $activity->delete();
+        return response([
+            'message' => 'L\'activité a été supprimée.'
+        ], 200);
+    }
+
     function create(Request $request)
     {
         Log::debug('Create Activity Request');
