@@ -52,7 +52,12 @@
                                             <!-- <ShowHideIcon />
                                             <ShowResultsIcon />
                                             <RealTimeProgressionIcon /> -->
-                                            <ActivityIconAction :activityId=activity.id action="show"/>
+                                            <div v-if="activity.hidden">
+                                                <ActivityIconAction :activityId=activity.id action="hide"/>
+                                            </div>
+                                            <div v-else>
+                                                <ActivityIconAction :activityId=activity.id action="show"/>
+                                            </div>
                                             <ActivityIconAction :activityId=activity.id action="results"/>
                                             <ActivityIconAction :activityId=activity.id action="realTime"/>
                                         </div>
@@ -70,7 +75,6 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import ShowHideIcon from '@/components/icons/ShowHideIcon.vue';
 import ShowResultsIcon from '@/components/icons/ShowResultsIcon.vue';
 import RealTimeProgressionIcon from '@/components/icons/RealTimeProgressionIcon.vue';
 import PlayActivityIcon from '@/components/icons/PlayActivityIcon.vue';

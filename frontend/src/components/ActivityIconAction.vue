@@ -1,11 +1,22 @@
 <template>
-    <ActivityIconAction @click="debug"/>
+    <div v-tooltip="tooltip">
+        <div v-if="path">
+        <RouterLink :to="path">
+            <ActivityIconAction />
+        </RouterLink>
+    </div>
+    <div v-else class="hover:cursor-pointer">
+        <ActivityIconAction @click="debug"/>
+    </div>
+    </div>
 </template>
 
 <script setup>
 import { computed, ref } from 'vue';
+import { RouterLink } from 'vue-router';
 import { useActivityStore } from '../stores/activity';
-import ShowHideIcon from '@/components/icons/ShowHideIcon.vue';
+import ShowActivityIcon from '@/components/icons/ShowActivityIcon.vue';
+import HideActivityIcon from '@/components/icons/HideActivityIcon.vue';
 import ShowResultsIcon from '@/components/icons/ShowResultsIcon.vue';
 import RealTimeProgressionIcon from '@/components/icons/RealTimeProgressionIcon.vue';
 import PlayActivityIcon from '@/components/icons/PlayActivityIcon.vue';
@@ -19,26 +30,36 @@ const props = defineProps({
     action: String
 });
 
+const path = ref('');
+const tooltip = ref('');
+
 const ActivityIconAction = computed(() => {
     switch (props.action) {
         case 'show':
-            return ShowHideIcon;
+            tooltip.value = 'Cacher l\'activité aux étudiants';
+            return ShowActivityIcon;
         case 'hide':
-            return ShowHideIcon;
+            tooltip.value = 'Rendre visible l\'activité aux étudiants';
+            return HideActivityIcon;
         case 'results':
+            path.value = '/quizzes';
+            tooltip.value = 'Afficher les résultats';
             return ShowResultsIcon;
         case 'realTime':
+            path.value = '/rosters';
+            tooltip.value = 'Afficher la progression en temps réel';
             return RealTimeProgressionIcon;
         case 'play':
+            tooltip.value = 'Lancer l\'activité';
             return PlayActivityIcon;
         case 'open':
+            tooltip.value = 'Activité fermée. Cliquer pour l\'ouvrir.';
             return OpenActivityIcon;
         case 'close':
+            tooltip.value = 'Activité disponible pour les étudiants. Appuyez pour la fermer.';
             return CloseActivityIcon;
         case 'delete':
             return TrashIcon;
-        default:
-            return ShowHideIcon;
     }
 });
 
