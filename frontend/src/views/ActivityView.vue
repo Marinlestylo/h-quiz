@@ -49,9 +49,6 @@
                                             Time
                                         </div>
                                         <div v-else class="flex items-center space-x-1">
-                                            <!-- <ShowHideIcon />
-                                            <ShowResultsIcon />
-                                            <RealTimeProgressionIcon /> -->
                                             <div v-if="!activity.hidden">
                                                 <ActivityIconAction :activityId=activity.id action="hide" />
                                             </div>
@@ -74,16 +71,8 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import ShowResultsIcon from '@/components/icons/ShowResultsIcon.vue';
-import RealTimeProgressionIcon from '@/components/icons/RealTimeProgressionIcon.vue';
-import PlayActivityIcon from '@/components/icons/PlayActivityIcon.vue';
-import OpenActivityIcon from '@/components/icons/OpenActivityIcon.vue';
-import CloseActivityIcon from '@/components/icons/CloseActivityIcon.vue';
 import TrashIcon from '@/components/icons/TrashIcon.vue';
 import ActivityIconAction from '../components/ActivityIconAction.vue';
-
-
-import ErrorMessage from '@/components/StatusError.vue';
 import { useActivityStore } from '../stores/activity';
 
 

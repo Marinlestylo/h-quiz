@@ -6,7 +6,6 @@ import * as utils from '../utils.js';
 export const useActivityStore = defineStore('activity', () => {
     const allActivities = ref(null)
 
-    // Pas encore testé
     const fetchAllActivities = async () => {
         const response = await utils.fetchApi('/api/activities');
         const data = await response.json();
