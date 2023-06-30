@@ -37,29 +37,29 @@
                                         {{ timestampToDateAndHour(activity.updated_at) }} </td>
                                     <td class="whitespace-nowrap px-6 py-6 h-full">
                                         <div v-if="activity.status === 'idle'" class="flex items-center space-x-1">
-                                            <TrashIcon :activityId="activity.id"/>
-                                            <ActivityIconAction :activityId=activity.id action="open"/>
+                                            <TrashIcon :activityId="activity.id" />
+                                            <ActivityIconAction :activityId=activity.id action="open" />
                                         </div>
                                         <div v-else-if="activity.status === 'opened'" class="flex items-center space-x-1">
-                                            <ActivityIconAction :activityId=activity.id action="play"/>
-                                            <ActivityIconAction :activityId=activity.id action="close"/>
+                                            <ActivityIconAction :activityId=activity.id action="play" />
+                                            <ActivityIconAction :activityId=activity.id action="close" />
                                         </div>
                                         <div v-else-if="activity.status === 'running'" class="flex items-center space-x-1">
-                                            <ActivityIconAction :activityId=activity.id action="realTime"/>
+                                            <ActivityIconAction :activityId=activity.id action="realTime" />
                                             Time
                                         </div>
                                         <div v-else class="flex items-center space-x-1">
                                             <!-- <ShowHideIcon />
                                             <ShowResultsIcon />
                                             <RealTimeProgressionIcon /> -->
-                                            <div v-if="activity.hidden">
-                                                <ActivityIconAction :activityId=activity.id action="hide"/>
+                                            <div v-if="!activity.hidden">
+                                                <ActivityIconAction :activityId=activity.id action="hide" />
                                             </div>
                                             <div v-else>
-                                                <ActivityIconAction :activityId=activity.id action="show"/>
+                                                <ActivityIconAction :activityId=activity.id action="show" />
                                             </div>
-                                            <ActivityIconAction :activityId=activity.id action="results"/>
-                                            <ActivityIconAction :activityId=activity.id action="realTime"/>
+                                            <ActivityIconAction :activityId=activity.id action="results" />
+                                            <ActivityIconAction :activityId=activity.id action="realTime" />
                                         </div>
                                     </td>
                                 </tr>
@@ -70,7 +70,6 @@
             </div>
         </div>
     </div>
-    
 </template>
 
 <script setup>

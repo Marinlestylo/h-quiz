@@ -35,18 +35,128 @@ class ActivityController extends Controller
             $activities->where('roster_id', $roster_id);
 
         return fractal(
-            $activities->orderBy('updated_at', 'desc')->get(), new ActivityTransformer)->toArray();
+            $activities->orderBy('updated_at', 'desc')->get(),
+            new ActivityTransformer
+        )->toArray();
     }
 
-    function edit($id, Request $request){
+    function edit($id, Request $request)
+    {
         $activity = Activity::findOrFail($id);
-        return response([
-            'message' => $request->input('action'),
-            'error' => "Bad Request"
-        ], 400);
-    } 
 
-    function delete($id) {
+        if ($activity->user_id != Auth::id()) {
+            return response([
+                'message' => "Seulement le créateur de l'activité peut la modifier.",
+                'error' => "Unauthorized"
+            ], 403);
+        }
+
+        $action = $request->input('action');
+        $message = '';
+
+        switch ($action) {
+            case 'play':
+                if ($activity->hidden) {
+                    return response([
+                        'message' => "Vous ne pouvez pas démarrer une activité cachée.",
+                        'error' => "Bad Request"
+                    ], 400);
+                }
+
+                if ($activity->completed) {
+                    return response([
+                        'message' => "Vous ne pouvez pas démarrer une activité terminée.",
+                        'error' => "Bad Request"
+                    ], 400);
+                }
+
+                if ($activity->started) {
+                    return response([
+                        'message' => "Vous ne pouvez pas démarrer une activité qui a déjà été démarrée.",
+                        'error' => "Bad Request"
+                    ], 400);
+                }
+
+                $activity->started_at = Carbon::now();
+                $activity->save();
+                $message = 'L\'activité a été démarrée.';
+
+                break;
+            case 'hide':
+                if ($activity->status != 'finished') {
+                    return response([
+                        'message' => "Vous ne pouvez pas cacher une activité qui n'est pas terminée.",
+                        'error' => "Bad Request"
+                    ], 400);
+                }
+
+                if ($activity->hidden) {
+                    return response([
+                        'message' => "Vous ne pouvez pas cacher une activité qui est déjà cachée.",
+                        'error' => "Bad Request"
+                    ], 400);
+                }
+                $activity->update(['hidden' => true]);
+                $activity->save();
+                $message = 'L\'activité a été cachée.';
+                break;
+            case 'show':
+                if ($activity->status != 'finished') {
+                    return response([
+                        'message' => "Vous ne pouvez pas rendre visible une activité qui n'est pas terminée.",
+                        'error' => "Bad Request"
+                    ], 400);
+                }
+                if (!$activity->hidden) {
+                    return response([
+                        'message' => "L'activité est déjà visible.",
+                        'error' => "Bad Request"
+                    ], 400);
+                }
+
+                $activity->update(['hidden' => false]);
+                $activity->save();
+                $message = 'L\'activité a été rendue visible.';
+                break;
+            case 'open':
+                if ($activity->hidden) {
+                    return response([
+                        'message' => "Vous ne pouvez pas ouvrir une activité cachée.",
+                        'error' => "Bad Request"
+                    ], 400);
+                }
+
+                if ($activity->status != 'idle') {
+                    return response([
+                        'message' => "Vous ne pouvez pas ouvrir cette activité.",
+                        'error' => "Bad Request"
+                    ], 400);
+                }
+
+                $activity->update(['opened_at' => Carbon::now()]);
+                $activity->save();
+                $message = 'L\'activité a été ouverte.';
+                break;
+            case 'close':
+                if ($activity->status != 'opened') {
+                    return response([
+                        'message' => "Vous ne pouvez fermer que des activités ouvertes.",
+                        'error' => "Bad Request"
+                    ], 400);
+                }
+
+                $activity->update(['opened_at' => null]);
+                $activity->save();
+                $message = 'L\'activité a été fermée';
+                break;
+        }
+        return response([
+            'message' => $message,
+        ], 200);
+    }
+
+    function delete($id)
+    {
         $activity = Activity::findOrFail($id);
 
         if ($activity->user_id != Auth::id()) {

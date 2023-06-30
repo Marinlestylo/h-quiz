@@ -37,11 +37,11 @@ export const useActivityStore = defineStore('activity', () => {
         return [response.status, data];
     }
 
-    const updateActivity = async (action) => {
+    const updateActivity = async (action, id) => {
         const payload = {
             'action': action
         };
-        const response = await utils.fetchApi('/api/activities/' + activityId, {
+        const response = await utils.fetchApi('/api/activities/' + id, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
