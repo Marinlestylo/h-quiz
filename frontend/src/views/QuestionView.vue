@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-6 flex justify-between">
+    <div class="mb-6 flex justify-between items-center">
         <div class="text-3xl">
             Toute les questions
         </div>
