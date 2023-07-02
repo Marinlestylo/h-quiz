@@ -109,14 +109,14 @@
         </div>
 
         <div class="mb-6 flex">
-            <label for="name" class="block mb-2 text-lg font-medium text-gray-900 w-64">Explication de la réponse</label>
-            <input type="text" id="name" v-model="question.name"
+            <label for="explanation" class="block mb-2 text-lg font-medium text-gray-900 w-64">Explication de la réponse</label>
+            <input type="text" id="explanation" v-model="question.explanation"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 autocomplete="off">
         </div>
 
         <div>
-            <button @click="debug"
+            <button @click="createQuestion"
                 class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto mb-4">Création de
                 la question
             </button>
@@ -145,12 +145,30 @@ const question = ref({
     content: '',
     keywords: [],
     difficulty: '',
+    validation: '42',
     type: '',
     explanation: '',
 });
 
 const debug = () => {
     console.log(question.value);
+    console.log(validateQuestion());
+}
+
+const createQuestion = async () => {
+    if (!validateQuestion()) {
+        return;
+    }
+    const [status, data] = await questionStore.createQuestion(question.value);
+    console.log(status);
+    console.log(data);
+    // if (response.status === 201) {
+    //     successMessage.value = 'La question a été créée avec succès.';
+    //     errorMessage.value = '';
+    // } else {
+    //     errorMessage.value = 'Une erreur est survenue lors de la création de la question.';
+    //     successMessage.value = '';
+    // }
 }
 
 const addKeywords = () => {
@@ -181,5 +199,21 @@ onMounted(async () => {
     questionTypes.value = await questionStore.fetchAllQuestionTypes();
 
 });
+
+const validateQuestion = () => {
+    if (question.value.name === '') {
+        return false;
+    }
+    if (question.value.content === '') {
+        return false;
+    }
+    if (question.value.difficulty === '' || !difficulties.value.includes(question.value.difficulty)) {
+        return false;
+    }
+    if (question.value.type === '' || !questionTypes.value.includes(question.value.type)) {
+        return false;
+    }
+    return true;
+}
 
 </script>

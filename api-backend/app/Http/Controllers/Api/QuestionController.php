@@ -9,6 +9,7 @@ use App\Models\Question;
 
 use Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class QuestionController extends Controller
 {
@@ -61,5 +62,19 @@ class QuestionController extends Controller
         preg_match("/^enum\(\'(.*)\'\)$/", $type, $matches);
         $enum = explode("','", $matches[1]);
         return $enum;
+    }
+
+    function create(Request $request)
+    {
+        Log::debug('Create question');
+        $data = $request->all();
+        $q = new Question();
+        $q->fill($data);
+
+        $q->save();
+        return response([
+            'message' => 'Question created',
+            'roster' => $q
+        ], 200);
     }
 }
