@@ -65,6 +65,8 @@ Route::middleware('auth')->group(function () {
     // Question
     Route::get('/questions', [QuestionController::class, 'index']);
     Route::get('/questions/{keyword}', [QuestionController::class, 'getQuestions']);
+    Route::get('/questions-types', [QuestionController::class, 'getTypes']);
+    Route::get('/questions-difficulties', [QuestionController::class, 'getDifficulties']);
 
     // Activity
     Route::get('/activities', [ActivityController::class, 'index']);

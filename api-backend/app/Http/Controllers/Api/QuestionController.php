@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Question;
 
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
@@ -33,15 +34,32 @@ class QuestionController extends Controller
         //     ], 400);
         // }
 
-        if( $keyword == "all"){
+        if ($keyword == "all") {
             $q = Question::with('keywords')->get();
-        }
-        else{
+        } else {
             $q = Question::whereHas('keywords', function ($query) use ($keyword) {
                 return $query->where('name', 'like', $keyword);
             })->get();
         }
 
         return $q;
+    }
+
+    function getTypes()
+    {
+        return $this->getAllValuesFromEnum('questions', 'type');
+    }
+
+    function getDifficulties()
+    {
+        return $this->getAllValuesFromEnum('questions', 'difficulty');
+    }
+
+    private static function getAllValuesFromEnum($table, $field)
+    {
+        $type = DB::select("SHOW COLUMNS FROM {$table} WHERE Field = '{$field}'")[0]->Type;
+        preg_match("/^enum\(\'(.*)\'\)$/", $type, $matches);
+        $enum = explode("','", $matches[1]);
+        return $enum;
     }
 }

@@ -87,24 +87,32 @@
         </div>
 
         <div class="mb-6 flex">
-            <label for="name" class="block mb-2 text-lg font-medium text-gray-900 w-64">Difficulté</label>
-            <input type="text" id="name" v-model="question.difficulty"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                placeholder="Boucle for" autocomplete="off">
+            <label for="difficulty" class="block mb-2 text-lg font-medium text-gray-900 w-48 mr-2">Difficulté</label>
+            <div>
+                <select v-model="question.difficulty" id="difficulty"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <option disabled selected value="">Quelle est la difficulté de la question ?</option>
+                    <option v-for="diff in difficulties" :key="diff" v-bind:value="diff">{{ diff }}</option>
+                </select>
+            </div>
         </div>
 
         <div class="mb-6 flex">
-            <label for="name" class="block mb-2 text-lg font-medium text-gray-900 w-64">Type de la question</label>
-            <input type="text" id="name" v-model="question.name"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                placeholder="Boucle for" autocomplete="off">
+            <label for="type" class="block mb-2 text-lg font-medium text-gray-900 w-48 mr-2">Type de la question</label>
+            <div>
+                <select v-model="question.type" id="type"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <option disabled selected value="">Quelle est le type de la question ?</option>
+                    <option v-for="t in questionTypes" :key="t" v-bind:value="t">{{ t }}</option>
+                </select>
+            </div>
         </div>
 
         <div class="mb-6 flex">
             <label for="name" class="block mb-2 text-lg font-medium text-gray-900 w-64">Explication de la réponse</label>
             <input type="text" id="name" v-model="question.name"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                placeholder="Boucle for" autocomplete="off">
+                autocomplete="off">
         </div>
 
         <div>
@@ -120,11 +128,17 @@
 
 import { computed, onMounted, ref } from 'vue';
 import { useKeywordStore } from '../stores/keyword';
+import { useQuestionStore } from '../stores/question';
 
 const keywordStore = useKeywordStore();
 const keywords = computed(() => keywordStore.allKeywords);
 
+const questionStore = useQuestionStore();
+
 const searchKeyword = ref('');
+
+const difficulties = ref([]);
+const questionTypes = ref([]);
 
 const question = ref({
     name: '',
@@ -132,6 +146,7 @@ const question = ref({
     keywords: [],
     difficulty: '',
     type: '',
+    explanation: '',
 });
 
 const debug = () => {
@@ -157,11 +172,14 @@ const removeKeywords = (id) => {
     }
 }
 
-onMounted(() => {
+onMounted(async () => {
     if (keywords.value === null) {
-        keywordStore.fetchAllKeywords();
+        await keywordStore.fetchAllKeywords();
     }
-    console.log(keywords.value);
+
+    difficulties.value = await questionStore.fetchAllDifficultyLevels();
+    questionTypes.value = await questionStore.fetchAllQuestionTypes();
+
 });
 
 </script>
