@@ -14,7 +14,7 @@
             <div class="flex items-center">
                 <RouterLink to="/activities" class="ml-4 hover:text-gray-300">Activités</RouterLink>
                 <RouterLink to="/quizzes" class="ml-4 hover:text-gray-300">Quizzes</RouterLink>
-                <RouterLink to="/update-question" class="ml-4 hover:text-gray-300">Questions</RouterLink>
+                <RouterLink to="/questions" class="ml-4 hover:text-gray-300">Questions</RouterLink>
                 <RouterLink to="/rosters" class="ml-4 hover:text-gray-300">Rosters</RouterLink>
             </div>
             <div class="flex items-center">

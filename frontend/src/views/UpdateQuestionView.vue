@@ -1,5 +1,5 @@
 <template>
-    Modifier une question
+    Modifier la question {{ $route.params.id }}
 </template>
 
 <script setup>

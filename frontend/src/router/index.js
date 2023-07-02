@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import QuizzesView from '@/views/QuizzesView.vue'
 import SandboxView from '@/views/SandboxView.vue'
+import QuestionView from '@/views/QuestionView.vue'
 import CreateQuestionView from '@/views/CreateQuestionView.vue'
 import UpdateQuestionView from '@/views/UpdateQuestionView.vue'
 import CreateQuizView from '@/views/CreateQuizView.vue'
@@ -42,12 +43,17 @@ const router = createRouter({
       component: SandboxView
     },
     {
+      path: '/questions',
+      name: 'questions',
+      component: QuestionView
+    },
+    {
       path: '/create-question',
       name: 'create question',
       component: CreateQuestionView
     },
     {
-      path: '/update-question',
+      path: '/update-question/:id',
       name: 'update question',
       component: UpdateQuestionView
     },
