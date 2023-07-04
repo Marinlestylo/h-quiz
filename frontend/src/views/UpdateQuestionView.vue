@@ -11,15 +11,11 @@
     </div>
 
     <div v-if="!showQuestion">
-        <AlertPopup v-model:message="message" alertType="error"/>
+        <AlertPopup v-model:message="message" alertType="error" />
     </div>
     <div v-else>
-        <QuestionEditor v-model:question="question" usage="update"/>
+        <QuestionEditor v-model:question="question" usage="update" />
     </div>
-
-
-
-    
 </template>
 
 <script setup>

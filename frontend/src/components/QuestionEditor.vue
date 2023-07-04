@@ -104,6 +104,9 @@
                 autocomplete="off">
         </div>
         <div>
+            <QuestionPreview :questionType="question.type" :content="question.content" />
+        </div>
+        <div>
             <AlertPopup v-model:message="message" :alertType="popupType" class="my-4" />
         </div>
         <div>
@@ -120,6 +123,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useKeywordStore } from '../stores/keyword';
 import { useQuestionStore } from '../stores/question';
 import AlertPopup from '../components/AlertPopup.vue';
+import QuestionPreview from './QuestionPreview.vue';
 
 const questionStore = useQuestionStore();
 
