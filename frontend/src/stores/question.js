@@ -18,6 +18,11 @@ export const useQuestionStore = defineStore('question', () => {
         return response.status;
     }
 
+    const fetchQuestionById = async (id) => {
+        const response = await utils.fetchApi(`/api/questions/${id}`);
+        return await response.json();
+    }
+
     const fetchAllQuestionTypes = async () => {
         const response = await utils.fetchApi('/api/questions-types');
         return await response.json();
@@ -41,5 +46,5 @@ export const useQuestionStore = defineStore('question', () => {
         return [response.status, data];
     }
 
-    return { allQuestions, createQuestion, fetchAllDifficultyLevels, fetchAllQuestionTypes, fetchAllQuestions }
+    return { allQuestions, createQuestion, fetchAllDifficultyLevels, fetchAllQuestionTypes, fetchQuestionById, fetchAllQuestions }
 });
