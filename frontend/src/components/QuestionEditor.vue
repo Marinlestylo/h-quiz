@@ -1,18 +1,6 @@
 <template>
-    <div class="flex items-center mb-6 justify-between">
-        <div class="text-3xl">
-            Création d'une nouvelle question
-        </div>
-        <div>
-            <RouterLink to="/questions" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded ml-48">
-                Retour vers toutes les questions
-            </RouterLink>
-        </div>
-    </div>
-
-    <!-- Création d'une nouvelle question -->
-    <div class="w-full">
-        <!-- <div class="mb-6 flex">
+    <div>
+        <div class="mb-6 flex">
             <label for="name" class="block mb-2 text-lg font-medium text-gray-900 w-64">Nom de la question</label>
             <input type="text" id="name" v-model="question.name"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
@@ -109,109 +97,154 @@
         </div>
 
         <div class="mb-6 flex">
-            <label for="explanation" class="block mb-2 text-lg font-medium text-gray-900 w-64">Explication de la réponse</label>
+            <label for="explanation" class="block mb-2 text-lg font-medium text-gray-900 w-64">Explication de la
+                réponse</label>
             <input type="text" id="explanation" v-model="question.explanation"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 autocomplete="off">
-        </div> -->
-        <QuestionEditor v-model:question="question" usage="create"/>
+        </div>
+        <div>
+            <AlertPopup v-model:message="message" :alertType="popupType" class="my-4" />
+        </div>
+        <div>
+            <button @click="editQuestion"
+                class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto mb-4">Création de
+                la question
+            </button>
+        </div>
     </div>
 </template>
 
 <script setup>
-
 import { computed, onMounted, ref } from 'vue';
 import { useKeywordStore } from '../stores/keyword';
 import { useQuestionStore } from '../stores/question';
-import QuestionEditor from '../components/QuestionEditor.vue';
+import AlertPopup from '../components/AlertPopup.vue';
+
+const questionStore = useQuestionStore();
 
 const keywordStore = useKeywordStore();
 const keywords = computed(() => keywordStore.allKeywords);
-
-const questionStore = useQuestionStore();
 
 const searchKeyword = ref('');
 
 const difficulties = ref([]);
 const questionTypes = ref([]);
+const message = ref('');
+const popupType = ref('error');
 
-const question = ref({
-    name: '',
-    content: '',
-    keywords: [],
-    difficulty: '',
-    validation: '42',
-    type: '',
-    explanation: '',
-});
+
+const props = defineProps({
+    question: {
+        type: Object,
+        required: true
+    },
+    usage: {
+        type: String,
+        required: true
+    }
+})
 
 const debug = () => {
-    console.log(question.value);
+    console.log(props.question);
     console.log(validateQuestion());
 }
 
-const createQuestion = async () => {
+const editQuestion = async () => {
     if (!validateQuestion()) {
+        displayPopup('Veuillez remplir tous les champs correctement.', 'error');
         return;
     }
-    const [status, data] = await questionStore.createQuestion(question.value);
+    const [status, data] = await apiCall();
+    // const [status, data] = await questionStore.createQuestion(question.value);
     console.log(status);
     console.log(data);
-    // if (response.status === 201) {
-    //     successMessage.value = 'La question a été créée avec succès.';
+    // if (status === 200) {
+    //     message.value = data.message;
     //     errorMessage.value = '';
+    // } else if (status === 201) {
+    //     successMessage.value = data.message;
+    //     errorMessage.value = '';
+    //     resetFields();
     // } else {
     //     errorMessage.value = 'Une erreur est survenue lors de la création de la question.';
     //     successMessage.value = '';
     // }
+    if (status === 201) {
+        resetFields();
+    }
+    displayPopup(data.message, status === 201 || status === 200 ? 'success' : 'error');
 }
 
-// const addKeywords = () => {
-//     const matchingKeyword = keywords.value.find(keyword => keyword.name === searchKeyword.value);
-//     if (matchingKeyword) {
-//         const alreadyAdded = question.value.keywords.find(keyword => keyword.id === matchingKeyword.id);
-//         if (alreadyAdded) {
-//             return;
-//         }
-//         question.value.keywords.push(matchingKeyword);
-//         searchKeyword.value = '';
-//     }
-// }
+const apiCall = async () => {
+    if (props.usage === 'create') {
+        return await questionStore.createQuestion(props.question);
+    } else if (props.usage === 'update') {
+        return await questionStore.updateQuestion(props.question);
+    } else {
+        console.log('Mauvais usage du props editQuestion');
+        return;
+    }
+}
 
-// const removeKeywords = (id) => {
-//     const matchingKeyword = question.value.keywords.find(keyword => keyword.id === id);
-//     if (matchingKeyword) {
-//         question.value.keywords = question.value.keywords.filter(keyword => keyword.id !== id);
-//     }
-// }
+const displayPopup = (m, t) => {
+    message.value = m;
+    popupType.value = t;
+}
 
-// onMounted(async () => {
-//     if (keywords.value === null) {
-//         await keywordStore.fetchAllKeywords();
-//     }
+onMounted(async () => {
+    if (keywords.value === null) {
+        await keywordStore.fetchAllKeywords();
+    }
 
-//     difficulties.value = await questionStore.fetchAllDifficultyLevels();
-//     questionTypes.value = await questionStore.fetchAllQuestionTypes();
+    difficulties.value = await questionStore.fetchAllDifficultyLevels();
+    questionTypes.value = await questionStore.fetchAllQuestionTypes();
+});
 
-// });
+const addKeywords = () => {
+    const matchingKeyword = keywords.value.find(keyword => keyword.name === searchKeyword.value);
+    if (matchingKeyword) {
+        const alreadyAdded = props.question.keywords.find(keyword => keyword.id === matchingKeyword.id);
+        if (!alreadyAdded) {
+            props.question.keywords.push(matchingKeyword);
+        }
+        searchKeyword.value = '';
+    }
+}
+
+const removeKeywords = (id) => {
+    const matchingKeyword = props.question.keywords.find(keyword => keyword.id === id);
+    if (matchingKeyword) {
+        props.question.keywords = props.question.keywords.filter(keyword => keyword.id !== id);
+    }
+}
 
 const validateQuestion = () => {
-    if (question.value.name === '') {
+    if (props.question.name === '') {
         return false;
     }
-    if (question.value.content === '') {
+    if (props.question.content === '') {
         return false;
     }
-    if (question.value.difficulty === '' || !difficulties.value.includes(question.value.difficulty)) {
+    if (props.question.difficulty === '' || !difficulties.value.includes(props.question.difficulty)) {
         console.log(difficulties.value);
         console.log('difficulty');
         return false;
     }
-    if (question.value.type === '' || !questionTypes.value.includes(question.value.type)) {
+    if (props.question.type === '' || !questionTypes.value.includes(props.question.type)) {
         console.log('type');
         return false;
     }
     return true;
 }
 
+const resetFields = () => {
+    props.question.name = '';
+    props.question.content = '';
+    props.question.difficulty = '';
+    props.question.type = '';
+    props.question.explanation = '';
+    props.question.keywords = [];
+    props.question.validation = '';
+}
 </script>

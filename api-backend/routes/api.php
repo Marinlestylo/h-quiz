@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function () {
 
     // Question
     Route::get('/questions', [QuestionController::class, 'index']);
+    Route::get('/questions/{id}', [QuestionController::class, 'show'])->where('id', '[0-9]+');
     Route::get('/questions/{keyword}', [QuestionController::class, 'getQuestions']);
     Route::get('/questions-types', [QuestionController::class, 'getTypes']);
     Route::get('/questions-difficulties', [QuestionController::class, 'getDifficulties']);

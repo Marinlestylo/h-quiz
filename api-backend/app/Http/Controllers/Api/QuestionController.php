@@ -11,6 +11,8 @@ use Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+use App\Transformers\QuestionTransformer;
+
 class QuestionController extends Controller
 {
     function index(Request $request)
@@ -42,8 +44,12 @@ class QuestionController extends Controller
                 return $query->where('name', 'like', $keyword);
             })->get();
         }
-
         return $q;
+    }
+
+    function show($id){
+        $q = Question::with('keywords')->find($id);
+        return $q == null ? [] : $q;
     }
 
     function getTypes()
@@ -73,8 +79,7 @@ class QuestionController extends Controller
 
         $q->save();
         return response([
-            'message' => 'Question created',
-            'roster' => $q
-        ], 200);
+            'message' => 'La question a bien été créée.',
+        ], 201);
     }
 }
