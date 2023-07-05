@@ -9,8 +9,8 @@
         <div v-else-if="questionType === 'multiple-choice'">
             <MultipleChoice :content="content" v-model:selected="choices" />
         </div>
-        <div v-else-if="questionType === 'multiple-choice'">
-
+        <div v-else-if="questionType === 'fill-in-the-gaps'">
+            <FillGaps :content="content" :option="option" v-model:selected="choices"/>
         </div>
         <div v-else-if="questionType === 'multiple-choice'">
 
@@ -38,12 +38,15 @@ const props = defineProps({
         type: String,
         required: true,
     },
+    option:{
+        type: Object,
+        required: true,
+    }
 });
 
 const shortAnswer = ref('');
 
 const choices = ref([]);
-const selectedChoice = ref([]);
 
 const debug = () => {
     console.log(choices.value);

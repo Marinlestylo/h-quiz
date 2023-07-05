@@ -39,6 +39,7 @@ const question = ref({
     validation: '',
     type: '',
     explanation: '',
+    option: '',
 });
 
 onMounted(async () => {
@@ -57,6 +58,7 @@ onMounted(async () => {
         question.value.validation = data.validation;
         question.value.type = data.type;
         question.value.explanation = data.explanation;
+        question.value.option = data.options;
     }
 });
 </script>

@@ -104,13 +104,13 @@
                 autocomplete="off">
         </div>
         <div>
-            <QuestionPreview :questionType="question.type" :content="question.content" />
+            <QuestionPreview :questionType="question.type" :content="question.content" :option="question.option"  />
         </div>
         <div>
             <AlertPopup v-model:message="message" :alertType="popupType" class="my-4" />
         </div>
         <div>
-            <button @click="editQuestion"
+            <button @click="debug"
                 class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto mb-4">Création de
                 la question
             </button>
