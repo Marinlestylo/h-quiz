@@ -96,6 +96,10 @@
             </div>
         </div>
 
+        <div class="mb-6">
+           <Answer :questionType="question.type" v-model:answer="question.validation" :option="question.option" :content="question.content"/> 
+        </div>
+
         <div class="mb-6 flex">
             <label for="explanation" class="block mb-2 text-lg font-medium text-gray-900 w-64">Explication de la
                 réponse</label>
@@ -124,6 +128,7 @@ import { useKeywordStore } from '../stores/keyword';
 import { useQuestionStore } from '../stores/question';
 import AlertPopup from '../components/AlertPopup.vue';
 import QuestionPreview from './QuestionPreview.vue';
+import Answer from './questions/Answer.vue';
 
 const questionStore = useQuestionStore();
 
@@ -149,8 +154,9 @@ const props = defineProps({
 })
 
 const debug = () => {
+    // console.log(props.question.validation);
     console.log(props.question);
-    console.log(validateQuestion());
+    // console.log(validateQuestion());
 }
 
 const editQuestion = async () => {
