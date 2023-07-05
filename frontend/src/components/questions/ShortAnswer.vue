@@ -9,7 +9,6 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
 import BacktickText from './BacktickText.vue';
 const props = defineProps({
     content: {
@@ -21,5 +20,4 @@ const props = defineProps({
         required: true,
     },
 });
-
 </script>

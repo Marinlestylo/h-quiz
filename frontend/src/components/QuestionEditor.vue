@@ -137,7 +137,6 @@ const questionTypes = ref([]);
 const message = ref('');
 const popupType = ref('error');
 
-
 const props = defineProps({
     question: {
         type: Object,

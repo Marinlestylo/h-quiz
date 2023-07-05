@@ -12,8 +12,8 @@
         <div v-else-if="questionType === 'fill-in-the-gaps'">
             <FillGaps :content="content" :option="option" v-model:selected="choices"/>
         </div>
-        <div v-else-if="questionType === 'multiple-choice'">
-
+        <div v-else-if="questionType === 'code'">
+            <Code :content="content" v-model:code="shortAnswer" />
         </div>
         <div v-else>
             Ce type de question n'est pas encore supporté.
@@ -40,7 +40,7 @@ const props = defineProps({
     },
     option:{
         type: Object,
-        required: true,
+        required: false,
     }
 });
 
@@ -49,6 +49,7 @@ const shortAnswer = ref('');
 const choices = ref([]);
 
 const debug = () => {
-    console.log(choices.value);
+    // console.log(choices.value);
+    console.log(option.value);
 };
 </script>
