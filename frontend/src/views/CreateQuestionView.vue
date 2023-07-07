@@ -26,7 +26,7 @@ const question = ref({
     content: '',
     keywords: [],
     difficulty: '',
-    validation: '42',
+    validation: {},
     type: '',
     explanation: '',
 });

@@ -115,7 +115,7 @@
         </div>
         <div>
             <button @click="debug"
-                class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto mb-4">Création de
+                class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto mb-4">Sauvegarder
                 la question
             </button>
         </div>
@@ -244,6 +244,10 @@ const validateQuestion = () => {
         console.log('type');
         return false;
     }
+    if (props.question.validation === {}) {
+        console.log('validation');
+        return false;
+    }
     return true;
 }
 
@@ -254,6 +258,6 @@ const resetFields = () => {
     props.question.type = '';
     props.question.explanation = '';
     props.question.keywords = [];
-    props.question.validation = '';
+    props.question.validation = {};
 }
 </script>
