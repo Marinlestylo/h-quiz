@@ -33,19 +33,25 @@ Route::get('auth/callback', [KeycloakController::class, 'callback']);
 Route::get('login', [KeycloakController::class, 'login']);
 Route::get('after', [KeycloakController::class, 'afterLogout']);
 
+Route::get('/user', function (Request $request) {
+    $name = $request->user()->getFullName();
+    return response()->json([
+        'name' => $name,
+        'role' => $request->user()->affiliation,
+        'id' => $request->user()->id,
+    ]);
+});
+
+Route::get('debug/logout', function () {
+    Auth::logout();
+});
+
 // Authentification
-Route::middleware('auth')->group(function () {
+Route::middleware('checkUserRole:teacher')->group(function () {
+    
 
     // User
     // TODO : mettre dans userController
-    Route::get('/user', function (Request $request) {
-        $name = $request->user()->getFullName();
-        return response()->json([
-            'name' => $name,
-            'role' => $request->user()->affiliation,
-            'id' => $request->user()->id,
-        ]);
-    });
     Route::get('/users', [UserController::class, 'index']);
     
     // Student

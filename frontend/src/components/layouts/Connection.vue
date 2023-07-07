@@ -27,6 +27,7 @@ const user = computed(() => store.user);
 // console.log(appUrl);
 onMounted(async () => {
     await store.fetchUser();
+    console.log('yo');
 });
 
 
