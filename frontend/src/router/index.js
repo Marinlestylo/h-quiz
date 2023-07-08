@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import QuizzesView from '@/views/QuizzesView.vue'
-import SandboxView from '@/views/SandboxView.vue'
 import QuestionView from '@/views/QuestionView.vue'
 import CreateQuestionView from '@/views/CreateQuestionView.vue'
 import UpdateQuestionView from '@/views/UpdateQuestionView.vue'
@@ -10,6 +9,7 @@ import UpdateQuizView from '@/views/UpdateQuizView.vue'
 import CreateRosterView from '@/views/CreateRosterView.vue'
 import RosterView from '@/views/RosterView.vue'
 import ActivityView from '@/views/ActivityView.vue'
+import PageNotFound from '@/views/PageNotFound.vue'
 
 import auth from '../middlewares/auth.js'
 import teacher from '../middlewares/teacher.js'
@@ -127,6 +127,11 @@ const router = createRouter({
         ]
       },
       component: RosterView
+    },
+    {
+      path:  "/:catchAll(.*)",
+      name: '404',
+      component: PageNotFound
     }
   ]
 })
