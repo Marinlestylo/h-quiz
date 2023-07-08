@@ -34,11 +34,20 @@ Route::get('login', [KeycloakController::class, 'login']);
 Route::get('after', [KeycloakController::class, 'afterLogout']);
 
 Route::get('/user', function (Request $request) {
-    $name = $request->user()->getFullName();
+    // die($request->user());
+    $name = '';
+    $affiliation = '';
+    $id = null;
+    
+    if ($request->user()){
+        $name = $request->user()->getFullName();
+        $affiliation = $request->user()->affiliation;
+        $id = $request->user()->id;
+    }
     return response()->json([
         'name' => $name,
-        'role' => $request->user()->affiliation,
-        'id' => $request->user()->id,
+        'role' => $affiliation,
+        'id' => $id,
     ]);
 });
 
