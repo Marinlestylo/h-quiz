@@ -25,7 +25,7 @@ export const useUserStore = defineStore('user', () => {
       user.value.id = data.id;
       user.value.name = data.name;
       user.value.role = data.role;
-      console.log(user.value);
+      // console.log(user.value);
       return data;
     }
   }
