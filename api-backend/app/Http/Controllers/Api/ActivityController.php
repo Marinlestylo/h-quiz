@@ -40,6 +40,13 @@ class ActivityController extends Controller
         )->toArray();
     }
 
+    function owned() {
+        $request = request();
+        $request->owned = true;
+
+        return $this->index($request);
+    }
+
     function edit($id, Request $request)
     {
         $activity = Activity::findOrFail($id);

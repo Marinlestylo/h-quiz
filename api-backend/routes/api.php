@@ -33,6 +33,7 @@ Route::get('auth/callback', [KeycloakController::class, 'callback']);
 Route::get('login', [KeycloakController::class, 'login']);
 Route::get('after', [KeycloakController::class, 'afterLogout']);
 
+// TODO : mettre dans userController
 Route::get('/user', function (Request $request) {
     // die($request->user());
     $name = '';
@@ -57,8 +58,6 @@ Route::get('debug/logout', function () {
 
 // Authentification
 Route::middleware('checkUserRole:teacher')->group(function () {
-    
-
     // User
     // TODO : mettre dans userController
     Route::get('/users', [UserController::class, 'index']);
@@ -112,13 +111,13 @@ Route::middleware('checkUserRole:teacher')->group(function () {
     Route::get('logout',[KeycloakController::class, 'logout']); 
 });
 
+Route::middleware('checkUserRole:student')->group(function () {
+    Route::get('/user/activities/', [ActivityController::class, 'owned']);
+
+});
 Route::get('/', function () {
     return response()->json([
         'message' => 'Api de l\'application Quiz',
     ]);
 });
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 

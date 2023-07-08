@@ -17,6 +17,12 @@ export const useActivityStore = defineStore('activity', () => {
         return response.status;
     }
 
+    const fetchConnectedStudentActivities = async () => {
+        const response = await utils.fetchApi('/api/user/activities');
+        const data = await response.json();
+        return [response.status, data];
+    }
+
     const createActivity = async (duration, quizId, rosterId, shuffleQuestions, shufflePropositions) => {
         const payload = {
             'duration': duration * 60, //On passe en secondes
@@ -65,5 +71,5 @@ export const useActivityStore = defineStore('activity', () => {
 
 
 
-    return { allActivities, updateActivity, deleteActivity, createActivity, fetchAllActivities }
+    return { allActivities, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities }
 });
