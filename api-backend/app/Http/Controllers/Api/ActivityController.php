@@ -47,6 +47,69 @@ class ActivityController extends Controller
         return $this->index($request);
     }
 
+    function show($id) {
+        $activity = Activity::findOrFail($id);
+        if ($activity->hidden) {
+            return response([
+                'message' => "Vous n'êtes pas autorisé à voir cette activité.",
+                'error' => "Unauthorized"
+            ], 403);
+        }
+
+        $request = request();
+        $request->owned = true;
+        $activities = $this->index($request);
+        $current = Arr::first($activities['data'], function ($value, $key) use ($id) {
+            return $value['id'] == $id;
+        });
+        if ($current == null){
+            return response([
+                'message' => "Vous n'êtes pas autorisé à voir cette activité.",
+                'error' => "Unauthorized"
+            ], 403);
+        }
+
+        return fractal($activity, new ActivityTransformer)->toArray();
+    }
+
+    /**
+     * Questions
+     */
+    public function questions($activity_id) {
+        $activity = Activity::findOrFail($activity_id);
+        return fractal(
+            $activity->questions(),
+            new QuestionTransformer($activity))->toArray();
+    }
+
+    /**
+     * Question (get or post question)
+     */
+    public function question($activity_id, $question_number, Request $request) {
+        $activity = Activity::findOrFail($activity_id);
+        $question = $activity->questions()[$question_number - 1];
+
+        // Submit an answer?
+        if ($request->isMethod('post') && $activity->status == 'running') {
+            $answered = $request->answer;
+            Answer::updateOrCreate(
+                [
+                    'activity_id' => $activity_id,
+                    'student_id' => $request->user()->student->id,
+                    'question_id' => $question->id,
+                ],
+                [
+                    'answer' => $answered,
+                    'is_correct' => $question->validate($answered)
+                ]
+            );
+        }
+
+        return fractal(
+            $question,
+            new QuestionTransformer($activity))->toArray();
+    }
+
     function edit($id, Request $request)
     {
         $activity = Activity::findOrFail($id);

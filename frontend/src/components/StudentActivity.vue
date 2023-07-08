@@ -44,7 +44,7 @@
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-6 h-full">
                                         <div v-if="activity.status == 'opened' || activity.status == 'running'">
-                                            <RouterLink :to="`/activities/${activity.id}/question/1`" v-tooltip="'Cliquer pour commencer l\'activité.'">
+                                            <RouterLink :to="`/activities/${activity.id}/questions/1`" v-tooltip="'Cliquer pour commencer l\'activité.'">
                                                 <PlayActivityIcon />
                                             </RouterLink>
                                         </div>

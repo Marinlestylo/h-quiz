@@ -10,6 +10,7 @@ import CreateRosterView from '@/views/CreateRosterView.vue'
 import RosterView from '@/views/RosterView.vue'
 import ActivityView from '@/views/ActivityView.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
+import QuestionDetailed from '@/views/QuestionDetailed.vue'
 
 import auth from '../middlewares/auth.js'
 import teacher from '../middlewares/teacher.js'
@@ -57,6 +58,16 @@ const router = createRouter({
         ]
       },
       component: ActivityView
+    },
+    {
+      path: '/activities/:id(\\d+)/questions/:questionId(\\d+)',
+      name: 'activity question',
+      meta: {
+        middleware: [
+          auth
+        ]
+      },
+      component: QuestionDetailed
     },
     {
       path: '/questions',
@@ -129,7 +140,7 @@ const router = createRouter({
       component: RosterView
     },
     {
-      path:  "/:catchAll(.*)",
+      path: "/:catchAll(.*)",
       name: '404',
       component: PageNotFound
     }
@@ -140,7 +151,7 @@ router.beforeEach((to, from, next) => {
 
   /** Navigate to next if middleware is not applied */
   if (!to.meta.middleware) {
-      return next()
+    return next()
   }
   const userStore = useUserStore();
 
@@ -150,12 +161,12 @@ router.beforeEach((to, from, next) => {
     from,
     next,
     userStore
-  //   store  | You can also pass store as an argument
+    //   store  | You can also pass store as an argument
   }
 
   return middleware[0]({
-      ...context,
-      next:middlewarePipeline(context, middleware,1)
+    ...context,
+    next: middlewarePipeline(context, middleware, 1)
   })
 })
 

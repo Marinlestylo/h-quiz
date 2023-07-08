@@ -113,6 +113,8 @@ Route::middleware('checkUserRole:teacher')->group(function () {
 
 Route::middleware('checkUserRole:student')->group(function () {
     Route::get('/user/activities/', [ActivityController::class, 'owned']);
+    Route::get('/activities/{id}', [ActivityController::class, 'show']);
+    Route::get('/activities/{id}/questions/{question_id}', [ActivityController::class,'question']);
 
 });
 Route::get('/', function () {

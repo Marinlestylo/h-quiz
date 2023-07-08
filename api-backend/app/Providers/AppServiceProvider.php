@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (env('APP_AUTOLOGIN', false)){
-            $user = User::find(1);
+            $user = User::find(3);
             if ($user) {
                 Auth::login($user);
             }

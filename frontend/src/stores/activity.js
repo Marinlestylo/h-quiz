@@ -5,6 +5,7 @@ import * as utils from '../utils.js';
 
 export const useActivityStore = defineStore('activity', () => {
     const allActivities = ref(null)
+    const currentlyUsedActivity = ref({})
 
     const fetchAllActivities = async () => {
         const response = await utils.fetchApi('/api/activities');
@@ -19,6 +20,12 @@ export const useActivityStore = defineStore('activity', () => {
 
     const fetchConnectedStudentActivities = async () => {
         const response = await utils.fetchApi('/api/user/activities');
+        const data = await response.json();
+        return [response.status, data];
+    }
+
+    const fetchOneActivity = async (activityId) => {
+        const response = await utils.fetchApi('/api/activities/' + activityId);
         const data = await response.json();
         return [response.status, data];
     }
@@ -71,5 +78,5 @@ export const useActivityStore = defineStore('activity', () => {
 
 
 
-    return { allActivities, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities }
+    return { allActivities, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity }
 });
