@@ -12,7 +12,7 @@
                 </RouterLink>
             </div>
             <div class="flex items-center">
-                <RouterLink to="/activities" class="ml-4 hover:text-gray-300">Activités</RouterLink>
+                <RouterLink v-if="user.id" to="/activities" class="ml-4 hover:text-gray-300">Activités</RouterLink>
                 <div v-if="user.role.includes('staff')">
                     <RouterLink to="/quizzes" class="ml-4 hover:text-gray-300">Quizzes</RouterLink>
                     <RouterLink to="/questions" class="ml-4 hover:text-gray-300">Questions</RouterLink>

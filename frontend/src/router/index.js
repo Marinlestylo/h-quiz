@@ -11,6 +11,7 @@ import RosterView from '@/views/RosterView.vue'
 import ActivityView from '@/views/ActivityView.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import QuestionDetailed from '@/views/QuestionDetailed.vue'
+import tempView from '@/views/tempView.vue'
 
 import auth from '../middlewares/auth.js'
 import teacher from '../middlewares/teacher.js'
@@ -25,6 +26,11 @@ const router = createRouter({
       path: '/',
       name: 'root',
       component: HomeView
+    },
+    {
+      path: '/debug/login/:id',
+      name: 'debug login',
+      component: tempView
     },
     {
       path: '/about',

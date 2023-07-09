@@ -33,6 +33,12 @@ Route::get('auth/callback', [KeycloakController::class, 'callback']);
 Route::get('login', [KeycloakController::class, 'login']);
 Route::get('after', [KeycloakController::class, 'afterLogout']);
 
+// TODO: remove
+Route::get('debug/login/{id}', function ($id) {
+    Auth::loginUsingId($id);
+    return redirect('http://localhost:5173/');
+});
+
 // TODO : mettre dans userController
 Route::get('/user', function (Request $request) {
     // die($request->user());
@@ -54,6 +60,11 @@ Route::get('/user', function (Request $request) {
 
 Route::get('debug/logout', function () {
     Auth::logout();
+});
+
+Route::middleware('auth')->group(function () {
+     // Logout
+     Route::get('logout',[KeycloakController::class, 'logout']); 
 });
 
 // Authentification
@@ -104,11 +115,6 @@ Route::middleware('checkUserRole:teacher')->group(function () {
     //TODO changer les routes pour les rendre plus REST
     Route::post('/rosters/add-student', [RosterController::class, 'addStudent']);
     Route::delete('/rosters/delete-student', [RosterController::class, 'deleteStudent']);
-
-
-
-    // Logout
-    Route::get('logout',[KeycloakController::class, 'logout']); 
 });
 
 Route::middleware('checkUserRole:student')->group(function () {
