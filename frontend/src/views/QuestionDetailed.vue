@@ -77,6 +77,7 @@ import CodeQuestion from '../components/questions/CodeQuestion.vue';
 const activityStore = useActivityStore();
 const activity = computed(() => activityStore.currentlyUsedActivity.activity);
 const questions = computed(() => activityStore.currentlyUsedActivity.questions);
+const answers = computed(() => activityStore.currentlyUsedActivity.answers);
 const unauthorized = ref(false);
 const route = useRoute();
 const currentQuestionNumber = +route.params.questionId;
@@ -100,31 +101,58 @@ onBeforeMount(async () => {
             return;
         }
     }
-    fetchQuestion(+route.params.questionId);
+    fetchQuestionAndAnswer(+route.params.questionId);
+    // fetchAnswer(+route.params.questionId);
 });
 
 
 const debug = () => {
-    // console.log(questions.value[currentQuestionNumber - 1]);
+    console.log(answers.value);
     // console.log(choices.value);
     // console.log(questions.value[currentQuestionNumber - 1].option)
 }
 
-const fetchQuestion = async (id) => {
+const saveAnswer = () => {
+    if (questions.value[currentQuestionNumber - 1].type === 'multiple-choice' || questions.value[currentQuestionNumber - 1].type === 'fill-in-the-gaps') {
+        if (answers.value[currentQuestionNumber - 1] !== choices.value) {
+            activityStore.addOneAnswer(currentQuestionNumber, choices.value);
+        }
+    } else {
+        if (answers.value[currentQuestionNumber - 1] !== answer.value) {
+            activityStore.addOneAnswer(currentQuestionNumber, answer.value);
+        }
+    }
+}
+
+const fetchQuestionAndAnswer = async (id) => {
+    // Mauvais ID
     if (id < 1 || id > activity.value.quiz.questions) {
         router.push(`/404`);
         return;
     }
 
-    if (questions.value[id - 1]) {
-        return;
+    // pas besoin de fetch, c'est dans le store
+    if (!questions.value[id - 1]) {
+        await activityStore.fetchActivityQuestion(route.params.id, id);
     }
     // console.log('fetching question');
 
-    await activityStore.fetchActivityQuestion(route.params.id, id);
+    // await activityStore.fetchActivityQuestion(route.params.id, id);
+    if (questions.value[currentQuestionNumber - 1].type === 'multiple-choice' || questions.value[currentQuestionNumber - 1].type === 'fill-in-the-gaps'){
+        if (answers.value[id - 1]) {
+            choices.value = answers.value[id - 1];
+            return;
+        }
+    } else {
+        if (answers.value[id - 1]) {
+            answer.value = answers.value[id - 1];
+            return;
+        }
+    }
 }
 
 const nextQ = () => {
+    saveAnswer();
     if (+route.params.questionId === activity.value.quiz.questions) {
         return;
     }
@@ -133,6 +161,7 @@ const nextQ = () => {
 }
 
 const previousQ = () => {
+    saveAnswer();
     if (+route.params.questionId === 1) {
         return;
     }

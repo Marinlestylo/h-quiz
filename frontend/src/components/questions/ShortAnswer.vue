@@ -10,6 +10,7 @@
 
 <script setup>
 import BacktickText from './BacktickText.vue';
+
 const props = defineProps({
     content: {
         type: String,

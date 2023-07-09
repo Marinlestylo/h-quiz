@@ -47,6 +47,10 @@ export const useActivityStore = defineStore('activity', () => {
         return response.status;
     }
 
+    const addOneAnswer = (idQuestion, data) => {
+        currentlyUsedActivity.value.answers[idQuestion-1] = data;
+    }
+
     const createActivity = async (duration, quizId, rosterId, shuffleQuestions, shufflePropositions) => {
         const payload = {
             'duration': duration * 60, //On passe en secondes
@@ -95,5 +99,5 @@ export const useActivityStore = defineStore('activity', () => {
 
 
 
-    return { allActivities, currentlyUsedActivity, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity, fetchActivityQuestion }
+    return { allActivities, currentlyUsedActivity, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity, fetchActivityQuestion, addOneAnswer }
 });
