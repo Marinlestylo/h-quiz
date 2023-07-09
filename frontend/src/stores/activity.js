@@ -5,7 +5,11 @@ import * as utils from '../utils.js';
 
 export const useActivityStore = defineStore('activity', () => {
     const allActivities = ref(null)
-    const currentlyUsedActivity = ref({})
+    const currentlyUsedActivity = ref({
+        activity: {},
+        questions: [],
+        answers: [],
+    })
 
     const fetchAllActivities = async () => {
         const response = await utils.fetchApi('/api/activities');
@@ -27,7 +31,20 @@ export const useActivityStore = defineStore('activity', () => {
     const fetchOneActivity = async (activityId) => {
         const response = await utils.fetchApi('/api/activities/' + activityId);
         const data = await response.json();
-        return [response.status, data];
+        if (response.status === 200) {
+            currentlyUsedActivity.value.activity = data.data;
+        }
+        return response.status;
+    }
+
+    const fetchActivityQuestion = async (activityId, question) => {
+        const response = await utils.fetchApi('/api/activities/' + activityId + '/questions/'+question);
+        const data = await response.json();
+        if (response.status === 200) {
+            // currentlyUsedActivity.value.questions.push(data.data);
+            currentlyUsedActivity.value.questions[question-1] = data.data;
+        }
+        return response.status;
     }
 
     const createActivity = async (duration, quizId, rosterId, shuffleQuestions, shufflePropositions) => {
@@ -78,5 +95,5 @@ export const useActivityStore = defineStore('activity', () => {
 
 
 
-    return { allActivities, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity }
+    return { allActivities, currentlyUsedActivity, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity, fetchActivityQuestion }
 });

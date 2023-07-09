@@ -9,7 +9,7 @@ import NavBar from '@/components/layouts/Navbar.vue'
     <NavBar/>
 
     <div class="mb-auto mx-auto mt-16">
-      <RouterView />
+      <RouterView :key="$route.fullPath"/>
     </div>
 
     <MyFooter/>
