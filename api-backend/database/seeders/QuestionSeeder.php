@@ -26,7 +26,8 @@ class QuestionSeeder extends Seeder
             'options' => [
                 'length' => 10
             ],
-            'difficulty' => 'medium'
+            'difficulty' => 'medium',
+            'user_id' => 1,
         ]);
         $q1->keywords()->attach(Keyword::where('name', 'binary')->get());
 
@@ -39,6 +40,7 @@ class QuestionSeeder extends Seeder
                 'expected' => '0b1000'
             ],
             'difficulty' => 'medium',
+            'user_id' => 1,
             'explanation' => "`8` exprimé en hexadécimal correspond à $2^4$ soit le quatrième bit du nombre à un."
         ]);
         $q2->keywords()->attach(Keyword::where('name', 'hexadecimal')->get());
@@ -52,6 +54,7 @@ class QuestionSeeder extends Seeder
                 'expected' => '0'
             ],
             'difficulty' => 'easy',
+            'user_id' => 1,
             'explanation' => ''
         ]);
 
@@ -87,6 +90,7 @@ Ajouter 1 puis inverer tous les bits
 ",
             'validation' => [2],
             'difficulty' => 'easy',
+            'user_id' => 1,
             'explanation' => ''
         ]);
 
@@ -122,10 +126,12 @@ Dans l'algorithme de Shunting-yard dont l'image suivante résume le principe, pl
                 ]
             ],
             'difficulty' => 'insane',
+            'user_id' => 1,
             'explanation' => ""
         ]);
 
         $q6 = Question::create([
+            'name' => 'Déclaration de variable',
             'content' => "Comment déclarer une variable nommée `i`, un entier 32-bits non signé égal à la valeur `42` ?",
             'validation' => (object)[
                 'pattern' => '/\b(unsigned\s+int|uint32_t)\s+i\s*=\s*42\s*;?\b/',
@@ -136,6 +142,7 @@ Dans l'algorithme de Shunting-yard dont l'image suivante résume le principe, pl
                 'chars' => 40
             ],
             'difficulty' => 'insane',
+            'user_id' => 1,
             'explanation' => ""
         ]);
 
@@ -163,6 +170,7 @@ La quatrième proposition est certainement la bonne
             'validation' => [3, 4],
             'options' => (object)['multiple' => true],
             'difficulty' => 'hard',
+            'user_id' => 1,
             'explanation' => 'Aucune idée de pourquoi... Cette question ne semble pas avoir de sens'
         ]);
 
@@ -223,6 +231,7 @@ Dans le circuit ci-dessous. On reconnaît qu'il s'agit d'un *-*. Les deux *-* d'
                 ]
             ],
             'difficulty' => 'medium',
+            'user_id' => 1,
             'explanation' => 'Explication'
         ]);
     }

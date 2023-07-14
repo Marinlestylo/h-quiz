@@ -25,6 +25,9 @@ class QuestionFactory extends Factory
             'content' => $this->faker->paragraph(),
             'validation' => '42',
             'difficulty' => Arr::random(['easy', 'medium', 'hard', 'insane']),
+            'user_id' => Arr::random([1,2]),
+            'is_public' => Arr::random([true, false]),
+            'points' => $this->faker->randomFloat(1, 0, 10),
             'explanation' => $this->faker->paragraph()
         ];
     }

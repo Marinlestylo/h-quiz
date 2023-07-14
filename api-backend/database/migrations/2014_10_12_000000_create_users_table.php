@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->integer('unique_id')->comment('Switch AAI unique ID');
+            $table->string('keycloak_id');
             $table->string('firstname');
             $table->string('lastname');
             $table->string('email')->unique();
-            $table->string('keycloak_id')->nullable();
             $table->tinyInteger('gender');
             $table->string('affiliation')->comment('Usually `member;staff` or `member;student`');
             $table->rememberToken();

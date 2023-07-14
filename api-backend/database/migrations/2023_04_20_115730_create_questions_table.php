@@ -25,6 +25,9 @@ return new class extends Migration
             $table->json('options')->nullable();
             $table->enum('difficulty', ['easy', 'medium', 'hard', 'insane'])->default('easy');
             $table->text('explanation')->nullable()->default(null); // Markdown
+            $table->tinyInteger('is_public')->default(true);
+            $table->double('points')->default(0);
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

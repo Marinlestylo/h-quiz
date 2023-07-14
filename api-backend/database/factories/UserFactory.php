@@ -24,7 +24,7 @@ class UserFactory extends Factory
         $email = strtolower($firstname) . '.' . strtolower($lastname) . '@heig-vd.com';
         return [
             'email' => $this->faker->unique()->safeEmail,
-            'unique_id' => $this->faker->unique()->randomNumber(),
+            'keycloak_id' => $this->faker->bothify('#?#???##-#?#?-#?##-##??-#?######?##'), 
             'firstname' => $firstname,
             'lastname' => $lastname,
             'email' => $email,

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('user_id')->constrained();
+            $table->enum('type', ['quiz', 'exam'])->default('quiz');
             $table->timestamps();
         });
     }
