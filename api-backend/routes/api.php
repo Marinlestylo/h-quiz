@@ -7,7 +7,14 @@ use App\Http\Controllers\Api\KeywordController;
 use App\Http\Controllers\Api\QuizController;
 use App\Http\Controllers\Api\ActivityController;
 use App\Http\Controllers\Api\RosterController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\StudentController;
+use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\QuestionController;
+
 use App\Models\Activity;
+use App\Models\Course;
+use App\Models\Student;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,36 +26,106 @@ use App\Models\Activity;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+// Routes concernant le login sans être authentifié
 Route::get('auth/redirect', [KeycloakController::class, 'redirect'])->name('login');
 Route::get('auth/callback', [KeycloakController::class, 'callback']);
 Route::get('login', [KeycloakController::class, 'login']);
 Route::get('after', [KeycloakController::class, 'afterLogout']);
 
-Route::middleware('auth')->group(function () {
-    Route::get('/keywords', [KeywordController::class, 'index']);
-    Route::get('/user', function (Request $request) {
-        $name = $request->user()->getFullName();
-        return response()->json([
-            'name' => $name,
-        ]);
-    });
-    Route::get('/quizzes', [QuizController::class, 'index']);
-
-    Route::get('/activities', [ActivityController::class, 'index']);
-
-    Route::get('/rosters', [RosterController::class, 'index']);
-
-    Route::get('logout',[KeycloakController::class, 'logout']); 
+// TODO: remove
+Route::get('debug/login/{id}', function ($id) {
+    Auth::loginUsingId($id);
+    return redirect('http://localhost:5173/');
 });
 
-Route::get('/', function () {
+// TODO : mettre dans userController
+Route::get('/user', function (Request $request) {
+    // die($request->user());
+    $name = '';
+    $affiliation = '';
+    $id = null;
+    
+    if ($request->user()){
+        $name = $request->user()->getFullName();
+        $affiliation = $request->user()->affiliation;
+        $id = $request->user()->id;
+    }
     return response()->json([
-        'message' => 'Welcome to our API',
+        'name' => $name,
+        'role' => $affiliation,
+        'id' => $id,
     ]);
 });
 
-Route::get('/keys', [KeywordController::class, 'index']);
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::get('debug/logout', function () {
+    Auth::logout();
+});
+
+Route::middleware('auth')->group(function () {
+     // Logout
+     Route::get('logout',[KeycloakController::class, 'logout']); 
+});
+
+// Authentification
+Route::middleware('checkUserRole:teacher')->group(function () {
+    // User
+    // TODO : mettre dans userController
+    Route::get('/users', [UserController::class, 'index']);
+    
+    // Student
+    Route::get('/students', [StudentController::class, 'index']);
+
+    // Quiz
+    Route::get('/quizzes', [QuizController::class, 'index']);
+    Route::get('/quizzes/{id}', [QuizController::class, 'show']);
+    Route::get('/quizzes/{id}/questions', [QuizController::class, 'questions']);
+    Route::post('/quizzes', [QuizController::class, 'create']);
+    Route::post('/quizzes/question', [QuizController::class, 'addQuestion']);
+    Route::delete('quizzes/question', [QuizController::class, 'deleteQuestion']);
+
+    // Keyword
+    Route::get('/keywords', [KeywordController::class, 'index']);
+
+    // Question
+    Route::get('/questions', [QuestionController::class, 'index']);
+    Route::get('/questions/{id}', [QuestionController::class, 'show'])->where('id', '[0-9]+');
+    Route::get('/questions/{keyword}', [QuestionController::class, 'getQuestions']);
+    Route::get('/questions-types', [QuestionController::class, 'getTypes']);
+    Route::get('/questions-difficulties', [QuestionController::class, 'getDifficulties']);
+    Route::post('/questions', [QuestionController::class, 'create']);
+
+    // Activity
+    Route::get('/activities', [ActivityController::class, 'index']);
+    Route::post('/activities', [ActivityController::class, 'create']);
+
+    Route::delete('/activities/{id}', [ActivityController::class, 'delete']);
+    // Route to start, open, close, hide and show an activity
+    Route::patch('/activities/{id}', [ActivityController::class, 'edit']);
+
+    // Course
+    Route::get('/courses', [CourseController::class, 'index']);
+    Route::get('/courses/{id}', [CourseController::class, 'show']);
+
+    // Roster
+    Route::get('/rosters', [RosterController::class, 'index']);
+    Route::get('/rosters/{id}', [RosterController::class, 'show']);
+    Route::get('/rosters/{id}/students', [RosterController::class, 'students']);
+    Route::post('/rosters', [RosterController::class, 'create']);
+    //TODO changer les routes pour les rendre plus REST
+    Route::post('/rosters/add-student', [RosterController::class, 'addStudent']);
+    Route::delete('/rosters/delete-student', [RosterController::class, 'deleteStudent']);
+});
+
+Route::middleware('checkUserRole:student')->group(function () {
+    Route::get('/user/activities/', [ActivityController::class, 'owned']);
+    Route::get('/activities/{id}', [ActivityController::class, 'show']);
+    Route::get('/activities/{id}/questions/{question_id}', [ActivityController::class,'question']);
+
+});
+Route::get('/', function () {
+    return response()->json([
+        'message' => 'Api de l\'application Quiz',
+    ]);
+});
 

@@ -9,7 +9,7 @@
         <div>
             <RouterLink to="/create-quiz"
                 class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded ml-48">
-                Créer un quiz
+                Créer un nouveau quiz
             </RouterLink>
         </div>
     </div>
@@ -26,25 +26,35 @@
                                     <th scope="col" class="px-6 py-2">Quiz</th>
                                     <th scope="col" class="px-6 py-2">Questions</th>
                                     <th scope="col" class="px-6 py-2">Créateur</th>
+                                    <th scope="col" class="px-6 py-2">Difficulté</th>
                                     <th scope="col" class="px-6 py-2">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in listItems.quizzes"
+                                <tr v-for="quiz in quizzes"
                                     class="border-b transition duration-300 ease-in-out hover:bg-neutral-200">
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ item.id }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ item.name }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ item.question_count }}</td>
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ item.owner.firstname + " " +
-                                        item.owner.lastname }}
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.id }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                        {{ quiz.name }}
+                                        <div class="flex items-center mt-1">
+                                            <div class="text-xs text-white mr-2 bg-gray-700 rounded-lg px-1 py-1 items-center"
+                                                v-for="keyword in quiz.keywords">
+                                                {{ keyword }}
+                                            </div>
+                                        </div>
+
                                     </td>
-                                    <td class="whitespace-nowrap px-6 py-4 flex"><svg xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.questions }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ quiz.owner.name }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium"><DifficultyShower :difficultyLevel="quiz.difficulty"/></td>
+                                    <td class="whitespace-nowrap px-6 py-4 flex"><svg xmlns="http://www.w3.org/2000/svg" @click="openModal(quiz.name, quiz.id)"
+                                            v-tooltip="'Créer une activité à partir de ce quiz'" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                             class="w-10 h-10 hover:cursor-pointer">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <RouterLink to="/update-quiz">
+                                        <RouterLink to="/update-quiz" v-tooltip="'Modifier un quiz'">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor"
                                                 class="w-9 h-9 hover:cursor-pointer ml-2">
@@ -61,28 +71,36 @@
             </div>
         </div>
     </div>
+    <ActivityModal v-model:isOpen="showModal" :quizId="selectedQuizId" :quizName="selectedQuizName" />
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { useQuizStore } from '../stores/quiz';
+import DifficultyShower from '@/components/DifficultyShower.vue';
+import ActivityModal from '../components/ActivityModal.vue';
 import ErrorMessage from '@/components/StatusError.vue';
-import { backUrl } from '@/stores/user';
 
-const listItems = ref([]);
-let status = ref(0);
+const quizStore = useQuizStore();
+const quizzes = computed(() => quizStore.allQuizzes);
 const isLoading = ref(true);
+const status = ref(0);
 
-async function getData() {
-    const res = await fetch(`${backUrl}/api/quizzes`, {
-        credentials: 'include',
-    });
-    status.value = res.status;
-    if (res.status === 200) {
-        const finalRes = await res.json();
-        listItems.value = finalRes;
+const showModal = ref(false);
+const selectedQuizId = ref(null);
+const selectedQuizName = ref('');
+
+const openModal = (quizName, quizId) => {
+    selectedQuizId.value = quizId;
+    selectedQuizName.value = quizName;
+    showModal.value = true;
+};
+
+onMounted(async () => {
+    const status = await quizStore.fetchAllQuizzes();
+    if (status === 200) {
+        isLoading.value = false;
     }
-    isLoading.value = false;
-}
+});
 
-getData()
 </script>

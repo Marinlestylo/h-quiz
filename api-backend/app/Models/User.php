@@ -43,30 +43,71 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    function student() {
+    function hasRole($roles)
+    {
+        if (!is_array($roles))
+            $roles = [$roles];
+
+        foreach ($roles as $role) {
+            if (
+                $role == 'student' &&
+                str_contains($this->affiliation, 'member') &&
+                str_contains($this->affiliation, 'student')
+            ) {
+                return true;
+            }
+            if (
+                $role == 'teacher' &&
+                str_contains($this->affiliation, 'member') &&
+                str_contains($this->affiliation, 'staff')
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function isTeacher()
+    {
+        return $this->hasRole('teacher');
+    }
+
+    function isStudent()
+    {
+        return $this->hasRole('student');
+    }
+
+    function student()
+    {
         return $this->hasOne(Student::class);
     }
 
-    function activities() {
+    function activities()
+    {
         return $this->hasMany(Activity::class);
     }
 
-    function rosters() {
+    function rosters()
+    {
         return $this->hasMany(Roster::class, 'teacher_id');
     }
 
-    function getFullName() {
+    function getFullName()
+    {
         return $this->firstname . ' ' . $this->lastname;
     }
-    
-      /**
+
+    /**
      * Get the value of the model's primary key.
      *
      * @return mixed
      */
     public function getKey()
     {
-        return $this->email;
+        //TODO : si keycloak cassé, rechanger ça
+        // return $this->email;
+        return $this->id;
     }
 
     /**
@@ -76,7 +117,8 @@ class User extends Authenticatable
      */
     public function getAuthIdentifierName()
     {
-        return 'email';
+        // return 'email';
+        return 'id';
     }
 
     /**
@@ -86,6 +128,7 @@ class User extends Authenticatable
      */
     public function getAuthIdentifier()
     {
-        return $this->email;
+        // return $this->email;
+        return $this->id;
     }
 }

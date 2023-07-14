@@ -26,13 +26,13 @@ class RosterTransformer extends TransformerAbstract
             'id' => $roster->id,
             'year' => $roster->year,
             'name' => $this->fullname($roster),
-            'semester' => $roster->semester ? 'spring' : 'fall',
+            'semester' => $roster->semester ? 'Printemps' : 'Automne',
             'students' => $roster->students_count,
             'orientations' => $roster->orientations(),
             'has_running_activities' => $roster->has_running_activities,
             'teacher' => [
                 'id' => $roster->teacher->id,
-                'name' => $roster->teacher->name
+                'name' => $roster->teacher->getFullName(),
             ],
             'created_at' => $roster->created_at->timestamp,
         ];

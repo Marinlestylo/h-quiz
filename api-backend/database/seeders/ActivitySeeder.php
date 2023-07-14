@@ -18,8 +18,8 @@ class ActivitySeeder extends Seeder
         $activity = Activity::create([
             'quiz_id' => 1,
             'roster_id' => 1,
-            'duration' => 120,
             'user_id' => 1,
+            'duration' => 120,
             'started_at' => '2020-09-01T14:58:05',
             'opened_at' => '2020-09-01T15:30:00',
             'ended_at' => '2020-09-01T15:40:00',
