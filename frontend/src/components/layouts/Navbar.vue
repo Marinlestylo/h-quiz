@@ -12,12 +12,19 @@
                 </RouterLink>
             </div>
             <div class="flex items-center">
-                <RouterLink v-if="user.id" to="/activities" class="ml-4 hover:text-gray-300">Activités</RouterLink>
-                <div v-if="user.role.includes('staff')">
-                    <RouterLink to="/quizzes" class="ml-4 hover:text-gray-300">Quizzes</RouterLink>
-                    <RouterLink to="/questions" class="ml-4 hover:text-gray-300">Questions</RouterLink>
-                    <RouterLink to="/rosters" class="ml-4 hover:text-gray-300">Rosters</RouterLink>
+                <div v-if="user.id">
+                    <DropdownMenu name="Activités" :links="activityLinks" class="ml-4" />
+
                 </div>
+                <div v-if="user.role.includes('staff')">
+                    <DropdownMenu name="Quiz" :links="quizLinks" class="ml-4" />
+                    <DropdownMenu name="Questions" :links="questionLinks" class="ml-4" />
+                    <DropdownMenu name="Rosters" :links="rosterLinks" class="ml-4" />
+                </div>
+                <div v-else-if="user.role.includes('student')">
+                    <DropdownMenu name="Drill" :links="drillLinks" class="ml-4" />
+                </div>
+
 
             </div>
             <div class="flex items-center">
@@ -28,9 +35,34 @@
 </template>
 
 <script setup>
-import Connection from '@/components/layouts/Connection.vue'
+import Connection from '@/components/layouts/Connection.vue';
+import DropdownMenu from './DropdownMenu.vue';
 import { useUserStore } from '@/stores/user';
 import { computed } from 'vue';
+
+const activityLinks = [
+    { name: 'Activités', link: '/activities' },
+];
+
+const quizLinks = [
+    { name: 'Quiz', link: '/quizzes' },
+    { name: 'Création d\'un quiz', link: '/questions' },
+    { name: 'Modification d\'un quiz', link: '/rosters' },
+];
+
+const questionLinks = [
+    { name: 'Questions', link: '/questions' },
+    { name: 'Création d\'une question', link: '/create-question' },
+];
+
+const rosterLinks = [
+    { name: 'Rosters', link: '/rosters' },
+    { name: 'Création d\'un roster', link: '/create-roster' }
+];
+
+const drillLinks = [
+    { name: 'Mode Drill', link: '/drill' },
+];
 
 const store = useUserStore();
 const user = computed(() => store.user);
