@@ -18,6 +18,9 @@
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 placeholder="Les bases du python" autocomplete="off">
         </div>
+        <div>
+            
+        </div>
 
         <button @click="createQuiz"
             class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto mb-4">Création du

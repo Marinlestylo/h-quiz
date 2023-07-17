@@ -47,8 +47,8 @@ const activityLinks = [
 
 const quizLinks = [
     { name: 'Quiz', link: '/quizzes' },
-    { name: 'Création d\'un quiz', link: '/questions' },
-    { name: 'Modification d\'un quiz', link: '/rosters' },
+    { name: 'Création d\'un quiz', link: '/create-quiz' },
+    { name: 'Modification d\'un quiz', link: '/update-quiz' },
 ];
 
 const questionLinks = [
