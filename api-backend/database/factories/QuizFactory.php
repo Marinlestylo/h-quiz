@@ -25,6 +25,7 @@ class QuizFactory extends Factory
         return [
             'name' => $this->faker->sentence(4),
             'user_id' => Arr::random($teachers_id),
+            'type' => Arr::random(['quiz', 'exam']),
         ];
     }
 }

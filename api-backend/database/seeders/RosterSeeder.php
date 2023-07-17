@@ -33,6 +33,14 @@ class RosterSeeder extends Seeder
             'teacher_id' => 1
         ]);
 
+        Roster::create([
+            'name' => 'A',
+            'semester' => 0,
+            'year' => 2020,
+            'course_id' => $playground->id,
+            'teacher_id' => 2
+        ]);
+
         $playground_roster->students()->attach(User::where('firstname', 'Bob')->first()->student);
         $playground_roster->students()->attach(User::where('firstname', 'Alice')->first()->student);
 

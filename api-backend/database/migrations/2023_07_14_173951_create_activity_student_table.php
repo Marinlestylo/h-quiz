@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('answers', function (Blueprint $table) {
+        Schema::create('activity_student', function (Blueprint $table) {
             $table->id();
             $table->foreignId('activity_id')->constrained('activities');
-            $table->foreignId('student_id')->constrained();
-            $table->foreignId('question_id')->constrained();
-            $table->text('answer')->nullable(); // Raw given answer by student
-            $table->boolean('is_correct'); // This question was answered correctly
-            $table->double('points')->nullable()->default(0);
+            $table->foreignId('student_id')->constrained('students');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('answers');
+        Schema::dropIfExists('activity_student');
     }
 };

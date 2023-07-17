@@ -28,7 +28,6 @@ class KeyCloakController extends Controller
             'email' => $remote_user->email,
             'gender'=>$remote_user->user['gender'],
             'affiliation'=>'member;staff',
-            'unique_id'=> 3252355,
             'remember_token' => $remote_user->refreshToken,
         ]);
 

@@ -12,6 +12,8 @@ import ActivityView from '@/views/ActivityView.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import QuestionDetailed from '@/views/QuestionDetailed.vue'
 import tempView from '@/views/tempView.vue'
+import Documentation from '@/views/Documentation.vue'
+import DrillView from '@/views/DrillView.vue'
 
 import auth from '../middlewares/auth.js'
 import teacher from '../middlewares/teacher.js'
@@ -31,19 +33,6 @@ const router = createRouter({
       path: '/debug/login/:id',
       name: 'debug login',
       component: tempView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      meta: {
-        middleware: [
-          auth
-        ]
-      },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
     },
     {
       path: '/quizzes',
@@ -106,6 +95,16 @@ const router = createRouter({
       component: UpdateQuestionView
     },
     {
+      path: '/documentation',
+      name: 'documentation',
+      meta: {
+        middleware: [
+          teacher
+        ]
+      },
+      component: Documentation
+    },
+    {
       path: '/create-quiz',
       name: 'create quiz',
       meta: {
@@ -144,6 +143,16 @@ const router = createRouter({
         ]
       },
       component: RosterView
+    },
+    {
+      path: '/drill',
+      name: 'drill',
+      meta: {
+        middleware: [
+          auth
+        ]
+      },
+      component: DrillView
     },
     {
       path: "/:catchAll(.*)",

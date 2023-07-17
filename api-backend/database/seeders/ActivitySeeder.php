@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Activity;
 use App\Models\Answer;
 use App\Models\User;
+use DB;
 
 class ActivitySeeder extends Seeder
 {
@@ -148,6 +149,11 @@ class ActivitySeeder extends Seeder
                 "de Schottky"
             ],
             'is_correct' => false
+        ]);
+
+        DB::table('activity_student')->insert([
+            'activity_id' => '1',
+            'student_id' => '3'
         ]);
     }
 }
