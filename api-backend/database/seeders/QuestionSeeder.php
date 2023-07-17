@@ -234,5 +234,16 @@ Dans le circuit ci-dessous. On reconnaît qu'il s'agit d'un *-*. Les deux *-* d'
             'user_id' => 1,
             'explanation' => 'Explication'
         ]);
+
+        Question::create([
+            'name' => 'Nombres binaires signés',
+            'content' => 'Expliquez comment créer un set de nombres binaires signés sur 8 bits et donnez un exemple.',
+            'type' => 'long-answer',
+            'validation' => [
+                'expected' => 'Pour créer un ensemble de nombres binaires signés sur 8 bits, nous utilisons la représentation signée la plus courante, appelée "complément à deux". Dans cette représentation, le bit le plus significatif (le bit le plus à gauche) est utilisé comme bit de signe (0 pour les nombres positifs et 1 pour les nombres négatifs), tandis que les 7 bits restants sont utilisés pour représenter la valeur absolue du nombre.'
+            ],
+            'difficulty' => 'medium',
+            'user_id' => 1,
+        ]);
     }
 }
