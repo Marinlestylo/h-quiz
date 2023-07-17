@@ -144,4 +144,8 @@ class QuizController extends Controller
             'questions' => $questions
         ], 200);
     }
+
+    function getTypes() {
+        return getAllPossibleValuesFromEnum('quizzes', 'type');
+    }
 }

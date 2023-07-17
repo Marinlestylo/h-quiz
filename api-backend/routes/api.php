@@ -80,6 +80,7 @@ Route::middleware('checkUserRole:teacher')->group(function () {
     Route::get('/quizzes', [QuizController::class, 'index']);
     Route::get('/quizzes/{id}', [QuizController::class, 'show']);
     Route::get('/quizzes/{id}/questions', [QuizController::class, 'questions']);
+    Route::get('/quizzes-types', [QuizController::class, 'getTypes']);
     Route::post('/quizzes', [QuizController::class, 'create']);
     Route::post('/quizzes/question', [QuizController::class, 'addQuestion']);
     Route::delete('quizzes/question', [QuizController::class, 'deleteQuestion']);

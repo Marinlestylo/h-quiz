@@ -54,20 +54,13 @@ class QuestionController extends Controller
 
     function getTypes()
     {
-        return $this->getAllValuesFromEnum('questions', 'type');
+        // return $this->getAllValuesFromEnum('questions', 'type');
+        return getAllPossibleValuesFromEnum('questions', 'type');
     }
 
     function getDifficulties()
     {
-        return $this->getAllValuesFromEnum('questions', 'difficulty');
-    }
-
-    private static function getAllValuesFromEnum($table, $field)
-    {
-        $type = DB::select("SHOW COLUMNS FROM {$table} WHERE Field = '{$field}'")[0]->Type;
-        preg_match("/^enum\(\'(.*)\'\)$/", $type, $matches);
-        $enum = explode("','", $matches[1]);
-        return $enum;
+        return getAllPossibleValuesFromEnum('questions', 'difficulty');
     }
 
     function create(Request $request)
