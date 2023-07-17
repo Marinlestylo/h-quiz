@@ -14,7 +14,6 @@ class RouteTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->artisan('cache:clear');
         $this->artisan('migrate:fresh --seed');
     }
 
