@@ -20,6 +20,7 @@
                     <DropdownMenu name="Quiz" :links="quizLinks" class="ml-4" />
                     <DropdownMenu name="Questions" :links="questionLinks" class="ml-4" />
                     <DropdownMenu name="Rosters" :links="rosterLinks" class="ml-4" />
+                    <DropdownMenu name="Documentation" :links="documentationLinks" class="ml-4" />
                 </div>
                 <div v-else-if="user.role.includes('student')">
                     <DropdownMenu name="Drill" :links="drillLinks" class="ml-4" />
@@ -58,6 +59,10 @@ const questionLinks = [
 const rosterLinks = [
     { name: 'Rosters', link: '/rosters' },
     { name: 'Création d\'un roster', link: '/create-roster' }
+];
+
+const documentationLinks = [
+    { name: 'Documentation', link: '/documentation' },
 ];
 
 const drillLinks = [

@@ -12,7 +12,7 @@ import ActivityView from '@/views/ActivityView.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import QuestionDetailed from '@/views/QuestionDetailed.vue'
 import tempView from '@/views/tempView.vue'
-import QuestionHelpView from '@/views/QuestionHelpView.vue'
+import Documentation from '@/views/Documentation.vue'
 import DrillView from '@/views/DrillView.vue'
 
 import auth from '../middlewares/auth.js'
@@ -95,14 +95,14 @@ const router = createRouter({
       component: UpdateQuestionView
     },
     {
-      path: '/question-help',
-      name: 'question help',
+      path: '/documentation',
+      name: 'documentation',
       meta: {
         middleware: [
           teacher
         ]
       },
-      component: QuestionHelpView
+      component: Documentation
     },
     {
       path: '/create-quiz',
