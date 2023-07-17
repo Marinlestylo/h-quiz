@@ -10,7 +10,7 @@
       <div class="text-lg">
         <p class="mb-2">
           Il y a deux types de questionnaire, les <span class="font-bold">quiz</span> et les <span
-            class="font-bold">drill</span>.
+            class="font-bold">drills</span>.
         </p>
         <p class="mb-2">
           Les <span class="font-bold">quiz</span> sont des questionnaires qui peuvent être soit des quiz normaux, soit
@@ -19,8 +19,8 @@
           de vos quiz.
         </p>
         <p>
-          Les <span class="font-bold">drill</span> sont des questionnaires auto-généré qui permettent aux étudiants de
-          s'entrainer
+          Les <span class="font-bold">drills</span> sont des questionnaires auto-généré qui permettent aux étudiants de
+          s'entraîner
           sur des types de questions.
         </p>
       </div>
@@ -35,8 +35,8 @@
         <p class="mb-4">
           Une question peut être soit publique (un autre professeur pourra l'utiliser dans un de ses quiz), soit privée
           (un
-          autre professeur ne pourra pas l'ajouter à l'un de ses quiz et cette dernière n'apparaitra pas dans le mode
-          drill). Cependant, si l'une de vos questions privées apparait dans l'un de vos quiz, un autre professeur pourra
+          autre professeur ne pourra pas l'ajouter à l'un de ses quiz et cette dernière n'apparaîtra pas dans le mode
+          drill). Cependant, si l'une de vos questions privées apparat dans l'un de vos quiz, un autre professeur pourra
           tout de même
           créer une activité avec ce quiz.
         </p>
@@ -69,7 +69,7 @@
             Question à développement
           </h3>
           <div>
-            Il s'agit d'une question à laquelle l'étudiant doit répondre en dévelopant son idée. Cette question n'est pas corrigée automatiquement.
+            Il s'agit d'une question à laquelle l'étudiant doit répondre en développant son idée. Cette question n'est pas corrigée automatiquement.
           </div>
         </div>
 
@@ -78,7 +78,7 @@
             Question à Choix Multiple
           </h3>
           <div>
-            L'étudiant à le choix entre plusieurs réponse et doit choisir la bonne. Cette question est également corrigée
+            L'étudiant à le choix entre plusieurs réponses et doit choisir la bonne. Cette question est également corrigée
             automatiquement. Pour créer une réponse potentielle, il vous suffit d'écrire "## n°réponse" puis la réponse,
             comme montré dans les images ci-dessous.
           </div>
