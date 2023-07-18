@@ -124,6 +124,7 @@ Route::middleware('checkUserRole:student')->group(function () {
     Route::get('/activities/{id}/questions/{question_id}', [ActivityController::class,'question']);
 
 });
+
 Route::get('/', function () {
     return response()->json([
         'message' => 'Api de l\'application Quiz',

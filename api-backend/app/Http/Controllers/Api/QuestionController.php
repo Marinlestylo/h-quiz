@@ -54,7 +54,6 @@ class QuestionController extends Controller
 
     function getTypes()
     {
-        // return $this->getAllValuesFromEnum('questions', 'type');
         return getAllPossibleValuesFromEnum('questions', 'type');
     }
 

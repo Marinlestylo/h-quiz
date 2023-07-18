@@ -1,5 +1,6 @@
 <template>
-    <span v-for="(content, index) in separatedContent">
+    <div v-if="option.gaps">
+        <span v-for="(content, index) in separatedContent">
         <span>
             {{ content }}
         </span>
@@ -10,6 +11,7 @@
             </select>
         </span>
     </span>
+    </div>
 </template>
 
 <script setup>

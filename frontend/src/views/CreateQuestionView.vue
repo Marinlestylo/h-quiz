@@ -28,7 +28,10 @@ const question = ref({
     difficulty: '',
     validation: {},
     type: '',
+    option: {},
     explanation: '',
+    public: false,
+    points: 0,
 });
 
 </script>
