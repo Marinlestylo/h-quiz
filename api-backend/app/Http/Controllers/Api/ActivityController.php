@@ -277,6 +277,14 @@ class ActivityController extends Controller
 
         $quiz = Quiz::findOrFail($request->quiz_id);
 
+        if ($quiz->type == 'exam' && $quiz->user_id != Auth::id()) {
+            return response([
+                'message' => "Vous ne pouvez pas utiliser cet examen",
+                'error' => "Bad Request"
+            ], 400);
+        }
+
+
         $activity = Activity::create([
             'user_id' => Auth::id(),
             'roster_id' => $request->roster_id,
