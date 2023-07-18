@@ -1,7 +1,5 @@
 <?php
 
-use DB;
-
 function getAllPossibleValuesFromEnum($table, $field)
 {
     $type = DB::select("SHOW COLUMNS FROM {$table} WHERE Field = '{$field}'")[0]->Type;

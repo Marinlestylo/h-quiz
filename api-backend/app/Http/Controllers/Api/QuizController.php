@@ -15,25 +15,6 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
-    //TODO changer l'index
-    // function index()
-    // {
-    //     $quizzes = Quiz::all();
-    //     //get number of questions
-    //     foreach ($quizzes as $quiz) {
-    //         $quiz->question_count = $quiz->questions()->count();
-    //     }
-
-    //     // transform the user_id from the quiz to the user's full name
-    //     foreach ($quizzes as $quiz) {
-    //         $quiz->owner = $quiz->owner;
-    //     }
-        
-    //     return [
-    //         'count' => count($quizzes),
-    //         'quizzes' => $quizzes,
-    //     ];
-    // }
     function index(Request $request) {
         if ($request->owned)
             $quiz = Quiz::where('user_id', Auth::id())->get();
