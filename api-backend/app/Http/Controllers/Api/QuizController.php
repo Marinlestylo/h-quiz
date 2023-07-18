@@ -64,14 +64,6 @@ class QuizController extends Controller
 
     function create(Request $request)
     {
-        //TODO : middleware ?
-        // if( !Auth::user()->isTeacher() ){
-        //     return response([
-        //         'message' => "Only the teacher can create a quiz",
-        //         'error' => "Bad Request"
-        //     ], 400);
-        // };
-
         Log::debug('Create quiz');
         $data = $request->all();
         $q = new Quiz();
@@ -83,7 +75,7 @@ class QuizController extends Controller
         return response([
             'message' => 'Quiz created',
             'quiz' => $q->name
-        ], 200);
+        ], 201);
     }
 
     function addQuestion(Request $request) {
