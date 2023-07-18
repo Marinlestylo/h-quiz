@@ -69,9 +69,22 @@ class QuestionController extends Controller
         $q = new Question();
         $q->fill($data);
 
+        //TODO add keywords
+
         $q->save();
         return response([
             'message' => 'La question a bien été créée.',
+        ], 201);
+    }
+
+    function edit(Request $request){
+        Log::debug('Edit question');
+        $data = $request->all();
+        $q = Question::find($data['id']);
+        $q->fill($data);
+        $q->save();
+        return response([
+            'message' => 'La question a bien été modifiée.',
         ], 201);
     }
 }

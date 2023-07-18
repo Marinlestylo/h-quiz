@@ -95,6 +95,7 @@ Route::middleware('checkUserRole:teacher')->group(function () {
     Route::get('/questions-types', [QuestionController::class, 'getTypes']);
     Route::get('/questions-difficulties', [QuestionController::class, 'getDifficulties']);
     Route::post('/questions', [QuestionController::class, 'create']);
+    Route::patch('/questions', [QuestionController::class, 'edit']);
 
     // Activity
     Route::get('/activities', [ActivityController::class, 'index']);

@@ -136,7 +136,7 @@
             <AlertPopup v-model:message="message" :alertType="popupType" class="my-4" />
         </div>
         <div>
-            <button @click="debug"
+            <button @click="editQuestion"
                 class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto mb-4">Sauvegarder
                 la question
             </button>
@@ -288,5 +288,8 @@ const resetFields = () => {
     props.question.explanation = '';
     props.question.keywords = [];
     props.question.validation = {};
+    props.question.option = {};
+    props.question.public = false;
+    props.question.points = 0;
 }
 </script>
