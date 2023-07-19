@@ -15,6 +15,9 @@
         <div v-else-if="questionType === 'code'">
             <CodeQuestion :content="content" v-model:code="answer"/>
         </div>
+        <div v-else-if="questionType === 'long-answer'">
+            <LongAnswer :content="content" v-model:code="answer"/>
+        </div>
         <div v-else>
             Ce type de question n'est pas encore supporté.
         </div>
@@ -27,6 +30,7 @@ import ShortAnswer from './questions/ShortAnswer.vue';
 import MultipleChoice from './questions/MultipleChoice.vue';
 import FillGaps from './questions/FillGaps.vue';
 import CodeQuestion from './questions/CodeQuestion.vue';
+import LongAnswer from './questions/LongAnswer.vue';
 
 const props = defineProps({
     questionType: {

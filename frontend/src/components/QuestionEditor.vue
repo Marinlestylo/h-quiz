@@ -134,7 +134,7 @@
         </div>
         <div>
             <button @click="editQuestion"
-                class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto mb-4">Sauvegarder
+                class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto mb-4 mt-4">Sauvegarder
                 la question
             </button>
         </div>
@@ -205,7 +205,7 @@ const editQuestion = async () => {
     //     errorMessage.value = 'Une erreur est survenue lors de la création de la question.';
     //     successMessage.value = '';
     // }
-    if (status === 201) {
+    if (status === 201 && props.usage === 'create') {
         resetFields();
     }
     displayPopup(data.message, status === 201 || status === 200 ? 'success' : 'error');
