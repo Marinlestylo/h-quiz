@@ -62,9 +62,13 @@ Route::get('debug/logout', function () {
     Auth::logout();
 });
 
+// Route::get('/test-code', [ActivityController::class, 'compilation']);
+
 Route::middleware('auth')->group(function () {
      // Logout
-     Route::get('logout',[KeycloakController::class, 'logout']); 
+     Route::get('logout',[KeycloakController::class, 'logout']);
+     Route::post('/test-code', [ActivityController::class, 'compilation']);
+    //  Route::get('/test-code', [ActivityController::class, 'compilation']);
 });
 
 // Authentification

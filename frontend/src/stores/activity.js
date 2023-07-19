@@ -97,7 +97,22 @@ export const useActivityStore = defineStore('activity', () => {
         // return response.status;
     }
 
+    const compileCode = async (code) => {
+        const payload = {
+            'code': code
+        };
+        const response = await utils.fetchApi('/api/test-code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        return [response.status, data];
+    }
 
 
-    return { allActivities, currentlyUsedActivity, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity, fetchActivityQuestion, addOneAnswer }
+
+    return { allActivities, currentlyUsedActivity, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity, fetchActivityQuestion, addOneAnswer, compileCode }
 });

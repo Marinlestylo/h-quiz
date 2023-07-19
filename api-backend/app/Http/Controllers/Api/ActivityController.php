@@ -18,9 +18,11 @@ use Log;
 use App\Transformers\ActivityTransformer;
 use App\Transformers\QuestionTransformer;
 
+use Illuminate\Support\Facades\Http;
+
 class ActivityController extends Controller
 {
-    //
+
     function index(Request $request)
     {
         $activities = Activity::query();
@@ -40,14 +42,29 @@ class ActivityController extends Controller
         )->toArray();
     }
 
-    function owned() {
+    function owned()
+    {
         $request = request();
         $request->owned = true;
 
         return $this->index($request);
     }
 
-    function show($id) {
+    function compilation(Request $request)
+    {
+        $url = 'http://localhost:8082/api/compile?language=PYTHON&memoryLimit=100&timeLimit=15';
+        $code = $request->code;
+
+        $response = Http::attach('inputFile', '1', 'input.txt')
+            ->attach('expectedOutputs', 'hi', 'output.txt')
+            ->attach('sourcecode', $code, 'sourceCode.py')
+            ->post($url);
+
+        return $response;
+    }
+
+    function show($id)
+    {
         $activity = Activity::findOrFail($id);
         if ($activity->hidden) {
             return response([
@@ -62,7 +79,7 @@ class ActivityController extends Controller
         $current = Arr::first($activities['data'], function ($value, $key) use ($id) {
             return $value['id'] == $id;
         });
-        if ($current == null){
+        if ($current == null) {
             return response([
                 'message' => "Vous n'êtes pas autorisé à voir cette activité.",
                 'error' => "Unauthorized"
@@ -75,17 +92,20 @@ class ActivityController extends Controller
     /**
      * Questions
      */
-    public function questions($activity_id) {
+    public function questions($activity_id)
+    {
         $activity = Activity::findOrFail($activity_id);
         return fractal(
             $activity->questions(),
-            new QuestionTransformer($activity))->toArray();
+            new QuestionTransformer($activity)
+        )->toArray();
     }
 
     /**
      * Question (get or post question)
      */
-    public function question($activity_id, $question_number, Request $request) {
+    public function question($activity_id, $question_number, Request $request)
+    {
         $activity = Activity::findOrFail($activity_id);
         $question = $activity->questions()[$question_number - 1];
 
@@ -107,7 +127,8 @@ class ActivityController extends Controller
 
         return fractal(
             $question,
-            new QuestionTransformer($activity))->toArray();
+            new QuestionTransformer($activity)
+        )->toArray();
     }
 
     function edit($id, Request $request)
