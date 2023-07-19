@@ -75,7 +75,6 @@
             </div>
         </div>
     </div>
-    <button @click="debug">WWWW</button>
 </template>
 
 <script setup>

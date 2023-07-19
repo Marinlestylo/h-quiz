@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Question;
+use App\Models\Activity;
+use App\Models\Keyword;
 
 use Auth;
 use Illuminate\Support\Facades\DB;
@@ -68,10 +70,16 @@ class QuestionController extends Controller
         $data = $request->all();
         $q = new Question();
         $q->fill($data);
-
-        //TODO add keywords
-
         $q->save();
+
+        // Add keywords
+        if(array_key_exists('keywords', $data) && $data['keywords'])
+        {
+            foreach($data['keywords'] as $k)
+            {
+                $q->keywords()->attach($k['id']);
+            }
+        }
         return response([
             'message' => 'La question a bien été créée.',
         ], 201);
@@ -80,9 +88,55 @@ class QuestionController extends Controller
     function edit(Request $request){
         Log::debug('Edit question');
         $data = $request->all();
-        $q = Question::find($data['id']);
+        $q = Question::findOrFail($data['id']);
+
+        if ($q->user_id != Auth::id()){
+            return response([
+                'message' => "Seul le créateur de la question peut la modifier.",
+                'error' => "Bad Request"
+            ], 400);
+        }
+
         $q->fill($data);
         $q->save();
+
+        // Delete keywords that are not in the new list
+        foreach($q->keywords as $qk)
+        {
+            $exist = false;
+            if(array_key_exists('keywords', $data) && $data['keywords'])
+            {
+                foreach($data['keywords'] as $dk)
+                {
+                    if( $dk['id'] == $qk['id'])
+                    {
+                        $exist = true;
+                        break;
+                    }
+                }
+            }
+            if(!$exist)
+            {
+                $q->keywords()->detach($qk['id']);
+            }
+        }
+
+        if(array_key_exists('keywords', $data) && $data['keywords'])
+        {
+            foreach($data['keywords'] as $k)
+            {
+                $nbr = Question::where('id', $q['id'])
+                        ->whereHas('keywords', function($query) use ($k) {
+		                    $query->where('keywords.id', $k['id']);
+	                    })->count();
+
+                if($nbr == 0){
+                    $q->keywords()->attach($k['id']);
+                }
+            }
+        }
+
+
         return response([
             'message' => 'La question a bien été modifiée.',
         ], 201);

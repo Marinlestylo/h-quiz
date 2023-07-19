@@ -2,7 +2,7 @@
     <div>
         <div class="mb-4">
             En cas de besoin, n'hésitez pas à consulter la <RouterLink to="/documentation" target="_blank"
-                class="text-blue-500 hover:text-blue-700">documentation</RouterLink> des questions qui se trouve
+                class="text-blue-500 hover:text-blue-700">documentation</RouterLink> des questions.
         </div>
         <div class="mb-6 flex">
             <label for="name" class="block mb-2 text-lg font-medium text-gray-900 w-64">Nom de la question</label>
@@ -117,9 +117,6 @@
         <div class="mb-6">
             <Answer :questionType="question.type" v-model:answer="question.validation" v-model:option="question.option"
                 v-model:nbFillGaps="nbFillGaps" />
-        </div>
-        <div>
-            nb = {{ nbFillGaps }}
         </div>
 
         <div class="mb-6 flex">
