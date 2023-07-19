@@ -52,7 +52,8 @@ class ActivityController extends Controller
 
     function compilation(Request $request)
     {
-        $url = 'http://localhost:8082/api/compile?language=PYTHON&memoryLimit=100&timeLimit=15';
+        $compilerUrl = env('CODE_COMPILER_URL', NULL);
+        $url = $compilerUrl . 'api/compile?language=PYTHON&memoryLimit=100&timeLimit=15';
         $code = $request->code;
 
         $response = Http::attach('inputFile', '1', 'input.txt')
