@@ -21,7 +21,8 @@
                     {{ questions[currentQuestionNumber - 1].name }}
                 </span>
             </div>
-            <div class="border p-4 rounded-lg border-solid border-gray-300 bg-gray-50 max-w-4xl" v-if="questions[currentQuestionNumber - 1]">
+            <div class="border p-4 rounded-lg border-solid border-gray-300 bg-gray-50 max-w-4xl"
+                v-if="questions[currentQuestionNumber - 1]">
                 <div v-if="questions[currentQuestionNumber - 1].type === 'short-answer'">
                     <ShortAnswer :content="questions[currentQuestionNumber - 1].content" v-model:shortAnswer="answer" />
                 </div>
@@ -29,7 +30,8 @@
                     <MultipleChoice :content="questions[currentQuestionNumber - 1].content" v-model:selected="choices" />
                 </div>
                 <div v-else-if="questions[currentQuestionNumber - 1].type === 'fill-in-the-gaps'">
-                    <FillGaps :content="questions[currentQuestionNumber - 1].content" :option="questions[currentQuestionNumber - 1].options" v-model:selected="choices" />
+                    <FillGaps :content="questions[currentQuestionNumber - 1].content"
+                        :option="questions[currentQuestionNumber - 1].options" v-model:selected="choices" />
                 </div>
                 <div v-else-if="questions[currentQuestionNumber - 1].type === 'code'">
                     <CodeQuestion :content="questions[currentQuestionNumber - 1].content" v-model:code="answer" />
@@ -38,23 +40,16 @@
                     Ce type de question n'est pas encore supporté.
                 </div>
             </div>
-            <!-- <div class="flex justify-between w-full">
-                <RouterLink :to="`/activities/${$route.params.id}/questions/${previous}`"
-                    class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
-                    v-show="+$route.params.questionId > 1">
-                    Précédent
-                </RouterLink>
-                <RouterLink :to="`/activities/${$route.params.id}/questions/${next}`"
-                    class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
-                    v-show="+$route.params.questionId !== activity.quiz.questions">
-                    Suivant
-                </RouterLink>
-            </div> -->
             <div class="w-full flex justify-between mt-4">
-                <button @click="previousQ" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">Précédent</button>
-                <button @click="nextQ" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">Suivant</button>
+                <button @click="previousQ"
+                    class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">Précédent</button>
+                <div>
+                    <button @click="nextQ" v-if="currentQuestionNumber !== activity.quiz.questions"
+                        class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">Suivant</button>
+                    <button @click="finish" v-else
+                        class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">Terminer</button>
+                </div>
             </div>
-            <button @click="debug">WWWWWWWWWW</button>
         </div>
         <div v-else>
 
@@ -63,12 +58,10 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onBeforeMount, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useActivityStore } from '../stores/activity';
 import { useRoute } from 'vue-router';
-import { RouterLink } from 'vue-router';
 import router from '../router';
-import BacktickText from '../components/questions/BacktickText.vue';
 import ShortAnswer from '../components/questions/ShortAnswer.vue';
 import MultipleChoice from '../components/questions/MultipleChoice.vue';
 import FillGaps from '../components/questions/FillGaps.vue';
@@ -83,18 +76,9 @@ const route = useRoute();
 const currentQuestionNumber = +route.params.questionId;
 const choices = ref([]);
 const answer = ref('');
-const next = computed(() => {
-    return +route.params.questionId + 1;
-});
-const previous = computed(() => {
-    return +route.params.questionId - 1;
-});
 
-
-onBeforeMount(async () => {
-    // console.log('mounted');
+onMounted(async () => {
     if (!Object.entries(activityStore.currentlyUsedActivity.activity).length || activityStore.currentlyUsedActivity.activity.id !== +route.params.id) {
-        // console.log('fetching');
         const status = await activityStore.fetchOneActivity(route.params.id);
         if (status !== 200) {
             unauthorized.value = true;
@@ -102,26 +86,24 @@ onBeforeMount(async () => {
         }
     }
     fetchQuestionAndAnswer(+route.params.questionId);
-    // fetchAnswer(+route.params.questionId);
 });
 
-
-const debug = () => {
-    console.log(answers.value);
-    // console.log(choices.value);
-    // console.log(questions.value[currentQuestionNumber - 1].option)
-}
-
-const saveAnswer = () => {
-    if (questions.value[currentQuestionNumber - 1].type === 'multiple-choice' || questions.value[currentQuestionNumber - 1].type === 'fill-in-the-gaps') {
+const saveAnswer = async () => {
+    if (questions.value[currentQuestionNumber - 1].type === 'multiple-choice') {
         if (answers.value[currentQuestionNumber - 1] !== choices.value) {
             activityStore.addOneAnswer(currentQuestionNumber, choices.value);
+            await activityStore.submitQuizAnswer(route.params.id, currentQuestionNumber, choices.value);
         }
+    } else if (questions.value[currentQuestionNumber - 1].type === 'fill-in-the-gaps') {
+        activityStore.addOneAnswer(currentQuestionNumber, choices.value);
+        await activityStore.submitQuizAnswer(route.params.id, currentQuestionNumber, choices.value);
     } else {
         if (answers.value[currentQuestionNumber - 1] !== answer.value) {
             activityStore.addOneAnswer(currentQuestionNumber, answer.value);
+            await activityStore.submitQuizAnswer(route.params.id, currentQuestionNumber, answer.value);
         }
     }
+
 }
 
 const fetchQuestionAndAnswer = async (id) => {
@@ -135,10 +117,8 @@ const fetchQuestionAndAnswer = async (id) => {
     if (!questions.value[id - 1]) {
         await activityStore.fetchActivityQuestion(route.params.id, id);
     }
-    // console.log('fetching question');
 
-    // await activityStore.fetchActivityQuestion(route.params.id, id);
-    if (questions.value[currentQuestionNumber - 1].type === 'multiple-choice' || questions.value[currentQuestionNumber - 1].type === 'fill-in-the-gaps'){
+    if (questions.value[currentQuestionNumber - 1].type === 'multiple-choice' || questions.value[currentQuestionNumber - 1].type === 'fill-in-the-gaps') {
         if (answers.value[id - 1]) {
             choices.value = answers.value[id - 1];
             return;
@@ -151,8 +131,8 @@ const fetchQuestionAndAnswer = async (id) => {
     }
 }
 
-const nextQ = () => {
-    saveAnswer();
+const nextQ = async () => {
+    await saveAnswer();
     if (+route.params.questionId === activity.value.quiz.questions) {
         return;
     }
@@ -160,12 +140,17 @@ const nextQ = () => {
     router.push(`/activities/${route.params.id}/questions/${next}`);
 }
 
-const previousQ = () => {
-    saveAnswer();
+const finish = async () => {
+    await saveAnswer();
+    router.push(`/activities`);
+}
+
+const previousQ = async () => {
+    await saveAnswer();
     if (+route.params.questionId === 1) {
         return;
     }
-    const next = +route.params.questionId - 1;
-    router.push(`/activities/${route.params.id}/questions/${next}`);
+    const previous = +route.params.questionId - 1;
+    router.push(`/activities/${route.params.id}/questions/${previous}`);
 }
 </script>

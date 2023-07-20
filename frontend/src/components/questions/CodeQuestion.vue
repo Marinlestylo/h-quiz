@@ -37,7 +37,6 @@ const compile = async () => {
         return;
     }
     const [status, data] = await store.compileCode(props.code);
-    console.log(status, data);
     if (data.verdict === 'Accepted' || data.verdict === 'Wrong Answer') {
         output.value = data.testCasesResult.defaultTestId.output;
     } else {

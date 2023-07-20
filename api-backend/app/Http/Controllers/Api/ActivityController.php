@@ -19,6 +19,7 @@ use App\Transformers\ActivityTransformer;
 use App\Transformers\QuestionTransformer;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log as FacadesLog;
 
 class ActivityController extends Controller
 {
@@ -122,6 +123,32 @@ class ActivityController extends Controller
                 [
                     'answer' => $answered,
                     'is_correct' => $question->validate($answered)
+                ]
+            );
+        }
+
+        return fractal(
+            $question,
+            new QuestionTransformer($activity)
+        )->toArray();
+    }
+
+    public function answer($activity_id, $question_number, Request $request){
+        $activity = Activity::findOrFail($activity_id);
+        $question = $activity->questions()[$question_number - 1];
+
+        if ($activity->status == 'running') {
+            $answered = $request->answer;
+            Log::debug(var_dump($answered));
+            Answer::updateOrCreate(
+                [
+                    'activity_id' => $activity_id,
+                    'student_id' => $request->user()->student->id,
+                    'question_id' => $question->id,
+                ],
+                [
+                    'answer' => $answered,
+                    'is_correct' => 0
                 ]
             );
         }

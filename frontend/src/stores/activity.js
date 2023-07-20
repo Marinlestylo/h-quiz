@@ -41,8 +41,8 @@ export const useActivityStore = defineStore('activity', () => {
         const response = await utils.fetchApi('/api/activities/' + activityId + '/questions/'+question);
         const data = await response.json();
         if (response.status === 200) {
-            // currentlyUsedActivity.value.questions.push(data.data);
             currentlyUsedActivity.value.questions[question-1] = data.data;
+            currentlyUsedActivity.value.answers[question-1] = data.data.answered;
         }
         return response.status;
     }
@@ -112,7 +112,20 @@ export const useActivityStore = defineStore('activity', () => {
         return [response.status, data];
     }
 
+    const submitQuizAnswer = async (activityId, questionNuber, answer) => {
+        const payload = {
+            'answer': answer
+        };
+        const response = await utils.fetchApi('/api/activities/' + activityId + '/questions/' + questionNuber, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+    }
 
 
-    return { allActivities, currentlyUsedActivity, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity, fetchActivityQuestion, addOneAnswer, compileCode }
+
+    return { allActivities, currentlyUsedActivity, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity, fetchActivityQuestion, addOneAnswer, compileCode, submitQuizAnswer }
 });
