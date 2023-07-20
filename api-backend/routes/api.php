@@ -128,6 +128,7 @@ Route::middleware('checkUserRole:student')->group(function () {
     Route::get('/activities/{id}', [ActivityController::class, 'show']);
     Route::get('/activities/{id}/questions/{question_id}', [ActivityController::class,'question']);
     Route::post('/activities/{id}/questions/{question_id}', [ActivityController::class,'answer']);
+    Route::post('/activities/{id}/finish', [ActivityController::class,'studentFinish']);
 });
 
 Route::get('/', function () {

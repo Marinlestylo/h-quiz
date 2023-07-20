@@ -15,6 +15,9 @@
             Veuillez patienter le temps que le professeur lance l'activité.
         </div>
         <div v-else-if="activity.status === 'running'" class="">
+            <div v-if="activity.quiz.type === 'exam'">
+                Examen
+            </div>
             <div class="text-2xl mb-3">
                 Question {{ currentQuestionNumber }} / {{ activity.quiz.questions }} :
                 <span v-if="questions[currentQuestionNumber - 1]">
@@ -54,6 +57,7 @@
         <div v-else>
 
         </div>
+        <button @click="debug">WWWWWW</button>
     </div>
 </template>
 
@@ -76,6 +80,11 @@ const route = useRoute();
 const currentQuestionNumber = +route.params.questionId;
 const choices = ref([]);
 const answer = ref('');
+
+const debug = () => {
+    // console.log(activity.value);
+    activityStore.studentFinishExam(route.params.id);
+}
 
 onMounted(async () => {
     if (!Object.entries(activityStore.currentlyUsedActivity.activity).length || activityStore.currentlyUsedActivity.activity.id !== +route.params.id) {

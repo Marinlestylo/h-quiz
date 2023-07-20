@@ -125,7 +125,21 @@ export const useActivityStore = defineStore('activity', () => {
         });
     }
 
+    const studentFinishExam = async (activityId) => {
+        const payload = {
+            'activity_id': activityId
+        };
+        const response = await utils.fetchApi('/api/activities/' + activityId + '/finish', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+    }
 
 
-    return { allActivities, currentlyUsedActivity, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity, fetchActivityQuestion, addOneAnswer, compileCode, submitQuizAnswer }
+
+
+    return { allActivities, currentlyUsedActivity, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity, fetchActivityQuestion, addOneAnswer, compileCode, submitQuizAnswer, studentFinishExam }
 });

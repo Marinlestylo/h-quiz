@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use App\Models\Roster;
 use App\Models\Answer;
 use App\Models\Quiz;
+use App\Models\Student;
 use Validator;
 use Arr;
 use Auth;
@@ -111,7 +112,7 @@ class ActivityController extends Controller
         $activity = Activity::findOrFail($activity_id);
         $question = $activity->questions()[$question_number - 1];
 
-        // Submit an answer?
+        // Submit an answer? TODO remove this bc it's in answer()
         if ($request->isMethod('post') && $activity->status == 'running') {
             $answered = $request->answer;
             Answer::updateOrCreate(
@@ -139,7 +140,6 @@ class ActivityController extends Controller
 
         if ($activity->status == 'running') {
             $answered = $request->answer;
-            Log::debug(var_dump($answered));
             Answer::updateOrCreate(
                 [
                     'activity_id' => $activity_id,
@@ -157,6 +157,12 @@ class ActivityController extends Controller
             $question,
             new QuestionTransformer($activity)
         )->toArray();
+    }
+
+    public function studentFinish(Request $request){
+        $activity = Activity::findOrFail($request->activity_id);
+        $s = Student::findOrFail($request->user()->student->id);
+        $activity->students()->attach($s->id);
     }
 
     function edit($id, Request $request)

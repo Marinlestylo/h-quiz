@@ -36,6 +36,10 @@ class Activity extends Model
         return $this->belongsTo(Roster::class);
     }
 
+    function students() {
+        return $this->belongsToMany(Student::class);
+    }
+
     function answers() {
         return $this->hasMany(Answer::class);
     }
