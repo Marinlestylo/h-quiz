@@ -27,6 +27,7 @@ class QuestionSeeder extends Seeder
                 'length' => 10
             ],
             'difficulty' => 'medium',
+            'points' => 2,
             'user_id' => 1,
         ]);
         $q1->keywords()->attach(Keyword::where('name', 'binary')->get());
@@ -41,6 +42,7 @@ class QuestionSeeder extends Seeder
             ],
             'difficulty' => 'medium',
             'user_id' => 1,
+            'points' => 2,
             'explanation' => "`8` exprimé en hexadécimal correspond à $2^4$ soit le quatrième bit du nombre à un."
         ]);
         $q2->keywords()->attach(Keyword::where('name', 'hexadecimal')->get());
@@ -55,6 +57,7 @@ class QuestionSeeder extends Seeder
             ],
             'difficulty' => 'easy',
             'user_id' => 1,
+            'points' => 2,
             'explanation' => ''
         ]);
 
