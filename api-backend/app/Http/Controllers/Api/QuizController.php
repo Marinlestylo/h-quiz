@@ -83,6 +83,13 @@ class QuizController extends Controller
 
         $question = Question::findOrFail($request->question_id);
 
+        if (!$question->is_public && $question->user_id != Auth::id()) {
+            return response([
+                'message' => "La question n'est pas publique ou n'appartient pas à l'utilisateur",
+                'error' => "Bad Request"
+            ], 400);
+        }
+
         $quiz->questions()->attach($question->id);
 
         $questions = Quiz::findOrFail($request->quiz_id)->questions;

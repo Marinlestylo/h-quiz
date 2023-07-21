@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //TODO: remove
         if (env('APP_AUTOLOGIN', false)){
-            $user = User::find(3);
+            $user = User::find(1);
             if ($user) {
                 Auth::login($user);
             }
