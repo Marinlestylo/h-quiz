@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\QuestionController;
+use App\Http\Controllers\Api\DrillController;
 
 use App\Models\Activity;
 use App\Models\Course;
@@ -69,6 +70,9 @@ Route::middleware('auth')->group(function () {
      Route::get('logout',[KeycloakController::class, 'logout']);
      Route::post('/test-code', [ActivityController::class, 'compilation']);
      Route::get('/activities/{id}', [ActivityController::class, 'show']);
+
+     // Keyword
+    Route::get('/keywords', [KeywordController::class, 'index']);
 });
 
 // Authentification
@@ -88,9 +92,6 @@ Route::middleware('checkUserRole:teacher')->group(function () {
     Route::post('/quizzes', [QuizController::class, 'create']);
     Route::post('/quizzes/question', [QuizController::class, 'addQuestion']);
     Route::delete('quizzes/question', [QuizController::class, 'deleteQuestion']);
-
-    // Keyword
-    Route::get('/keywords', [KeywordController::class, 'index']);
 
     // Question
     Route::get('/questions', [QuestionController::class, 'index']);
@@ -129,6 +130,11 @@ Route::middleware('checkUserRole:student')->group(function () {
     Route::get('/activities/{id}/questions/{question_id}', [ActivityController::class,'question']);
     Route::post('/activities/{id}/questions/{question_id}', [ActivityController::class,'answer']);
     Route::post('/activities/{id}/finish', [ActivityController::class,'studentFinish']);
+
+    // Drill
+    Route::get('/drills/{keyword}', [DrillController::class, 'makeDrill']);
+    // Route::patch('/drills/{keyword}', [DrillController::class, 'answerDrill']);
+    Route::post('/drills/answer', [DrillController::class, 'answerDrill']);
 });
 
 Route::get('/', function () {

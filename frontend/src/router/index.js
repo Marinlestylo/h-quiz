@@ -16,6 +16,7 @@ import Documentation from '@/views/Documentation.vue'
 import DrillView from '@/views/DrillView.vue'
 import ActivityResults from '@/views/ActivityResults.vue'
 import ActivityProgession from '@/views/ActivityProgression.vue'
+import DrillDetailed from '@/views/DrillDetailed.vue'
 
 import auth from '../middlewares/auth.js'
 import teacher from '../middlewares/teacher.js'
@@ -175,6 +176,16 @@ const router = createRouter({
         ]
       },
       component: DrillView
+    },
+    {
+      path: '/drill/:keyword',
+      name: 'drill detailled',
+      meta: {
+        middleware: [
+          auth
+        ]
+      },
+      component: DrillDetailed
     },
     {
       path: "/:catchAll(.*)",

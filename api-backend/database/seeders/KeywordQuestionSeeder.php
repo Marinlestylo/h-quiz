@@ -24,13 +24,33 @@ class KeywordQuestionSeeder extends Seeder
         ]);
 
         DB::table('keyword_question')->insert([
-            'keyword_id' => '3',
-            'question_id' => '1'
+            'keyword_id' => '2',
+            'question_id' => '3'
         ]);
 
         DB::table('keyword_question')->insert([
             'keyword_id' => '2',
             'question_id' => '2'
+        ]);
+
+        DB::table('keyword_question')->insert([
+            'keyword_id' => '2',
+            'question_id' => '4'
+        ]);
+        
+        DB::table('keyword_question')->insert([
+            'keyword_id' => '2',
+            'question_id' => '5'
+        ]);
+
+        DB::table('keyword_question')->insert([
+            'keyword_id' => '2',
+            'question_id' => '9'
+        ]);
+
+        DB::table('keyword_question')->insert([
+            'keyword_id' => '2',
+            'question_id' => '10'
         ]);
     }
 }
