@@ -1,7 +1,7 @@
 <template>
     <BacktickText :content="content" />
-    <textarea type="text" rows="10" class="border-2 border-gray-300 rounded-md p-2 w-full mt-2" :value="code"
-        @input="$emit('update:code', $event.target.value)">
+    <textarea type="text" rows="10" class="border-2 border-gray-300 rounded-md p-2 w-full mt-2" :value="answer"
+        @input="$emit('update:answer', $event.target.value)">
         </textarea>
 </template>
 
@@ -13,7 +13,7 @@ const props = defineProps({
         type: String,
         required: true,
     },
-    shortAnswer: {
+    answer: {
         type: String,
         required: true,
     },

@@ -68,8 +68,16 @@ class ActivityController extends Controller
 
     function show($id)
     {
-        $activity = Activity::findOrFail($id);
-        if ($activity->hidden) {
+        try{
+            $activity = Activity::findOrFail($id);
+        } catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response([
+                'message' => "Cette activité n'existe pas.",
+                'error' => "Not Found"
+            ], 404);
+        }
+        
+        if ($activity->hidden && Auth::user()->isStudent()) {
             return response([
                 'message' => "Vous n'êtes pas autorisé à voir cette activité.",
                 'error' => "Unauthorized"

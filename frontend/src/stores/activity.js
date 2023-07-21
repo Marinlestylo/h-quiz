@@ -140,6 +140,12 @@ export const useActivityStore = defineStore('activity', () => {
             currentlyUsedActivity.value.activity = {};
         }
     }
+
+    const activityResultsQuestions = async (activityId) => {
+        const response = await utils.fetchApi('/api/activities/' + activityId + '/questions');
+        const data = await response.json();
+        return [response.status, data];
+    }
     
-    return { allActivities, currentlyUsedActivity, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity, fetchActivityQuestion, addOneAnswer, compileCode, submitQuizAnswer, studentFinishExam }
+    return { allActivities, currentlyUsedActivity, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity, fetchActivityQuestion, addOneAnswer, compileCode, submitQuizAnswer, studentFinishExam, activityResultsQuestions }
 });

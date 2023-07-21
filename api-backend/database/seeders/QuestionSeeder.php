@@ -245,5 +245,17 @@ Dans le circuit ci-dessous. On reconnaît qu'il s'agit d'un *-*. Les deux *-* d'
             'difficulty' => 'medium',
             'user_id' => 1,
         ]);
+
+        Question::create([
+            'name' => 'Boucle for en python',
+            'content' => 'Faire une boucle for de 1 à 10 et afficher le résultat',
+            'type' => 'code',
+            'validation' => [
+                'expected' => '12345678910'
+            ],
+            'explanation' => 'Il faut utiliser la fonction range()',
+            'difficulty' => 'medium',
+            'user_id' => 1,
+        ]);
     }
 }

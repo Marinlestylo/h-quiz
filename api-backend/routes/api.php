@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
      // Logout
      Route::get('logout',[KeycloakController::class, 'logout']);
      Route::post('/test-code', [ActivityController::class, 'compilation']);
-    //  Route::get('/test-code', [ActivityController::class, 'compilation']);
+     Route::get('/activities/{id}', [ActivityController::class, 'show']);
 });
 
 // Authentification
@@ -103,8 +103,9 @@ Route::middleware('checkUserRole:teacher')->group(function () {
 
     // Activity
     Route::get('/activities', [ActivityController::class, 'index']);
+    Route::get('/activities/{id}/results', [ActivityController::class, 'results']);
+    Route::get('/activities/{id}/questions', [ActivityController::class, 'questions']);
     Route::post('/activities', [ActivityController::class, 'create']);
-
     Route::delete('/activities/{id}', [ActivityController::class, 'delete']);
     // Route to start, open, close, hide and show an activity
     Route::patch('/activities/{id}', [ActivityController::class, 'edit']);
@@ -125,7 +126,6 @@ Route::middleware('checkUserRole:teacher')->group(function () {
 
 Route::middleware('checkUserRole:student')->group(function () {
     Route::get('/user/activities/', [ActivityController::class, 'owned']);
-    Route::get('/activities/{id}', [ActivityController::class, 'show']);
     Route::get('/activities/{id}/questions/{question_id}', [ActivityController::class,'question']);
     Route::post('/activities/{id}/questions/{question_id}', [ActivityController::class,'answer']);
     Route::post('/activities/{id}/finish', [ActivityController::class,'studentFinish']);

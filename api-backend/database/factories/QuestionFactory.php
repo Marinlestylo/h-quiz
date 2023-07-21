@@ -23,7 +23,9 @@ class QuestionFactory extends Factory
         return [
             'name' => $this->faker->sentence(),
             'content' => $this->faker->paragraph(),
-            'validation' => '42',
+            'validation' => [
+                'expected' => "42"
+            ],
             'difficulty' => Arr::random(['easy', 'medium', 'hard', 'insane']),
             'user_id' => Arr::random([1,2]),
             'is_public' => Arr::random([true, false]),

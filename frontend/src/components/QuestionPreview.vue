@@ -16,7 +16,7 @@
             <CodeQuestion :content="content" v-model:code="answer"/>
         </div>
         <div v-else-if="questionType === 'long-answer'">
-            <LongAnswer :content="content" v-model:code="answer"/>
+            <LongAnswer :content="content" v-model:answer="answer"/>
         </div>
         <div v-else>
             Ce type de question n'est pas encore supporté.
