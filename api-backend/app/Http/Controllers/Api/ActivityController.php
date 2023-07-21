@@ -120,22 +120,6 @@ class ActivityController extends Controller
         $activity = Activity::findOrFail($activity_id);
         $question = $activity->questions()[$question_number - 1];
 
-        // Submit an answer? TODO remove this bc it's in answer()
-        if ($request->isMethod('post') && $activity->status == 'running') {
-            $answered = $request->answer;
-            Answer::updateOrCreate(
-                [
-                    'activity_id' => $activity_id,
-                    'student_id' => $request->user()->student->id,
-                    'question_id' => $question->id,
-                ],
-                [
-                    'answer' => $answered,
-                    'is_correct' => $question->validate($answered)
-                ]
-            );
-        }
-
         return fractal(
             $question,
             new QuestionTransformer($activity)
@@ -156,7 +140,7 @@ class ActivityController extends Controller
                 ],
                 [
                     'answer' => $answered,
-                    'is_correct' => 0
+                    'is_correct' => $question->validate($answered)
                 ]
             );
         }
