@@ -136,10 +136,10 @@ export const useActivityStore = defineStore('activity', () => {
             },
             body: JSON.stringify(payload)
         });
+        if (response.status === 200) {
+            currentlyUsedActivity.value.activity = {};
+        }
     }
-
-
-
-
+    
     return { allActivities, currentlyUsedActivity, updateActivity, deleteActivity, createActivity, fetchAllActivities, fetchConnectedStudentActivities, fetchOneActivity, fetchActivityQuestion, addOneAnswer, compileCode, submitQuizAnswer, studentFinishExam }
 });

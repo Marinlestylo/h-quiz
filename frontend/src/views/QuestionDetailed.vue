@@ -3,6 +3,9 @@
     <div v-if="unauthorized" class="text-3xl">
         Cette activité n'existe pas ou vous n'avez pas les droits pour la consulter.
     </div>
+    <div v-else-if="finished" class="text-3xl">
+        Vous avez terminé cet examen.
+    </div>
     <div v-else class="flex flex-col items-center justify-center">
         <!-- Incorrect status -->
         <div v-if="activity.status === 'idle'" class="text-3xl">
@@ -17,6 +20,10 @@
         <div v-else-if="activity.status === 'running'" class="">
             <div v-if="activity.quiz.type === 'exam'">
                 Examen
+            </div>
+            <div v-else-if="activity.quiz.type === 'exam' && activity.students_finished.some((s) => s.user_id === user.id)"
+                class="text-3xl">
+                Vous avez rendu cet examen
             </div>
             <div class="text-2xl mb-3">
                 Question {{ currentQuestionNumber }} / {{ activity.quiz.questions }} :
@@ -43,9 +50,13 @@
                     Ce type de question n'est pas encore supporté.
                 </div>
             </div>
-            <div class="w-full flex justify-between mt-4">
+            <div class="w-full flex justify-between mt-4 items-center">
                 <button @click="previousQ"
                     class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">Précédent</button>
+                <vue-countdown :time="activity.duration * 1000 - (Date.now() - Date.parse(activity.started_at))"
+                    v-slot="{ hours, minutes, seconds }" class="font-medium text-xl" :transform="transformSlotProps" @end="finish">
+                    {{ hours }}:{{ minutes }}:{{ seconds }}
+                </vue-countdown>
                 <div>
                     <button @click="nextQ" v-if="currentQuestionNumber !== activity.quiz.questions"
                         class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">Suivant</button>
@@ -57,13 +68,13 @@
         <div v-else>
 
         </div>
-        <button @click="debug">WWWWWW</button>
     </div>
 </template>
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useActivityStore } from '../stores/activity';
+import { useUserStore } from '../stores/user';
 import { useRoute } from 'vue-router';
 import router from '../router';
 import ShortAnswer from '../components/questions/ShortAnswer.vue';
@@ -76,15 +87,13 @@ const activity = computed(() => activityStore.currentlyUsedActivity.activity);
 const questions = computed(() => activityStore.currentlyUsedActivity.questions);
 const answers = computed(() => activityStore.currentlyUsedActivity.answers);
 const unauthorized = ref(false);
+const finished = ref(false);
 const route = useRoute();
 const currentQuestionNumber = +route.params.questionId;
 const choices = ref([]);
 const answer = ref('');
-
-const debug = () => {
-    // console.log(activity.value);
-    activityStore.studentFinishExam(route.params.id);
-}
+const userStore = useUserStore();
+const user = computed(() => userStore.user);
 
 onMounted(async () => {
     if (!Object.entries(activityStore.currentlyUsedActivity.activity).length || activityStore.currentlyUsedActivity.activity.id !== +route.params.id) {
@@ -94,8 +103,27 @@ onMounted(async () => {
             return;
         }
     }
+    if (activity.value.quiz.type === 'exam' && activity.value.students_finished.some((s) => s.user_id === user.value.id)) {
+        finished.value = true;
+        return;
+    }
     fetchQuestionAndAnswer(+route.params.questionId);
 });
+
+const transformSlotProps = (props) => {
+    const formattedProps = {};
+
+    Object.entries(props).forEach(([key, value]) => {
+        formattedProps[key] = value < 10 ? `0${value}` : String(value);
+    });
+
+    return formattedProps;
+}
+
+const timerFinish = () => {
+    finish();
+
+};
 
 const saveAnswer = async () => {
     if (questions.value[currentQuestionNumber - 1].type === 'multiple-choice') {
@@ -151,7 +179,11 @@ const nextQ = async () => {
 
 const finish = async () => {
     await saveAnswer();
-    router.push(`/activities`);
+    if (activity.value.quiz.type === 'exam') {
+        await activityStore.studentFinishExam(route.params.id);
+    }
+    // router.push(`/activities`);
+    window.location.href = '/activities';
 }
 
 const previousQ = async () => {
