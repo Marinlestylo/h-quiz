@@ -140,7 +140,8 @@ class ActivityController extends Controller
                 ],
                 [
                     'answer' => $answered,
-                    'is_correct' => $question->validate($answered)
+                    'is_correct' => $question->validate($answered),
+                    'points' => $question->validate($answered) ? $question->points : 0,
                 ]
             );
         }
