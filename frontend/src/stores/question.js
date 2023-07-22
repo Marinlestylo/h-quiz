@@ -46,5 +46,18 @@ export const useQuestionStore = defineStore('question', () => {
         return [response.status, data];
     }
 
-    return { allQuestions, createQuestion, fetchAllDifficultyLevels, fetchAllQuestionTypes, fetchQuestionById, fetchAllQuestions }
+    const updateQuestion = async (question) => {
+        const payload = question;
+        const response = await utils.fetchApi(`/api/questions`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        return [response.status, data];
+    }
+
+    return { allQuestions, createQuestion, updateQuestion, fetchAllDifficultyLevels, fetchAllQuestionTypes, fetchQuestionById, fetchAllQuestions }
 });

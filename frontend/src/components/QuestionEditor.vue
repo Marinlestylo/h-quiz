@@ -1,5 +1,9 @@
 <template>
     <div>
+        <div class="mb-4">
+            En cas de besoin, n'hésitez pas à consulter la <RouterLink to="/documentation" target="_blank"
+                class="text-blue-500 hover:text-blue-700">documentation</RouterLink> des questions.
+        </div>
         <div class="mb-6 flex">
             <label for="name" class="block mb-2 text-lg font-medium text-gray-900 w-64">Nom de la question</label>
             <input type="text" id="name" v-model="question.name"
@@ -86,6 +90,20 @@
         </div>
 
         <div class="mb-6 flex">
+            <label class="mb-2 text-lg font-medium text-gray-900 w-48">Visibilité</label>
+            <button class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 ml-2 px-4 rounded mb-4"
+                @click="question.public = !question.public">
+                {{ question.public ? 'Publique' : 'Privée' }}</button>
+        </div>
+
+        <div class="mb-6 flex">
+            <label for="points" class="block mb-2 text-lg font-medium text-gray-900 w-48">Nombre de points</label>
+            <input type="number" id="points" v-model="question.points"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-64 p-2.5 ml-2"
+                min="0" autocomplete="off">
+        </div>
+
+        <div class="mb-6 flex">
             <label for="type" class="block mb-2 text-lg font-medium text-gray-900 w-48 mr-2">Type de la question</label>
             <div>
                 <select v-model="question.type" id="type"
@@ -97,7 +115,8 @@
         </div>
 
         <div class="mb-6">
-           <Answer :questionType="question.type" v-model:answer="question.validation" :option="question.option" :content="question.content"/> 
+            <Answer :questionType="question.type" v-model:answer="question.validation" v-model:option="question.option"
+                v-model:nbFillGaps="nbFillGaps" />
         </div>
 
         <div class="mb-6 flex">
@@ -108,14 +127,14 @@
                 autocomplete="off">
         </div>
         <div>
-            <QuestionPreview :questionType="question.type" :content="question.content" :option="question.option"  />
+            <QuestionPreview :questionType="question.type" :content="question.content" :option="question.option" />
         </div>
         <div>
             <AlertPopup v-model:message="message" :alertType="popupType" class="my-4" />
         </div>
         <div>
-            <button @click="debug"
-                class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto mb-4">Sauvegarder
+            <button @click="editQuestion"
+                class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded flex ml-auto mb-4 mt-4">Sauvegarder
                 la question
             </button>
         </div>
@@ -127,6 +146,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useKeywordStore } from '../stores/keyword';
 import { useQuestionStore } from '../stores/question';
 import AlertPopup from '../components/AlertPopup.vue';
+import { RouterLink } from 'vue-router';
 import QuestionPreview from './QuestionPreview.vue';
 import Answer from './questions/Answer.vue';
 
@@ -141,6 +161,12 @@ const difficulties = ref([]);
 const questionTypes = ref([]);
 const message = ref('');
 const popupType = ref('error');
+const nbFillGaps = computed(() => {
+    if (props.question.content === '') {
+        return 0;
+    }
+    return props.question.content.split('*-*').length - 1;
+});
 
 const props = defineProps({
     question: {
@@ -179,7 +205,7 @@ const editQuestion = async () => {
     //     errorMessage.value = 'Une erreur est survenue lors de la création de la question.';
     //     successMessage.value = '';
     // }
-    if (status === 201) {
+    if (status === 201 && props.usage === 'create') {
         resetFields();
     }
     displayPopup(data.message, status === 201 || status === 200 ? 'success' : 'error');
@@ -259,5 +285,8 @@ const resetFields = () => {
     props.question.explanation = '';
     props.question.keywords = [];
     props.question.validation = {};
+    props.question.option = {};
+    props.question.public = false;
+    props.question.points = 0;
 }
 </script>

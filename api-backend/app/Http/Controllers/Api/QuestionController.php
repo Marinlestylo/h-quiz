@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Question;
+use App\Models\Activity;
+use App\Models\Keyword;
 
 use Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,9 +19,6 @@ class QuestionController extends Controller
 {
     function index(Request $request)
     {
-        // TODO : middleware ?
-        // if (!$request->user()->isTeacher()) abort(403);
-
         $questions = Question::with('keywords');
 
         return fractal($questions->get(), new QuestionTransformer())->toArray();
@@ -28,14 +27,6 @@ class QuestionController extends Controller
     function getQuestions(Request $request, $keyword)
     {
         $i = Auth::id();
-
-        // TODO : middleware ?
-        // if (!$request->user()->isTeacher()){
-        //     return response([
-        //         'message' => "Only teacher can get questions",
-        //         'error' => "Bad Request"
-        //     ], 400);
-        // }
 
         if ($keyword == "all") {
             $q = Question::with('keywords')->get();
@@ -54,20 +45,12 @@ class QuestionController extends Controller
 
     function getTypes()
     {
-        return $this->getAllValuesFromEnum('questions', 'type');
+        return getAllPossibleValuesFromEnum('questions', 'type');
     }
 
     function getDifficulties()
     {
-        return $this->getAllValuesFromEnum('questions', 'difficulty');
-    }
-
-    private static function getAllValuesFromEnum($table, $field)
-    {
-        $type = DB::select("SHOW COLUMNS FROM {$table} WHERE Field = '{$field}'")[0]->Type;
-        preg_match("/^enum\(\'(.*)\'\)$/", $type, $matches);
-        $enum = explode("','", $matches[1]);
-        return $enum;
+        return getAllPossibleValuesFromEnum('questions', 'difficulty');
     }
 
     function create(Request $request)
@@ -76,10 +59,75 @@ class QuestionController extends Controller
         $data = $request->all();
         $q = new Question();
         $q->fill($data);
-
         $q->save();
+
+        // Add keywords
+        if(array_key_exists('keywords', $data) && $data['keywords'])
+        {
+            foreach($data['keywords'] as $k)
+            {
+                $q->keywords()->attach($k['id']);
+            }
+        }
         return response([
             'message' => 'La question a bien été créée.',
+        ], 201);
+    }
+
+    function edit(Request $request){
+        Log::debug('Edit question');
+        $data = $request->all();
+        $q = Question::findOrFail($data['id']);
+
+        if ($q->user_id != Auth::id()){
+            return response([
+                'message' => "Seul le créateur de la question peut la modifier.",
+                'error' => "Bad Request"
+            ], 400);
+        }
+
+        $q->fill($data);
+        $q->save();
+
+        // Delete keywords that are not in the new list
+        foreach($q->keywords as $qk)
+        {
+            $exist = false;
+            if(array_key_exists('keywords', $data) && $data['keywords'])
+            {
+                foreach($data['keywords'] as $dk)
+                {
+                    if( $dk['id'] == $qk['id'])
+                    {
+                        $exist = true;
+                        break;
+                    }
+                }
+            }
+            if(!$exist)
+            {
+                $q->keywords()->detach($qk['id']);
+            }
+        }
+
+        if(array_key_exists('keywords', $data) && $data['keywords'])
+        {
+            foreach($data['keywords'] as $k)
+            {
+                $nbr = Question::where('id', $q['id'])
+                        ->whereHas('keywords', function($query) use ($k) {
+		                    $query->where('keywords.id', $k['id']);
+	                    })->count();
+
+                if($nbr == 0){
+                    $q->keywords()->attach($k['id']);
+                }
+            }
+        }
+
+
+        return response([
+            'message' => 'La question a bien été modifiée.',
         ], 201);
     }
 }

@@ -4,8 +4,8 @@
     </div>
     <div>
         <div v-for="(choice, index) in choices" :key="index" class="mt-4 flex items-center">
-            <button class="border rounded-full border-gray-400 px-2 hover:bg-green-400" @click="selectAnswer(index)"
-                :class="{ 'bg-green-500': selected.includes(index) }">
+            <button class="border rounded-full border-gray-400 px-2 hover:bg-green-400" @click="selectAnswer(index+1)"
+                :class="{ 'bg-green-500': selected.includes(index+1) }">
                 {{ index + 1 }}
             </button>
             <span class="ml-2">

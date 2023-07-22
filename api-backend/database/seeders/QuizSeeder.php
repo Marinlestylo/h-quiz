@@ -20,7 +20,7 @@ class QuizSeeder extends Seeder
             'user_id' => 1
         ]);
 
-        $quiz->questions()->attach([1,2,3,4,5,6,7,8]);
+        $quiz->questions()->attach([1,2,3,4,5,6,7,8,9,10]);
 
 
         $questions = Question::all();

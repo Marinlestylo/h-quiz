@@ -14,6 +14,9 @@ import QuestionDetailed from '@/views/QuestionDetailed.vue'
 import tempView from '@/views/tempView.vue'
 import Documentation from '@/views/Documentation.vue'
 import DrillView from '@/views/DrillView.vue'
+import ActivityResults from '@/views/ActivityResults.vue'
+import ActivityProgession from '@/views/ActivityProgression.vue'
+import DrillDetailed from '@/views/DrillDetailed.vue'
 
 import auth from '../middlewares/auth.js'
 import teacher from '../middlewares/teacher.js'
@@ -63,6 +66,26 @@ const router = createRouter({
         ]
       },
       component: QuestionDetailed
+    },
+    {
+      path: '/activities/:id(\\d+)/results',
+      name: 'activity results',
+      meta: {
+        middleware: [
+          teacher
+        ]
+      },
+      component: ActivityResults
+    },
+    {
+      path: '/activities/:id(\\d+)/progression',
+      name: 'activity progression',
+      meta: {
+        middleware: [
+          teacher
+        ]
+      },
+      component: ActivityProgession
     },
     {
       path: '/questions',
@@ -153,6 +176,16 @@ const router = createRouter({
         ]
       },
       component: DrillView
+    },
+    {
+      path: '/drill/:keyword',
+      name: 'drill detailled',
+      meta: {
+        middleware: [
+          auth
+        ]
+      },
+      component: DrillDetailed
     },
     {
       path: "/:catchAll(.*)",

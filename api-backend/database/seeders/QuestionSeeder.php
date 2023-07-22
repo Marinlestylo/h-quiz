@@ -27,6 +27,7 @@ class QuestionSeeder extends Seeder
                 'length' => 10
             ],
             'difficulty' => 'medium',
+            'points' => 2,
             'user_id' => 1,
         ]);
         $q1->keywords()->attach(Keyword::where('name', 'binary')->get());
@@ -41,6 +42,7 @@ class QuestionSeeder extends Seeder
             ],
             'difficulty' => 'medium',
             'user_id' => 1,
+            'points' => 2,
             'explanation' => "`8` exprimé en hexadécimal correspond à $2^4$ soit le quatrième bit du nombre à un."
         ]);
         $q2->keywords()->attach(Keyword::where('name', 'hexadecimal')->get());
@@ -55,6 +57,7 @@ class QuestionSeeder extends Seeder
             ],
             'difficulty' => 'easy',
             'user_id' => 1,
+            'points' => 2,
             'explanation' => ''
         ]);
 
@@ -242,6 +245,18 @@ Dans le circuit ci-dessous. On reconnaît qu'il s'agit d'un *-*. Les deux *-* d'
             'validation' => [
                 'expected' => 'Pour créer un ensemble de nombres binaires signés sur 8 bits, nous utilisons la représentation signée la plus courante, appelée "complément à deux". Dans cette représentation, le bit le plus significatif (le bit le plus à gauche) est utilisé comme bit de signe (0 pour les nombres positifs et 1 pour les nombres négatifs), tandis que les 7 bits restants sont utilisés pour représenter la valeur absolue du nombre.'
             ],
+            'difficulty' => 'medium',
+            'user_id' => 1,
+        ]);
+
+        Question::create([
+            'name' => 'Boucle for en python',
+            'content' => 'Faire une boucle for de 1 à 10 et afficher le résultat',
+            'type' => 'code',
+            'validation' => [
+                'expected' => '12345678910'
+            ],
+            'explanation' => 'Il faut utiliser la fonction range()',
             'difficulty' => 'medium',
             'user_id' => 1,
         ]);

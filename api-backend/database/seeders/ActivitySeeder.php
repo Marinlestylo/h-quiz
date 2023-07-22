@@ -41,6 +41,7 @@ class ActivitySeeder extends Seeder
             'activity_id' => 1,
             'student_id' => $bob->id,
             'question_id' => 1,
+            'points' => 2,
             'answer' => "0b111",
             'is_correct' => true
         ]);
@@ -48,6 +49,7 @@ class ActivitySeeder extends Seeder
             'activity_id' => 1,
             'student_id' => $alice->id,
             'question_id' => 2,
+            'points' => 2,
             'answer' => "1000",
             'is_correct' => true
         ]);
@@ -56,6 +58,7 @@ class ActivitySeeder extends Seeder
             'activity_id' => 1,
             'student_id' => $bob->id,
             'question_id' => 2,
+            'points' => 1,
             'answer' => "0b01001",
             'is_correct' => false
         ]);

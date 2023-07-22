@@ -4,7 +4,8 @@ import * as utils from '../utils.js';
 
 
 export const useQuizStore = defineStore('quiz', () => {
-    const allQuizzes = ref(null)
+    const allQuizzes = ref(null);
+    const quizTypes = ref(null);
 
     const fetchAllQuizzes = async () => {
         const response = await utils.fetchApi('/api/quizzes');
@@ -17,14 +18,28 @@ export const useQuizStore = defineStore('quiz', () => {
         return response.status;
     }
 
+    const fetchAllQuizTypes = async () => {
+        if (quizTypes.value !== null) {
+            return quizTypes.value;
+        }
+        const response = await utils.fetchApi('/api/quizzes-types');
+        const data = await response.json();
+        if (response.status === 401 || response.status === 403) {
+            quizTypes.value = null;
+            return;
+        }
+        quizTypes.value = data;
+        return quizTypes.value;
+    }
+
     const fetchQuestionsFromQuiz = async (id) => {
         const response = await utils.fetchApi(`/api/quizzes/${id}/questions`);
         const data = await response.json();
         return data;
     }
 
-    const createQuiz = async (name) => {
-        const payload = { 'name': name };
+    const createQuiz = async (name, quizType) => {
+        const payload = { 'name': name, 'type': quizType };
         const response = await utils.fetchApi('/api/quizzes', {
             method: 'POST',
             headers: {
@@ -68,5 +83,5 @@ export const useQuizStore = defineStore('quiz', () => {
         return [response.status, data];
     }
 
-    return { allQuizzes, addQuestionToQuiz, deleteQuestionFromQuiz, fetchQuestionsFromQuiz, fetchAllQuizzes, createQuiz }
+    return { allQuizzes, addQuestionToQuiz, deleteQuestionFromQuiz, fetchQuestionsFromQuiz, fetchAllQuizzes, createQuiz, fetchAllQuizTypes }
 });

@@ -10,10 +10,12 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@chenfengyuan/vue-countdown": "^2.1.1",
     "floating-vue": "^2.0.0-beta.22",
     "pinia": "^2.0.32",
-    "vue": "^3.2.47",
-    "vue-router": "^4.1.6"
+    "vue": "^3.3.4",
+    "vue-router": "^4.1.6",
+    "vue-timer-hook": "^1.0.84"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",

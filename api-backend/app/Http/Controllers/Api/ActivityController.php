@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use App\Models\Roster;
 use App\Models\Answer;
 use App\Models\Quiz;
+use App\Models\Student;
 use Validator;
 use Arr;
 use Auth;
@@ -18,9 +19,12 @@ use Log;
 use App\Transformers\ActivityTransformer;
 use App\Transformers\QuestionTransformer;
 
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log as FacadesLog;
+
 class ActivityController extends Controller
 {
-    //
+
     function index(Request $request)
     {
         $activities = Activity::query();
@@ -40,16 +44,40 @@ class ActivityController extends Controller
         )->toArray();
     }
 
-    function owned() {
+    function owned()
+    {
         $request = request();
         $request->owned = true;
 
         return $this->index($request);
     }
 
-    function show($id) {
-        $activity = Activity::findOrFail($id);
-        if ($activity->hidden) {
+    function compilation(Request $request)
+    {
+        $compilerUrl = env('CODE_COMPILER_URL', NULL);
+        $url = $compilerUrl . 'api/compile?language=PYTHON&memoryLimit=100&timeLimit=15';
+        $code = $request->code;
+
+        $response = Http::attach('inputFile', '1', 'input.txt')
+            ->attach('expectedOutputs', 'hi', 'output.txt')
+            ->attach('sourcecode', $code, 'sourceCode.py')
+            ->post($url);
+
+        return $response;
+    }
+
+    function show($id)
+    {
+        try{
+            $activity = Activity::findOrFail($id);
+        } catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response([
+                'message' => "Cette activité n'existe pas.",
+                'error' => "Not Found"
+            ], 404);
+        }
+        
+        if ($activity->hidden && Auth::user()->isStudent()) {
             return response([
                 'message' => "Vous n'êtes pas autorisé à voir cette activité.",
                 'error' => "Unauthorized"
@@ -62,7 +90,7 @@ class ActivityController extends Controller
         $current = Arr::first($activities['data'], function ($value, $key) use ($id) {
             return $value['id'] == $id;
         });
-        if ($current == null){
+        if ($current == null) {
             return response([
                 'message' => "Vous n'êtes pas autorisé à voir cette activité.",
                 'error' => "Unauthorized"
@@ -75,22 +103,34 @@ class ActivityController extends Controller
     /**
      * Questions
      */
-    public function questions($activity_id) {
+    public function questions($activity_id)
+    {
         $activity = Activity::findOrFail($activity_id);
         return fractal(
             $activity->questions(),
-            new QuestionTransformer($activity))->toArray();
+            new QuestionTransformer($activity)
+        )->toArray();
     }
 
     /**
      * Question (get or post question)
      */
-    public function question($activity_id, $question_number, Request $request) {
+    public function question($activity_id, $question_number, Request $request)
+    {
         $activity = Activity::findOrFail($activity_id);
         $question = $activity->questions()[$question_number - 1];
 
-        // Submit an answer?
-        if ($request->isMethod('post') && $activity->status == 'running') {
+        return fractal(
+            $question,
+            new QuestionTransformer($activity)
+        )->toArray();
+    }
+
+    public function answer($activity_id, $question_number, Request $request){
+        $activity = Activity::findOrFail($activity_id);
+        $question = $activity->questions()[$question_number - 1];
+
+        if ($activity->status == 'running') {
             $answered = $request->answer;
             Answer::updateOrCreate(
                 [
@@ -100,14 +140,22 @@ class ActivityController extends Controller
                 ],
                 [
                     'answer' => $answered,
-                    'is_correct' => $question->validate($answered)
+                    'is_correct' => $question->validate($answered),
+                    'points' => $question->validate($answered) ? $question->points : 0,
                 ]
             );
         }
 
         return fractal(
             $question,
-            new QuestionTransformer($activity))->toArray();
+            new QuestionTransformer($activity)
+        )->toArray();
+    }
+
+    public function studentFinish(Request $request){
+        $activity = Activity::findOrFail($request->activity_id);
+        $s = Student::findOrFail($request->user()->student->id);
+        $activity->students()->attach($s->id);
     }
 
     function edit($id, Request $request)
@@ -276,6 +324,14 @@ class ActivityController extends Controller
         }
 
         $quiz = Quiz::findOrFail($request->quiz_id);
+
+        if ($quiz->type == 'exam' && $quiz->user_id != Auth::id()) {
+            return response([
+                'message' => "Vous ne pouvez pas utiliser cet examen",
+                'error' => "Bad Request"
+            ], 400);
+        }
+
 
         $activity = Activity::create([
             'user_id' => Auth::id(),

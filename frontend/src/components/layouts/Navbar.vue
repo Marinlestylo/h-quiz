@@ -42,22 +42,22 @@ import { useUserStore } from '@/stores/user';
 import { computed } from 'vue';
 
 const activityLinks = [
-    { name: 'Activités', link: '/activities' },
+    { name: 'Toutes les activités', link: '/activities' },
 ];
 
 const quizLinks = [
-    { name: 'Quiz', link: '/quizzes' },
-    { name: 'Création d\'un quiz', link: '/questions' },
-    { name: 'Modification d\'un quiz', link: '/rosters' },
+    { name: 'Tous les quiz', link: '/quizzes' },
+    { name: 'Création d\'un quiz', link: '/create-quiz' },
+    { name: 'Modification d\'un quiz', link: '/update-quiz' },
 ];
 
 const questionLinks = [
-    { name: 'Questions', link: '/questions' },
+    { name: 'Toutes les questions', link: '/questions' },
     { name: 'Création d\'une question', link: '/create-question' },
 ];
 
 const rosterLinks = [
-    { name: 'Rosters', link: '/rosters' },
+    { name: 'Tous les rosters', link: '/rosters' },
     { name: 'Création d\'un roster', link: '/create-roster' }
 ];
 

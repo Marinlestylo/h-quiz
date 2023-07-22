@@ -46,7 +46,12 @@
                                         </div>
                                         <div v-else-if="activity.status === 'running'" class="flex items-center space-x-1">
                                             <ActivityIconAction :activityId=activity.id action="realTime" />
-                                            Time
+                                            <vue-countdown
+                                                :time="activity.duration * 1000 - (Date.now() - Date.parse(activity.started_at))"
+                                                v-slot="{ hours, minutes, seconds }" class="font-medium"
+                                                :transform="transformSlotProps" @end="reload">
+                                                {{ hours }}:{{ minutes }}:{{ seconds }}
+                                            </vue-countdown>
                                         </div>
                                         <div v-else class="flex items-center space-x-1">
                                             <div v-if="!activity.hidden">
@@ -75,6 +80,20 @@ import TrashIcon from '@/components/icons/TrashIcon.vue';
 import ActivityIconAction from '../components/ActivityIconAction.vue';
 import { useActivityStore } from '../stores/activity';
 
+
+const transformSlotProps = (props) => {
+    const formattedProps = {};
+
+    Object.entries(props).forEach(([key, value]) => {
+        formattedProps[key] = value < 10 ? `0${value}` : String(value);
+    });
+
+    return formattedProps;
+}
+
+const reload = () => {
+    window.location.reload();
+};
 
 const activityStore = useActivityStore();
 const activities = computed(() => activityStore.allActivities);

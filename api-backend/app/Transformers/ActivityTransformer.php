@@ -28,12 +28,14 @@ class ActivityTransformer extends TransformerAbstract
             'duration'   => $activity->duration,
             'completed'  => $activity->completed,
             'hidden'    => (int) $activity->hidden,
+            'students_finished' => $activity->students,
             'status' => $activity->status,
             'quiz' => [
                 'id' => $activity->quiz->id,
                 'name' => $activity->quiz->name,
                 'questions' => $activity->quiz->questions_count,
-                'keywords' => $activity->quiz->keywords
+                'keywords' => $activity->quiz->keywords,
+                'type' => $activity->quiz->type,
             ],
             'roster' => fractal($activity->roster, new RosterTransformer())->toArray(),
 

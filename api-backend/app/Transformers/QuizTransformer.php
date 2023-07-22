@@ -13,12 +13,13 @@ class QuizTransformer extends Fractal\TransformerAbstract
      * @return array
      */
     public function transform(Quiz $quiz)
-	{
-	    return [
+    {
+        return [
             'id'         => (int)$quiz->id,
             'name'       => $quiz->name,
             'questions' => $quiz->questions_count,
             'difficulty' => $quiz->difficulty,
+            'type' => $quiz->type,
             'taken_times' => $quiz->taken,
             'owner' => [
                 'id' => $quiz->owner->id,
@@ -32,6 +33,6 @@ class QuizTransformer extends Fractal\TransformerAbstract
             'quiz_url' => url("api/quizzes/$quiz->id"),
             'questions_url' => url("api/quizzes/$quiz->id/questions"),
             'activities_url' => url("api/quizzes/$quiz->id/activities"),
-	    ];
-	}
+        ];
+    }
 }

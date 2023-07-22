@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\QuestionController;
+use App\Http\Controllers\Api\DrillController;
 
 use App\Models\Activity;
 use App\Models\Course;
@@ -62,9 +63,16 @@ Route::get('debug/logout', function () {
     Auth::logout();
 });
 
+// Route::get('/test-code', [ActivityController::class, 'compilation']);
+
 Route::middleware('auth')->group(function () {
      // Logout
-     Route::get('logout',[KeycloakController::class, 'logout']); 
+     Route::get('logout',[KeycloakController::class, 'logout']);
+     Route::post('/test-code', [ActivityController::class, 'compilation']);
+     Route::get('/activities/{id}', [ActivityController::class, 'show']);
+
+     // Keyword
+    Route::get('/keywords', [KeywordController::class, 'index']);
 });
 
 // Authentification
@@ -80,12 +88,10 @@ Route::middleware('checkUserRole:teacher')->group(function () {
     Route::get('/quizzes', [QuizController::class, 'index']);
     Route::get('/quizzes/{id}', [QuizController::class, 'show']);
     Route::get('/quizzes/{id}/questions', [QuizController::class, 'questions']);
+    Route::get('/quizzes-types', [QuizController::class, 'getTypes']);
     Route::post('/quizzes', [QuizController::class, 'create']);
     Route::post('/quizzes/question', [QuizController::class, 'addQuestion']);
     Route::delete('quizzes/question', [QuizController::class, 'deleteQuestion']);
-
-    // Keyword
-    Route::get('/keywords', [KeywordController::class, 'index']);
 
     // Question
     Route::get('/questions', [QuestionController::class, 'index']);
@@ -94,11 +100,13 @@ Route::middleware('checkUserRole:teacher')->group(function () {
     Route::get('/questions-types', [QuestionController::class, 'getTypes']);
     Route::get('/questions-difficulties', [QuestionController::class, 'getDifficulties']);
     Route::post('/questions', [QuestionController::class, 'create']);
+    Route::patch('/questions', [QuestionController::class, 'edit']);
 
     // Activity
     Route::get('/activities', [ActivityController::class, 'index']);
+    Route::get('/activities/{id}/results', [ActivityController::class, 'results']);
+    Route::get('/activities/{id}/questions', [ActivityController::class, 'questions']);
     Route::post('/activities', [ActivityController::class, 'create']);
-
     Route::delete('/activities/{id}', [ActivityController::class, 'delete']);
     // Route to start, open, close, hide and show an activity
     Route::patch('/activities/{id}', [ActivityController::class, 'edit']);
@@ -119,10 +127,15 @@ Route::middleware('checkUserRole:teacher')->group(function () {
 
 Route::middleware('checkUserRole:student')->group(function () {
     Route::get('/user/activities/', [ActivityController::class, 'owned']);
-    Route::get('/activities/{id}', [ActivityController::class, 'show']);
     Route::get('/activities/{id}/questions/{question_id}', [ActivityController::class,'question']);
+    Route::post('/activities/{id}/questions/{question_id}', [ActivityController::class,'answer']);
+    Route::post('/activities/{id}/finish', [ActivityController::class,'studentFinish']);
 
+    // Drill
+    Route::get('/drills/{keyword}', [DrillController::class, 'makeDrill']);
+    Route::post('/drills/answer', [DrillController::class, 'answerDrill']);
 });
+
 Route::get('/', function () {
     return response()->json([
         'message' => 'Api de l\'application Quiz',

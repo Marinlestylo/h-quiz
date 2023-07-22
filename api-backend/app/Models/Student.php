@@ -15,6 +15,10 @@ class Student extends Model
         return $this->belongsToMany(Roster::class);
     }
 
+    function activity() {
+        return $this->belongsToMany(Activity::class);
+    }
+
     function activities() {
         $rosters = $this->rosters;
         $activities = Activity::where(function ($query) use ($rosters) {;

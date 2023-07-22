@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Auth;
+use Illuminate\Support\Facades\Log;
 
 class Activity extends Model
 {
@@ -24,23 +25,33 @@ class Activity extends Model
         'completed'  // The activity is finished
     ];
 
-    function quiz() {
+    function quiz()
+    {
         return $this->belongsTo(Quiz::class);
     }
 
-    function teacher() {
+    function teacher()
+    {
         return $this->belongsTo(User::class);
     }
 
-    function roster() {
+    function roster()
+    {
         return $this->belongsTo(Roster::class);
     }
 
-    function answers() {
+    function students()
+    {
+        return $this->belongsToMany(Student::class);
+    }
+
+    function answers()
+    {
         return $this->hasMany(Answer::class);
     }
 
-    function getOwnedAnswers() {
+    function getOwnedAnswers()
+    {
         $user = Auth::user();
         if ($user->isTeacher()) {
             return null;
@@ -48,7 +59,8 @@ class Activity extends Model
         return $this->answers->where('student_id', $user->student->id);
     }
 
-    function getElapsedAttribute() {
+    function getElapsedAttribute()
+    {
         if (!$this->started_at)
             return 0;
 
@@ -61,15 +73,18 @@ class Activity extends Model
         return min($elapsed, $this->duration);
     }
 
-    function getStartedAttribute() {
+    function getStartedAttribute()
+    {
         return $this->elapsed > 0 && $this->elapsed < $this->duration;
     }
 
-    function getCompletedAttribute() {
+    function getCompletedAttribute()
+    {
         return $this->elapsed >= $this->duration;
     }
 
-    function getStatusAttribute() {
+    function getStatusAttribute()
+    {
         if ($this->finished_at || $this->elapsed >= $this->duration)
             return 'finished';
         if ($this->started_at)
@@ -83,7 +98,8 @@ class Activity extends Model
      * For the current activity, returns the question order in
      * which they will be generated for the given student_id.
      */
-    protected function getQuestionsOrder() {
+    protected function getQuestionsOrder()
+    {
         if (!$this->shuffle_questions) {
             $count = $this->quiz->questions_count;
             return range(0, $count - 1);
@@ -95,7 +111,7 @@ class Activity extends Model
         $seed = unpack("L", substr($hash, 0, 4))[1];
         $count = $this->quiz->questions_count;
 
-        mt_srand($seed , MT_RAND_MT19937);
+        mt_srand($seed, MT_RAND_MT19937);
 
         $array = range(0, $count - 1);
         for ($i = 0; $i < $count; ++$i) {
@@ -106,7 +122,8 @@ class Activity extends Model
         return $array;
     }
 
-    function questions() {
+    function questions()
+    {
         $question_orders = $this->getQuestionsOrder($this);
         $activity = $this;
         return $this->quiz->questions()->get()->each(function ($item, $key) use ($activity, $question_orders) {
@@ -138,7 +155,7 @@ class Activity extends Model
                     ->select('answer')
                     ->get()->each(function ($item) use ($choices) {
                         $answer = $item->answer;
-                        foreach($answer as $proposition) {
+                        foreach ($answer as $proposition) {
                             $proposition -= 1;
                             if (property_exists($choices, $proposition)) {
                                 $choices->$proposition++;
@@ -165,22 +182,19 @@ class Activity extends Model
     /**
      * Get the final rank
      */
-    public function getRank($student_id = null) {
-        $sum = 0;
-
+    public function getRank($student_id = null)
+    {
         if ($this->status != 'finished')
             return null;
 
-        $mark = $this->answers()
+        $totalPoints = $this->answers()
             ->where('student_id', $student_id)
-            ->where('is_correct', true)
-            ->count() / $this->quiz->questions_count * 5 + 1;
+            ->sum('points');
+
+        $maximumPoints = max($this->quiz->questions->sum('points'), 1);
+
+        $mark = ($totalPoints / $maximumPoints) * 5 + 1;
 
         return round($mark, 1);
     }
-
-    // protected $dispatchesEvents = [
-    //     'saved' => ActivityUpdated::class,
-    //     'deleted' => ActivityUpdated::class,
-    // ];
 }

@@ -48,11 +48,11 @@ const ActivityIconAction = computed(() => {
             tooltip.value = 'L\'activité est visible par les étudiants. Cliquer pour la cacher.';
             return ClosedEyeIcon;
         case 'results':
-            path.value = '/quizzes';
+            path.value = `/activities/${props.activityId}/results`;
             tooltip.value = 'Afficher les résultats de l\'activité.';
             return ShowResultsIcon;
         case 'realTime':
-            path.value = '/rosters';
+            path.value = `/activities/${props.activityId}/progression`;
             tooltip.value = 'Afficher la progression en temps réel de l\'activité.';
             return RealTimeProgressionIcon;
         case 'play':

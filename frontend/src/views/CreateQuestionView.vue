@@ -18,8 +18,15 @@
 
 <script setup>
 
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import QuestionEditor from '../components/QuestionEditor.vue';
+import { useUserStore } from '../stores/user';
+const userStore = useUserStore();
+const user = computed(() => userStore.user);
+
+onMounted(async () => {
+    await userStore.fetchUser();
+});
 
 const question = ref({
     name: '',
@@ -28,7 +35,11 @@ const question = ref({
     difficulty: '',
     validation: {},
     type: '',
+    option: {},
     explanation: '',
+    public: false,
+    points: 0,
+    user_id: user.value.id
 });
 
 </script>
