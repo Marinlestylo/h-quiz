@@ -29,18 +29,18 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useKeywordStore } from '@/stores/keyword';
-import router from '@/router';
+import { useRouter } from 'vue-router';
 
 const keywordStore = useKeywordStore();
 const keywords = computed(() => keywordStore.allKeywords);
 const searchKeyword = ref('');
-
+const router = useRouter();
 onMounted(async () => {
     await keywordStore.fetchAllKeywords();
 });
 
 const chose = () => {
-    router.push('/drill/' + searchKeyword.value)
+    router.push('/drill/' + searchKeyword.value);
     searchKeyword.value = '';
 }
 </script>

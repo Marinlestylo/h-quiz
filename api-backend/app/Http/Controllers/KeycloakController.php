@@ -45,7 +45,7 @@ class KeyCloakController extends Controller
     public function logout()
     {
         Auth::logout();
-        $redirectUri = "http://localhost:8000/api/after";
+        $redirectUri = env('APP_URL')."/api/after";
         return redirect(Socialite::driver('keycloak')->getLogoutUrl($redirectUri, env('KEYCLOAK_CLIENT_ID')));
     }
 
