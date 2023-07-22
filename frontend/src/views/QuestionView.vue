@@ -57,7 +57,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { useQuestionStore } from '../stores/question';
+import { useQuestionStore } from '@/stores/question';
 import { RouterLink } from 'vue-router';
 
 const questionStore = useQuestionStore();

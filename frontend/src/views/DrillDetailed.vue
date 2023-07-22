@@ -68,7 +68,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useDrillStore } from '../stores/drill';
+import { useDrillStore } from '@/stores/drill';
 import ShortAnswer from '@/components/questions/ShortAnswer.vue';
 import MultipleChoice from '@/components/questions/MultipleChoice.vue';
 import FillGaps from '@/components/questions/FillGaps.vue';

@@ -17,7 +17,7 @@
 
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useUserStore, backUrl, appUrl } from '../../stores/user';
+import { useUserStore, backUrl, appUrl } from '@/stores/user';
 const store = useUserStore();
 const user = computed(() => store.user);
 

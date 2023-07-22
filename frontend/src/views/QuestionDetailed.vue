@@ -76,15 +76,15 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { useActivityStore } from '../stores/activity';
-import { useUserStore } from '../stores/user';
+import { useActivityStore } from '@/stores/activity';
+import { useUserStore } from '@/stores/user';
 import { useRoute } from 'vue-router';
-import router from '../router';
-import ShortAnswer from '../components/questions/ShortAnswer.vue';
-import MultipleChoice from '../components/questions/MultipleChoice.vue';
-import FillGaps from '../components/questions/FillGaps.vue';
-import CodeQuestion from '../components/questions/CodeQuestion.vue';
-import LongAnswer from '../components/questions/LongAnswer.vue';
+import router from '@/router';
+import ShortAnswer from '@/components/questions/ShortAnswer.vue';
+import MultipleChoice from '@/components/questions/MultipleChoice.vue';
+import FillGaps from '@/components/questions/FillGaps.vue';
+import CodeQuestion from '@/components/questions/CodeQuestion.vue';
+import LongAnswer from '@/components/questions/LongAnswer.vue';
 
 const activityStore = useActivityStore();
 const activity = computed(() => activityStore.currentlyUsedActivity.activity);

@@ -26,11 +26,11 @@
 
 <script setup>
 import { onMounted, ref, computed } from 'vue';
-import ShortAnswer from './questions/ShortAnswer.vue';
-import MultipleChoice from './questions/MultipleChoice.vue';
-import FillGaps from './questions/FillGaps.vue';
-import CodeQuestion from './questions/CodeQuestion.vue';
-import LongAnswer from './questions/LongAnswer.vue';
+import ShortAnswer from '@/components/questions/ShortAnswer.vue';
+import MultipleChoice from '@/components/questions/MultipleChoice.vue';
+import FillGaps from '@/components/questions/FillGaps.vue';
+import CodeQuestion from '@/components/questions/CodeQuestion.vue';
+import LongAnswer from '@/components/questions/LongAnswer.vue';
 
 const props = defineProps({
     questionType: {

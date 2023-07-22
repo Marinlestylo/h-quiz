@@ -51,9 +51,9 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useActivityStore } from '../stores/activity';
+import { useActivityStore } from '@/stores/activity';
 import { useRoute } from 'vue-router';
-import { useUserStore } from '../stores/user';
+import { useUserStore } from '@/stores/user';
 import ShortAnswer from '@/components/questions/ShortAnswer.vue';
 import MultipleChoice from '@/components/questions/MultipleChoice.vue';
 import FillGaps from '@/components/questions/FillGaps.vue';

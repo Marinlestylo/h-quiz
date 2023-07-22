@@ -61,10 +61,8 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import TrashIcon from '@/components/icons/TrashIcon.vue';
-import ActivityIconAction from '../components/ActivityIconAction.vue';
 import PlayActivityIcon from '@/components/icons/PlayActivityIcon.vue';
-import { useActivityStore } from '../stores/activity';
+import { useActivityStore } from '@/stores/activity';
 
 
 const activityStore = useActivityStore();

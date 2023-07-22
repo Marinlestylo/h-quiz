@@ -57,8 +57,8 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { useRosterStore } from '../stores/roster';
-import { useCourseStore } from '../stores/course';
+import { useRosterStore } from '@/stores/roster';
+import { useCourseStore } from '@/stores/course';
 import AlertPopup from '@/components/AlertPopup.vue';
 
 const store = useRosterStore();

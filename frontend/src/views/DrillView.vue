@@ -28,8 +28,8 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { useKeywordStore } from '../stores/keyword';
-import router from '../router';
+import { useKeywordStore } from '@/stores/keyword';
+import router from '@/router';
 
 const keywordStore = useKeywordStore();
 const keywords = computed(() => keywordStore.allKeywords);

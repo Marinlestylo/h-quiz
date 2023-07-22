@@ -21,9 +21,9 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useQuestionStore } from '../stores/question';
-import AlertPopup from '../components/AlertPopup.vue';
-import QuestionEditor from '../components/QuestionEditor.vue';
+import { useQuestionStore } from '@/stores/question';
+import AlertPopup from '@/components/AlertPopup.vue';
+import QuestionEditor from '@/components/QuestionEditor.vue';
 
 const questionStore = useQuestionStore();
 const message = ref('');

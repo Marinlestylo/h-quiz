@@ -40,7 +40,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { useQuizStore } from '../stores/quiz';
+import { useQuizStore } from '@/stores/quiz';
 import AlertPopup from '@/components/AlertPopup.vue';
 
 const quizStore = useQuizStore();
