@@ -6,28 +6,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Question;
-use App\Models\Activity;
-use App\Models\Keyword;
 
 use Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use App\Transformers\QuestionTransformer;
 
 class QuestionController extends Controller
 {
-    function index(Request $request)
+    function index()
     {
         $questions = Question::with('keywords');
 
         return fractal($questions->get(), new QuestionTransformer())->toArray();
     }
 
-    function getQuestions(Request $request, $keyword)
+    function getQuestions($keyword)
     {
-        $i = Auth::id();
-
         if ($keyword == "all") {
             $q = Question::with('keywords')->get();
         } else {

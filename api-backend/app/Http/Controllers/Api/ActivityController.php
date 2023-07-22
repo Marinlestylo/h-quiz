@@ -20,7 +20,6 @@ use App\Transformers\ActivityTransformer;
 use App\Transformers\QuestionTransformer;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log as FacadesLog;
 
 class ActivityController extends Controller
 {
