@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeycloakController;
 use App\Http\Controllers\Api\KeywordController;
@@ -12,10 +11,6 @@ use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\DrillController;
-
-use App\Models\Activity;
-use App\Models\Course;
-use App\Models\Student;
 
 /*
 |--------------------------------------------------------------------------

@@ -77,8 +77,8 @@ class QuestionController extends Controller
         if ($q->user_id != Auth::id()){
             return response([
                 'message' => "Seul le créateur de la question peut la modifier.",
-                'error' => "Bad Request"
-            ], 400);
+                'error' => "Forbidden"
+            ], 403);
         }
 
         $q->fill($data);
