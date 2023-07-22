@@ -9,8 +9,8 @@ export const useDrillStore = defineStore('drill', () => {
     const fetchCurrentDrill = async (keyword) => {
         const response = await utils.fetchApi(`/api/drills/${keyword}`);
         const data = await response.json();
-        if (response.status === 401 || response.status === 403) {
-            currentDrill.value = null;
+        if (response.status !== 200) {
+            currentDrill.value = {};
             return;
         }
         currentDrill.value = data.data;

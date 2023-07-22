@@ -32,7 +32,7 @@
             </div>
         </div>
     </div>
-    <div>
+    <div v-if="!noQuestion">
         <div class="text-2xl my-3">
             Timer :
             <span>{{minutes}}</span>:<span>{{ seconds }}</span>
