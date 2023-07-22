@@ -1,28 +1,22 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-
-export const backUrl = import.meta.env.VITE_BACKEND_URL;
-export const appUrl = import.meta.env.VITE_APP_URL;
-
+import * as utils from '../utils.js';
 
 export const useCourseStore = defineStore('course', () => {
   const allCourses = ref(null)
-  const fetchApi = (uri, settings) => {
-    const url = new URL(uri, backUrl);
-    return fetch(url, {...settings, credentials: 'include'}).then((response) => {
-      if (response.status === 401) {
-        user.value = null;
-      }
-      return response;
-    })
-  }
 
   const fetchAllCourses = async () => {
-    const response = await fetchApi('/api/courses');
-    const data = await response.json();
-    allCourses.value = data;
-    return response.status;
+    if (allCourses.value !== null) {
+      return allKeywords.value;
+    }
+
+    const response = await utils.fetchApi('/api/courses');
+    if (response.status === 200) {
+      const data = await response.json();
+      allCourses.value = data;
+      return response.status;
+    }
   }
 
-  return { allCourses, fetchAllCourses}
+  return { allCourses, fetchAllCourses }
 });
