@@ -69,7 +69,6 @@ const ActivityIconAction = computed(() => {
 
 async function updateActivity() {
     const [status, data] = await activityStore.updateActivity(props.action, props.activityId);
-    console.log(status, data);
     message.value = data.message;
     if (status === 200) {
         alertType.value = 'success';

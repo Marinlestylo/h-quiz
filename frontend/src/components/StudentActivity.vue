@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import PlayActivityIcon from '@/components/icons/PlayActivityIcon.vue';
 import { useActivityStore } from '@/stores/activity';
 

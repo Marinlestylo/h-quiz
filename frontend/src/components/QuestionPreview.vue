@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from 'vue';
+import { ref } from 'vue';
 import ShortAnswer from '@/components/questions/ShortAnswer.vue';
 import MultipleChoice from '@/components/questions/MultipleChoice.vue';
 import FillGaps from '@/components/questions/FillGaps.vue';

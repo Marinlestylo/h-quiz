@@ -180,32 +180,12 @@ const props = defineProps({
     }
 })
 
-const debug = () => {
-    // console.log(props.question.validation);
-    console.log(props.question);
-    // console.log(validateQuestion());
-}
-
 const editQuestion = async () => {
     if (!validateQuestion()) {
         displayPopup('Veuillez remplir tous les champs correctement.', 'error');
         return;
     }
     const [status, data] = await apiCall();
-    // const [status, data] = await questionStore.createQuestion(question.value);
-    console.log(status);
-    console.log(data);
-    // if (status === 200) {
-    //     message.value = data.message;
-    //     errorMessage.value = '';
-    // } else if (status === 201) {
-    //     successMessage.value = data.message;
-    //     errorMessage.value = '';
-    //     resetFields();
-    // } else {
-    //     errorMessage.value = 'Une erreur est survenue lors de la création de la question.';
-    //     successMessage.value = '';
-    // }
     if (status === 201 && props.usage === 'create') {
         resetFields();
     }
@@ -263,16 +243,12 @@ const validateQuestion = () => {
         return false;
     }
     if (props.question.difficulty === '' || !difficulties.value.includes(props.question.difficulty)) {
-        console.log(difficulties.value);
-        console.log('difficulty');
         return false;
     }
     if (props.question.type === '' || !questionTypes.value.includes(props.question.type)) {
-        console.log('type');
         return false;
     }
     if (props.question.validation === {}) {
-        console.log('validation');
         return false;
     }
     return true;

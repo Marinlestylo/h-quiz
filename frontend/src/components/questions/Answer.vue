@@ -141,15 +141,4 @@ const addAnswerFillGaps = () => {
 
 const choices = ref([]);
 const propositions = ref([]);
-
-const changeAnswer = () => {
-    emit('update:answer', choices.value);
-}
-
-const debug = () => {
-    // console.log(choices.value);
-    // console.log(nbFillGaps.value);
-    console.log(propositions.value);
-    console.log(props.option.gaps);
-}
 </script>

@@ -125,11 +125,6 @@ const transformSlotProps = (props) => {
     return formattedProps;
 }
 
-const timerFinish = () => {
-    finish();
-
-};
-
 const saveAnswer = async () => {
     if (questions.value[currentQuestionNumber - 1].type === 'multiple-choice') {
         if (answers.value[currentQuestionNumber - 1] !== choices.value) {
