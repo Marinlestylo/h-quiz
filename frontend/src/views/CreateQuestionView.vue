@@ -19,8 +19,8 @@
 <script setup>
 
 import { ref, computed, onMounted } from 'vue';
-import QuestionEditor from '../components/QuestionEditor.vue';
-import { useUserStore } from '../stores/user';
+import QuestionEditor from '@/components/QuestionEditor.vue';
+import { useUserStore } from '@/stores/user';
 const userStore = useUserStore();
 const user = computed(() => userStore.user);
 

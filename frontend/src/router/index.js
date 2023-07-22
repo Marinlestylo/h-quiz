@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@/views/HomeView.vue'
 import QuizzesView from '@/views/QuizzesView.vue'
 import QuestionView from '@/views/QuestionView.vue'
 import CreateQuestionView from '@/views/CreateQuestionView.vue'
@@ -11,18 +11,17 @@ import RosterView from '@/views/RosterView.vue'
 import ActivityView from '@/views/ActivityView.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 import QuestionDetailed from '@/views/QuestionDetailed.vue'
-import tempView from '@/views/tempView.vue'
 import Documentation from '@/views/Documentation.vue'
 import DrillView from '@/views/DrillView.vue'
 import ActivityResults from '@/views/ActivityResults.vue'
 import ActivityProgession from '@/views/ActivityProgression.vue'
 import DrillDetailed from '@/views/DrillDetailed.vue'
 
-import auth from '../middlewares/auth.js'
-import teacher from '../middlewares/teacher.js'
-import middlewarePipeline from '../middlewares/middleware-pipeline'
+import auth from '@/middlewares/auth.js'
+import teacher from '@/middlewares/teacher.js'
+import middlewarePipeline from '@/middlewares/middleware-pipeline'
 
-import { useUserStore } from '../stores/user.js'
+import { useUserStore } from '@/stores/user.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,11 +30,6 @@ const router = createRouter({
       path: '/',
       name: 'root',
       component: HomeView
-    },
-    {
-      path: '/debug/login/:id',
-      name: 'debug login',
-      component: tempView
     },
     {
       path: '/quizzes',
@@ -209,7 +203,6 @@ router.beforeEach((to, from, next) => {
     from,
     next,
     userStore
-    //   store  | You can also pass store as an argument
   }
 
   return middleware[0]({

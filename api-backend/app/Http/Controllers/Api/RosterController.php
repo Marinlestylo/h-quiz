@@ -53,9 +53,9 @@ class RosterController extends Controller
         $r->save();
 
         return response([
-            'message' => 'Roster added',
+            'message' => 'Le roster a bien été créé.',
             'roster' => $r
-        ], 200);
+        ], 201);
     }
 
     function deleteStudent(Request $request) {
@@ -66,8 +66,8 @@ class RosterController extends Controller
         if ($r->teacher_id != Auth::id()) {
             return response([
                 'message' => "Vous devez être le professeur de ce roster pour pouvoir supprimer un étudiant.",
-                'error' => "Bad Request",
-            ], 400);
+                'error' => "Forbidden",
+            ], 403);
         }
 
         $s = Student::findOrFail($request->student_id);
@@ -90,8 +90,8 @@ class RosterController extends Controller
         if ($r->teacher_id != Auth::id()) {
             return response([
                 'message' => "Vous devez être le professeur de ce roster pour pouvoir ajouter un étudiant.",
-                'error' => "Bad Request"
-            ], 400);
+                'error' => "Forbidden"
+            ], 403);
         }
 
         $s = Student::findOrFail($request->student_id);
@@ -108,9 +108,9 @@ class RosterController extends Controller
         $students = Roster::findOrFail($request->roster_id)->students;
         $s = fractal($students, new StudentTransformer())->toArray();
         return response([
-            'message' => 'Studdent added',
+            'message' => 'L\'étudiant a bien été ajouté.',
             'roster' => $r,
             'students' => $s
-        ], 200);
+        ], 201);
     }
 }

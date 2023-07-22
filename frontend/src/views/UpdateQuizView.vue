@@ -111,10 +111,10 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { useQuizStore } from '../stores/quiz';
-import { useKeywordStore } from '../stores/keyword';
-import { useQuestionStore } from '../stores/question';
-import AlertPopup from '../components/AlertPopup.vue';
+import { useQuizStore } from '@/stores/quiz';
+import { useKeywordStore } from '@/stores/keyword';
+import { useQuestionStore } from '@/stores/question';
+import AlertPopup from '@/components/AlertPopup.vue';
 
 const quizStore = useQuizStore();
 const quizzes = computed(() => quizStore.allQuizzes);

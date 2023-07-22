@@ -13,8 +13,6 @@ use Illuminate\Support\Carbon;
 use App\Transformers\DrillTransformer;
 
 use Auth;
-use Illuminate\Support\Facades\Log as FacadesLog;
-use Log;
 
 class DrillController extends Controller
 {

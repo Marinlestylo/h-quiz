@@ -78,7 +78,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 const props = defineProps({
     questionType: {
         type: String,

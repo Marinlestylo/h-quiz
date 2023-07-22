@@ -17,7 +17,8 @@
 
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useUserStore, backUrl, appUrl } from '../../stores/user';
+import { useUserStore } from '@/stores/user';
+import * as utils from '@/utils.js';
 const store = useUserStore();
 const user = computed(() => store.user);
 
@@ -27,10 +28,11 @@ onMounted(async () => {
 
 
 function redirect() {
-    window.location.href = `${backUrl}/api/login?redirect=${appUrl}`;
+    window.location.href = `${utils.backUrl}/api/login?redirect=${utils.appUrl}`;
 }
 
-function logout() {
-    window.location.href = `${backUrl}/api/logout?redirect=${appUrl}`;
+async function logout() {
+    await store.logout();
+    window.location.href = `${utils.backUrl}/api/logout?redirect=${utils.appUrl}`;
 }
 </script>

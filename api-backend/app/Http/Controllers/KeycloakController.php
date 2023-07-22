@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use Exception;
 use Socialite;
 use App\Models\User;
 
@@ -18,6 +17,7 @@ class KeyCloakController extends Controller
     public function callback()
     {
         $remote_user = Socialite::driver('keycloak')->stateless()->user();
+        // TODO : remove + check user creation
         // dump($remote_user);
         // die();
         $user = User::updateOrCreate([
@@ -32,8 +32,6 @@ class KeyCloakController extends Controller
         ]);
 
         Auth::login($user);
-
-        // return redirect('/api/keywords');
         return redirect(session()->get('url.intended', '/api'));
     }
 
@@ -47,11 +45,11 @@ class KeyCloakController extends Controller
     public function logout()
     {
         Auth::logout();
-        $redirectUri = "http://localhost:8000/api/after";
+        $redirectUri = env('APP_URL')."/api/after";
         return redirect(Socialite::driver('keycloak')->getLogoutUrl($redirectUri, env('KEYCLOAK_CLIENT_ID')));
     }
 
-    public function afterLogout(request $request)
+    public function afterLogout()
     {
         return redirect(session()->get('url.intended', '/api'));
     }

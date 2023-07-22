@@ -20,7 +20,6 @@ use App\Transformers\ActivityTransformer;
 use App\Transformers\QuestionTransformer;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log as FacadesLog;
 
 class ActivityController extends Controller
 {
@@ -80,7 +79,7 @@ class ActivityController extends Controller
         if ($activity->hidden && Auth::user()->isStudent()) {
             return response([
                 'message' => "Vous n'êtes pas autorisé à voir cette activité.",
-                'error' => "Unauthorized"
+                'error' => "Forbidden"
             ], 403);
         }
 
@@ -93,7 +92,7 @@ class ActivityController extends Controller
         if ($current == null) {
             return response([
                 'message' => "Vous n'êtes pas autorisé à voir cette activité.",
-                'error' => "Unauthorized"
+                'error' => "Forbidden"
             ], 403);
         }
 
@@ -165,7 +164,7 @@ class ActivityController extends Controller
         if ($activity->user_id != Auth::id()) {
             return response([
                 'message' => "Seulement le créateur de l'activité peut la modifier.",
-                'error' => "Unauthorized"
+                'error' => "Forbidden"
             ], 403);
         }
 
@@ -280,7 +279,7 @@ class ActivityController extends Controller
         if ($activity->user_id != Auth::id()) {
             return response([
                 'message' => "Seulement le professeur qui a créé l'activité peut la supprimer.",
-                'error' => "Unauthorized"
+                'error' => "Forbidden"
             ], 403);
         }
 
@@ -318,9 +317,9 @@ class ActivityController extends Controller
 
         if (Roster::findOrFail($request->input('roster_id'))->teacher_id != Auth::id()) {
             return response([
-                'message' => "Seulement le professeur peut créer une activité pour cette class",
-                'error' => "Bad Request"
-            ], 400);
+                'message' => "Seulement le professeur peut créer une activité pour cette classe",
+                'error' => "Forbidden"
+            ], 403);
         }
 
         $quiz = Quiz::findOrFail($request->quiz_id);
@@ -328,8 +327,8 @@ class ActivityController extends Controller
         if ($quiz->type == 'exam' && $quiz->user_id != Auth::id()) {
             return response([
                 'message' => "Vous ne pouvez pas utiliser cet examen",
-                'error' => "Bad Request"
-            ], 400);
+                'error' => "Forbidden"
+            ], 403);
         }
 
 

@@ -77,8 +77,8 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import TrashIcon from '@/components/icons/TrashIcon.vue';
-import ActivityIconAction from '../components/ActivityIconAction.vue';
-import { useActivityStore } from '../stores/activity';
+import ActivityIconAction from '@/components/ActivityIconAction.vue';
+import { useActivityStore } from '@/stores/activity';
 
 
 const transformSlotProps = (props) => {

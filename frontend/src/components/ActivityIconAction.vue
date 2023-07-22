@@ -9,7 +9,7 @@
             <ActivityIconAction @click="updateActivity" />
         </div>
     </div>
-    <div class="absolute bottom-24 right-0">
+    <div class="absolute bottom-0 right-0">
         <AlertPopup v-model:message="message" :alertType="alertType" class="" />
     </div>
 </template>
@@ -17,7 +17,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import { useActivityStore } from '../stores/activity';
+import { useActivityStore } from '@/stores/activity';
 import ClosedEyeIcon from '@/components/icons/ClosedEyeIcon.vue';
 import OpenEyeIcon from '@/components/icons/OpenEyeIcon.vue';
 import ShowResultsIcon from '@/components/icons/ShowResultsIcon.vue';

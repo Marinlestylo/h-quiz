@@ -2,6 +2,8 @@
     <div class="text-3xl min-w-max mr-64 mb-6">
         Bienvue sur le mode Drill.
     </div>
+
+    <!-- Search bar coming from here : https://flowbite.com/docs/forms/search-input/ -->
     <div class="flex mb-6 max-w-3xl w-full">
         <div class="relative w-full">
             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -26,19 +28,19 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { useKeywordStore } from '../stores/keyword';
-import router from '../router';
+import { useKeywordStore } from '@/stores/keyword';
+import { useRouter } from 'vue-router';
 
 const keywordStore = useKeywordStore();
 const keywords = computed(() => keywordStore.allKeywords);
 const searchKeyword = ref('');
-
+const router = useRouter();
 onMounted(async () => {
     await keywordStore.fetchAllKeywords();
 });
 
 const chose = () => {
-    router.push('/drill/' + searchKeyword.value)
+    router.push('/drill/' + searchKeyword.value);
     searchKeyword.value = '';
 }
 </script>

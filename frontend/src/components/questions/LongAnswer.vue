@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import BacktickText from './BacktickText.vue';
+import BacktickText from '@/components/questions/BacktickText.vue';
 
 const props = defineProps({
     content: {

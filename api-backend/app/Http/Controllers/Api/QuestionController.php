@@ -6,28 +6,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Question;
-use App\Models\Activity;
-use App\Models\Keyword;
 
 use Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use App\Transformers\QuestionTransformer;
 
 class QuestionController extends Controller
 {
-    function index(Request $request)
+    function index()
     {
         $questions = Question::with('keywords');
 
         return fractal($questions->get(), new QuestionTransformer())->toArray();
     }
 
-    function getQuestions(Request $request, $keyword)
+    function getQuestions($keyword)
     {
-        $i = Auth::id();
-
         if ($keyword == "all") {
             $q = Question::with('keywords')->get();
         } else {
@@ -82,8 +77,8 @@ class QuestionController extends Controller
         if ($q->user_id != Auth::id()){
             return response([
                 'message' => "Seul le créateur de la question peut la modifier.",
-                'error' => "Bad Request"
-            ], 400);
+                'error' => "Forbidden"
+            ], 403);
         }
 
         $q->fill($data);

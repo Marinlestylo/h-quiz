@@ -92,10 +92,10 @@ import {
     DialogPanel,
     DialogTitle,
 } from '@headlessui/vue'
-import AlertPopup from './AlertPopup.vue'
-import { useRosterStore } from '../stores/roster'
-import { useUserStore } from '../stores/user'
-import { useActivityStore } from '../stores/activity'
+import AlertPopup from '@/components/AlertPopup.vue'
+import { useRosterStore } from '@/stores/roster'
+import { useUserStore } from '@/stores/user'
+import { useActivityStore } from '@/stores/activity'
 
 const rosterStore = useRosterStore()
 const rosters = computed(() => rosterStore.rosters);

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Quiz;
-use App\Models\User;
 use App\Models\Question;
 
 use App\Transformers\QuizTransformer;
@@ -66,8 +65,8 @@ class QuizController extends Controller
         if ($quiz->user_id != Auth::id()) {
             return response([
                 'message' => "Seul le créateur du quiz peut le modifier",
-                'error' => "Bad Request"
-            ], 400);
+                'error' => "Forbidden"
+            ], 403);
         }
 
         // Check if question is already in quiz
@@ -95,7 +94,7 @@ class QuizController extends Controller
         $questions = Quiz::findOrFail($request->quiz_id)->questions;
         $quiz = fractal($quiz, new QuizTransformer())->toArray();
         return response([
-            'message' => 'Question added',
+            'message' => 'La question a bien été ajoutée',
             'quiz' => $quiz,
             'questions' => $questions
         ], 200);
@@ -108,8 +107,8 @@ class QuizController extends Controller
         if ($quiz->user_id != Auth::id()) {
             return response([
                 'message' => "Seul le créateur du quiz peut le modifier",
-                'error' => "Bad Request"
-            ], 400);
+                'error' => "Forbidden"
+            ], 403);
         }
 
         $question = Question::findOrFail($request->question_id);
@@ -119,7 +118,7 @@ class QuizController extends Controller
         $questions = Quiz::findOrFail($request->quiz_id)->questions;
         $quiz = fractal($quiz, new QuizTransformer())->toArray();
         return response([
-            'message' => 'Question deleted',
+            'message' => 'La question a bien été supprimée',
             'quiz' => $quiz,
             'questions' => $questions
         ], 200);

@@ -15,8 +15,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import BacktickText from './BacktickText.vue';
-import { useActivityStore } from '../../stores/activity';
+import BacktickText from '@/components/questions/BacktickText.vue';
+import { useActivityStore } from '@/stores/activity';
 
 const store = useActivityStore();
 const output = ref('');

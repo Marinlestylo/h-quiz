@@ -1,6 +1,5 @@
 <template>
     <div v-if="!isLoading">
-        <ErrorMessage :status="status" />
     </div>
     <div v-show="!isLoading" class="flex items-center mb-6 justify-between">
         <div class="text-3xl">
@@ -79,11 +78,10 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { useQuizStore } from '../stores/quiz';
-import { useUserStore } from '../stores/user';
+import { useQuizStore } from '@/stores/quiz';
+import { useUserStore } from '@/stores/user';
 import DifficultyShower from '@/components/DifficultyShower.vue';
-import ActivityModal from '../components/ActivityModal.vue';
-import ErrorMessage from '@/components/StatusError.vue';
+import ActivityModal from '@/components/ActivityModal.vue';
 
 const quizStore = useQuizStore();
 const quizzes = computed(() => quizStore.allQuizzes);

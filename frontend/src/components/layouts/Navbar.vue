@@ -37,7 +37,7 @@
 
 <script setup>
 import Connection from '@/components/layouts/Connection.vue';
-import DropdownMenu from './DropdownMenu.vue';
+import DropdownMenu from '@/components/layouts/DropdownMenu.vue';
 import { useUserStore } from '@/stores/user';
 import { computed } from 'vue';
 

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use App\Models\Question;
@@ -20,7 +19,7 @@ class QuestionSeeder extends Seeder
             'name' => 'Transformation binaire',
             'content' => 'Que vaut 7 en binaire ?',
             'validation' => [
-                'pattern' => '/\b(0b?)0*111\b/',
+                'pattern' => '/^(0b)?0*111$/',
                 'expected' => '0b0111'
             ],
             'options' => [
@@ -37,7 +36,7 @@ class QuestionSeeder extends Seeder
             'name' => 'Transformation binaire',
             'content' => 'Que vaut `0x8` en binaire ?',
             'validation' => (object)[
-                'pattern' => '/\b(0b?)0*1000\b/',
+                'pattern' => '/^(0b)?0*1000$/',
                 'expected' => '0b1000'
             ],
             'difficulty' => 'medium',
@@ -52,7 +51,7 @@ class QuestionSeeder extends Seeder
             'name' => 'Transformation binaire',
             'content' => 'Que vaut `0` en binaire ?',
             'validation' => (object)[
-                'pattern' => '/\b(0b?)0*0\b/',
+                'pattern' => '/^(0b)?0*0$/',
                 'expected' => '0'
             ],
             'difficulty' => 'easy',
