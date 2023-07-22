@@ -67,7 +67,6 @@ const user = computed(() => userStore.user);
 
 const route = useRoute();
 const unauthorized = ref(false);
-const notFinished = ref(false);
 const questions = ref([]);
 
 onMounted(async () => {
