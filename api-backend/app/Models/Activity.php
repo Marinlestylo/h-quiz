@@ -191,7 +191,7 @@ class Activity extends Model
             ->where('student_id', $student_id)
             ->sum('points');
 
-        $maximumPoints = $this->quiz->questions->sum('points');
+        $maximumPoints = max($this->quiz->questions->sum('points'), 1);
 
         $mark = ($totalPoints / $maximumPoints) * 5 + 1;
 

@@ -8,10 +8,12 @@ use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\Drill;
 use App\Models\Keyword;
+use Illuminate\Support\Carbon;
 
 use App\Transformers\DrillTransformer;
 
 use Auth;
+use Illuminate\Support\Facades\Log as FacadesLog;
 use Log;
 
 class DrillController extends Controller
@@ -80,12 +82,10 @@ class DrillController extends Controller
         }
 
         $drill->easiness = max(1.3, $drill->easiness + (0.1 - (5 - $rank) * (0.08 + (5 - $rank) * 0.02)));
+        $nextRepetition = Carbon::parse($drill->next_repetition);
+        $drill->next_repetition = $nextRepetition->addDays($drill->interval);
 
-        $drill-> next_repetition = now()->addDays($drill->interval);
         $drill->save();
-
-       
-
 
         return response()->json([
             'correct' => $correct,
@@ -102,10 +102,10 @@ class DrillController extends Controller
     // 0 means more than 40 and incorrect
     protected function getRank($time, $correct){
         $rank = 5;
-        if ($time > 20){
-            $rank -= 1;
-        } else if ($time > 40){
+        if ($time > 40){
             $rank -= 2;
+        } else if ($time > 20){
+            $rank -= 1;
         }
 
         if (!$correct){

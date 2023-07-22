@@ -17,9 +17,9 @@ export const useDrillStore = defineStore('drill', () => {
         return response.status;
     }
 
-    const tryAnswer = async (questionId, answer, drillId) => {
+    const submitAnswer = async (questionId, answer, drillId, timeInSec) => {
         const payload = {
-            'time': 25,
+            'time': timeInSec,
             'question_id': questionId,
             'answer': answer,
             'drill_id': drillId
@@ -35,5 +35,5 @@ export const useDrillStore = defineStore('drill', () => {
         return data;
     }
     
-    return { currentDrill, fetchCurrentDrill, tryAnswer }
+    return { currentDrill, fetchCurrentDrill, submitAnswer }
 });
