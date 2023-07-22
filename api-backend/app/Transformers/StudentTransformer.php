@@ -4,7 +4,6 @@ namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
 use App\Models\Student;
-use League\Fractal;
 
 class StudentTransformer extends TransformerAbstract
 {   

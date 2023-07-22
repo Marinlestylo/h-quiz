@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Student;
 use App\Models\Activity;
-use App\Events\AnswerUpdated;
 
 class Answer extends Model
 {

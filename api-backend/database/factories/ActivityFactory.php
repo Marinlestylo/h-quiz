@@ -8,7 +8,6 @@ use Illuminate\Support\Arr;
 use App\Models\User;
 use App\Models\Quiz;
 use App\Models\Roster;
-use App\Models\Activity;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Activity>

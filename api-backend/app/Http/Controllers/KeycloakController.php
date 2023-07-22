@@ -17,6 +17,7 @@ class KeyCloakController extends Controller
     public function callback()
     {
         $remote_user = Socialite::driver('keycloak')->stateless()->user();
+        // TODO : remove + check user creation
         // dump($remote_user);
         // die();
         $user = User::updateOrCreate([
