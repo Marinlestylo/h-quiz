@@ -46,6 +46,9 @@
                 <div v-else-if="questions[currentQuestionNumber - 1].type === 'code'">
                     <CodeQuestion :content="questions[currentQuestionNumber - 1].content" v-model:code="answer" />
                 </div>
+                <div v-else-if="questions[currentQuestionNumber - 1].type === 'long-answer'">
+                    <LongAnswer :content="questions[currentQuestionNumber - 1].content" v-model:answer="answer" />
+                </div>
                 <div v-else>
                     Ce type de question n'est pas encore supporté.
                 </div>
@@ -81,6 +84,7 @@ import ShortAnswer from '../components/questions/ShortAnswer.vue';
 import MultipleChoice from '../components/questions/MultipleChoice.vue';
 import FillGaps from '../components/questions/FillGaps.vue';
 import CodeQuestion from '../components/questions/CodeQuestion.vue';
+import LongAnswer from '../components/questions/LongAnswer.vue';
 
 const activityStore = useActivityStore();
 const activity = computed(() => activityStore.currentlyUsedActivity.activity);
