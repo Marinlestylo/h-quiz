@@ -19,9 +19,6 @@ class QuestionController extends Controller
 {
     function index(Request $request)
     {
-        // TODO : middleware ?
-        // if (!$request->user()->isTeacher()) abort(403);
-
         $questions = Question::with('keywords');
 
         return fractal($questions->get(), new QuestionTransformer())->toArray();
@@ -30,14 +27,6 @@ class QuestionController extends Controller
     function getQuestions(Request $request, $keyword)
     {
         $i = Auth::id();
-
-        // TODO : middleware ?
-        // if (!$request->user()->isTeacher()){
-        //     return response([
-        //         'message' => "Only teacher can get questions",
-        //         'error' => "Bad Request"
-        //     ], 400);
-        // }
 
         if ($keyword == "all") {
             $q = Question::with('keywords')->get();

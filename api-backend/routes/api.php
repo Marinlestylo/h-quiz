@@ -133,7 +133,6 @@ Route::middleware('checkUserRole:student')->group(function () {
 
     // Drill
     Route::get('/drills/{keyword}', [DrillController::class, 'makeDrill']);
-    // Route::patch('/drills/{keyword}', [DrillController::class, 'answerDrill']);
     Route::post('/drills/answer', [DrillController::class, 'answerDrill']);
 });
 

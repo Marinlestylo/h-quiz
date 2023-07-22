@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('exam_questions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('quiz_id')->constrained('quizzes');
+            $table->foreignId('question_id')->constrained();
             $table->string('name')->nullable()->default(null);
-            $table->text('content'); // Markdown
+            $table->text('content');
             $table->json('validation');
             $table->enum('type', ['short-answer', 'long-answer', 'multiple-choice', 'code', 'fill-in-the-gaps'])->default('short-answer');
             $table->json('options')->nullable();
-            $table->enum('difficulty', ['easy', 'medium', 'hard', 'insane'])->default('easy');
-            $table->text('explanation')->nullable()->default(null); // Markdown
-            $table->tinyInteger('is_public')->default(true);
+            $table->text('explanation')->nullable()->default(null);
             $table->double('points')->default(0);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('exam_questions');
     }
 };
