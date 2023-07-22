@@ -100,7 +100,6 @@ Route::middleware('checkUserRole:teacher')->group(function () {
     Route::get('/rosters/{id}', [RosterController::class, 'show']);
     Route::get('/rosters/{id}/students', [RosterController::class, 'students']);
     Route::post('/rosters', [RosterController::class, 'create']);
-    //TODO changer les routes pour les rendre plus REST
     Route::post('/rosters/student', [RosterController::class, 'addStudent']);
     Route::delete('/rosters/student', [RosterController::class, 'deleteStudent']);
 });
