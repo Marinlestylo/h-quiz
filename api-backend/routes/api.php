@@ -28,57 +28,37 @@ use App\Models\Student;
 |
 */
 
+Route::get('/', function () {
+    return response()->json([
+        'message' => 'Api de l\'application Quiz',
+    ]);
+});
+
 // Routes concernant le login sans être authentifié
 Route::get('auth/redirect', [KeycloakController::class, 'redirect'])->name('login');
 Route::get('auth/callback', [KeycloakController::class, 'callback']);
 Route::get('login', [KeycloakController::class, 'login']);
 Route::get('after', [KeycloakController::class, 'afterLogout']);
+Route::get('/user', [UserController::class, 'me']);
 
-// TODO: remove
-Route::get('debug/login/{id}', function ($id) {
-    Auth::loginUsingId($id);
-    return redirect('http://localhost:5173/');
-});
-
-// TODO : mettre dans userController
-Route::get('/user', function (Request $request) {
-    // die($request->user());
-    $name = '';
-    $affiliation = '';
-    $id = null;
-    
-    if ($request->user()){
-        $name = $request->user()->getFullName();
-        $affiliation = $request->user()->affiliation;
-        $id = $request->user()->id;
-    }
-    return response()->json([
-        'name' => $name,
-        'role' => $affiliation,
-        'id' => $id,
-    ]);
-});
-
-Route::get('debug/logout', function () {
-    Auth::logout();
-});
-
-// Route::get('/test-code', [ActivityController::class, 'compilation']);
-
+// Routes for both student and teacher
 Route::middleware('auth')->group(function () {
      // Logout
      Route::get('logout',[KeycloakController::class, 'logout']);
+
+     // Code compilation
      Route::post('/test-code', [ActivityController::class, 'compilation']);
+
+     //Activity
      Route::get('/activities/{id}', [ActivityController::class, 'show']);
 
      // Keyword
     Route::get('/keywords', [KeywordController::class, 'index']);
 });
 
-// Authentification
+// Routes for teacher only
 Route::middleware('checkUserRole:teacher')->group(function () {
     // User
-    // TODO : mettre dans userController
     Route::get('/users', [UserController::class, 'index']);
     
     // Student
@@ -121,10 +101,11 @@ Route::middleware('checkUserRole:teacher')->group(function () {
     Route::get('/rosters/{id}/students', [RosterController::class, 'students']);
     Route::post('/rosters', [RosterController::class, 'create']);
     //TODO changer les routes pour les rendre plus REST
-    Route::post('/rosters/add-student', [RosterController::class, 'addStudent']);
-    Route::delete('/rosters/delete-student', [RosterController::class, 'deleteStudent']);
+    Route::post('/rosters/student', [RosterController::class, 'addStudent']);
+    Route::delete('/rosters/student', [RosterController::class, 'deleteStudent']);
 });
 
+// Routes for student only
 Route::middleware('checkUserRole:student')->group(function () {
     Route::get('/user/activities/', [ActivityController::class, 'owned']);
     Route::get('/activities/{id}/questions/{question_id}', [ActivityController::class,'question']);
@@ -134,11 +115,5 @@ Route::middleware('checkUserRole:student')->group(function () {
     // Drill
     Route::get('/drills/{keyword}', [DrillController::class, 'makeDrill']);
     Route::post('/drills/answer', [DrillController::class, 'answerDrill']);
-});
-
-Route::get('/', function () {
-    return response()->json([
-        'message' => 'Api de l\'application Quiz',
-    ]);
 });
 

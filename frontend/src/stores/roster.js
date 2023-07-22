@@ -42,7 +42,7 @@ export const useRosterStore = defineStore('rosters', () => {
             'roster_id': id,
             'student_id': studentId
         };
-        const url = new URL('/api/rosters/delete-student', backUrl);
+        const url = new URL('/api/rosters/student', backUrl);
         const response = await fetch(url, {
             method: 'DELETE',
             headers: {
@@ -60,7 +60,7 @@ export const useRosterStore = defineStore('rosters', () => {
             'roster_id': id,
             'student_id': studentId
         };
-        const url = new URL('/api/rosters/add-student', backUrl);
+        const url = new URL('/api/rosters/student', backUrl);
         const response = await fetch(url, {
             method: 'POST',
             headers: {
