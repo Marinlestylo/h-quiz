@@ -94,7 +94,6 @@ export const useActivityStore = defineStore('activity', () => {
         });
         const data = await response.json();
         return [response.status, data];
-        // return response.status;
     }
 
     const compileCode = async (code) => {

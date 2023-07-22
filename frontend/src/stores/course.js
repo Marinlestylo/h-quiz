@@ -7,7 +7,7 @@ export const useCourseStore = defineStore('course', () => {
 
   const fetchAllCourses = async () => {
     if (allCourses.value !== null) {
-      return allKeywords.value;
+      return allCourses.value;
     }
 
     const response = await utils.fetchApi('/api/courses');

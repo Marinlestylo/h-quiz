@@ -91,7 +91,7 @@ async function createRoster() {
         'year': roster.value.year
     });
 
-    if (status === 200) {
+    if (status === 201) {
         successMessage.value = `Le roster "${data.roster.name}" a bien été créé`;
         resetFields();
     } else {
