@@ -105,7 +105,7 @@ class RouteTest extends TestCase
         //     \Database\Seeders\RosterSeeder::class,
         // ]);
         Auth::login(User::find(1));
-        $response = $this->delete('/api/rosters/delete-student', ['roster_id' => 1, 'student_id' => 1]);
+        $response = $this->delete('/api/rosters/student', ['roster_id' => 1, 'student_id' => 1]);
 
         $response->assertStatus(200);
     }
@@ -121,8 +121,8 @@ class RouteTest extends TestCase
         //     \Database\Seeders\RosterSeeder::class,
         // ]);
         Auth::login(User::find(1));
-        $response = $this->delete('/api/rosters/delete-student', ['roster_id' => 2, 'student_id' => 1]);
+        $response = $this->delete('/api/rosters/student', ['roster_id' => 2, 'student_id' => 1]);
 
-        $response->assertStatus(400);
+        $response->assertStatus(403);
     }
 }
