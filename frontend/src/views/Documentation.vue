@@ -19,6 +19,9 @@
           de vos quiz.
         </p>
         <p>
+          Les questions des quizs et des exmens sont corrigées automatiquement.
+        </p>
+        <p>
           Les <span class="font-bold">drills</span> sont des questionnaires auto-généré qui permettent aux étudiants de
           s'entraîner
           sur des types de questions.
@@ -60,7 +63,18 @@
           <div>
             Il s'agit d'une question à laquelle l'étudiant doit répondre par une courte phrase. Cette question peut être
             corrigée automatiquement soit grâce à une comparaison entre la réponse de l'étudiant et la réponse attendue,
-            soit grâce à une expression régulière.
+            soit grâce à une expression régulière. Comme montré dans l'image ci-dessous, le champ de la regex est
+            optionnel. Le champ "valeur exact", quant à lui, est obligatoire.
+          </div>
+          <div class="flex mt-4 justify-around">
+            <div>
+              <div class="text-lg font-semibold mb-2">Création de la question :</div>
+              <img src="@/assets/images/documentation/shortAnswerValidation.png" alt="Validation d'une question simple">
+            </div>
+            <div>
+              <div class="text-lg font-semibold mb-2">Preview de la question :</div>
+              <img src="@/assets/images/documentation/shortAnswerPreview.png" alt="Preview d'une question simple">
+            </div>
           </div>
         </div>
 
@@ -69,7 +83,15 @@
             Question à développement
           </h3>
           <div>
-            Il s'agit d'une question à laquelle l'étudiant doit répondre en développant son idée. Cette question n'est pas corrigée automatiquement.
+            Il s'agit d'une question à laquelle l'étudiant doit répondre en développant son idée. Cette question n'est pas
+            corrigée automatiquement. Cela veut dire que les réponses seront considérée comme fausse. Il vous faudra donc
+            rajouter les points lors de votre review de la correction.
+          </div>
+          <div class="flex mt-4 justify-start">
+            <div>
+              <div class="text-lg font-semibold mb-2">Preview de la question :</div>
+              <img src="@/assets/images/documentation/longAnswerPreview.png" alt="Preview d'une question longue">
+            </div>
           </div>
         </div>
 
@@ -84,11 +106,11 @@
           </div>
           <div class="flex mt-4 justify-around">
             <div>
-              <div class="text-sm mb-2">Création de la question :</div>
+              <div class="text-lg font-semibold mb-2">Création de la question :</div>
               <img src="@/assets/images/documentation/qcmExplanation.png" alt="Création d'une question à choix multiple">
             </div>
             <div>
-              <div class="text-sm mb-2">Preview de la question :</div>
+              <div class="text-lg font-semibold mb-2">Preview de la question :</div>
               <img src="@/assets/images/documentation/qcmPreview.png" alt="Preview d'une question à choix multiple">
             </div>
           </div>
@@ -99,17 +121,25 @@
             Texte à trou
           </h3>
           <div>
-            L'étudiant à un texte à trou avec plusieurs réponses possibles pour chaque trou. Cette question est également corrigée automatiquement. Pour créer cette question, il vous suffit d'écrire le texte et de mettre "*-*" au moment où vous souhaiter qu'un trou apparaisse, comme montré dans les images ci-dessous.
+            L'étudiant à un texte à trou avec plusieurs réponses possibles pour chaque trou. Cette question est également
+            corrigée automatiquement. Pour créer cette question, il vous suffit d'écrire le texte et de mettre "*-*" au
+            moment où vous souhaiter qu'un trou apparaisse, comme montré dans les images ci-dessous.
           </div>
           <!-- TODO : mettre screen -->
           <div class="flex mt-4 justify-around">
-            <div>
-              <div class="text-sm mb-2">Création de la question :</div>
-              <img src="" alt="Création d'une question à trou">
+            <div class="flex-col">
+              <div>
+                <div class="text-lg font-semibold mb-2">Création de la question :</div>
+                <img src="@/assets/images/documentation/fillGaps.png" alt="Création d'une question à trou">
+              </div>
+              <div>
+                <div class="text-lg font-semibold mb-2">Preview de la question :</div>
+                <img src="@/assets/images/documentation/fillGapsPreview.png" alt="Preview d'une question à trou">
+              </div>
             </div>
             <div>
-              <div class="text-sm mb-2">Preview de la question :</div>
-              <img src="" alt="Preview d'une question à trou">
+              <div class="text-lg font-semibold mb-2">Validation de la question :</div>
+              <img src="@/assets/images/documentation/fillGapsValidation.png" alt="Validation d'une question à trou">
             </div>
           </div>
         </div>
@@ -120,10 +150,16 @@
             Question de code
           </h3>
           <div>
-            L'étudiant doit répondre à un petit problème en écrivant du code. Ce dernier à la possibilité de build et de compiler son code.
+            L'étudiant doit répondre à un petit problème en écrivant du code. Ce dernier à la possibilité de
+            compiler son code. Cette question n'est pas corrigée automatiquement car même si l'output est correct, cela ne veut pas dire que le code mérite tous les points. Comme pour la question à développement, il vous faudra donc rajouter les points lors de votre review de la correction.
+          </div>
+          <div class="flex mt-4 justify-start">
+            <div>
+              <div class="text-lg font-semibold mb-2">Preview de la question :</div>
+              <img src="@/assets/images/documentation/longAnswerPreview.png" alt="Preview d'une question longue">
+            </div>
           </div>
         </div>
-      </div>
     </div>
   </div>
-</template>
+</div></template>

@@ -8,6 +8,7 @@ export const useQuizStore = defineStore('quiz', () => {
     const quizTypes = ref(null);
 
     const fetchAllQuizzes = async () => {
+
         const response = await utils.fetchApi('/api/quizzes');
         const data = await response.json();
         if (response.status === 401 || response.status === 403) {

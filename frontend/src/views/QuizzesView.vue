@@ -87,7 +87,6 @@ const quizStore = useQuizStore();
 const quizzes = computed(() => quizStore.allQuizzes);
 const user = useUserStore().user;
 const isLoading = ref(true);
-const status = ref(0);
 
 const showModal = ref(false);
 const selectedQuizId = ref(null);

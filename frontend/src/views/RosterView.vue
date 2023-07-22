@@ -147,7 +147,7 @@ async function addStudent() {
         return;
     }
     const [status, data] = await store.addStudentToRoster(selectedRoster.value, student.id);
-    if (status === 200) {
+    if (status === 201) {
         detailedRoster.value = data.students;
         searchStudent.value = '';
         errorMessage.value = '';

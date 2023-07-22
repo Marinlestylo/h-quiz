@@ -12,6 +12,7 @@ export const useActivityStore = defineStore('activity', () => {
     })
 
     const fetchAllActivities = async () => {
+
         const response = await utils.fetchApi('/api/activities');
         const data = await response.json();
         if (response.status === 401 || response.status === 403) {
@@ -94,7 +95,6 @@ export const useActivityStore = defineStore('activity', () => {
         });
         const data = await response.json();
         return [response.status, data];
-        // return response.status;
     }
 
     const compileCode = async (code) => {

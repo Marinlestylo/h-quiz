@@ -6,8 +6,11 @@ import * as utils from '../utils.js';
 export const useQuestionStore = defineStore('question', () => {
     const allQuestions = ref(null)
 
-    // TODO : changer endpoint
     const fetchAllQuestions = async () => {
+        if (allQuestions.value !== null) {
+            return allQuestions.value;
+        }
+
         const response = await utils.fetchApi('/api/questions/all');
         const data = await response.json();
         if (response.status === 401 || response.status === 403) {
