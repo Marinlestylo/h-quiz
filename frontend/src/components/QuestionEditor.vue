@@ -18,6 +18,7 @@
                 placeholder="Contenu de la question"></textarea>
         </div>
 
+        <!-- Search bar coming from here : https://flowbite.com/docs/forms/search-input/ -->
         <div class="flex mb-6">
             <label for="student" class="block mb-2 text-lg font-medium text-gray-900 w-64">Ajouter un mot-clé</label>
             <div class="relative w-full">

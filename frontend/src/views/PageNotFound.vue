@@ -1,4 +1,5 @@
 <template>
+    <!-- Design for this page coming from here : https://flowbite.com/blocks/marketing/404/ -->
     <section class="bg-white">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
             <div class="mx-auto max-w-screen-sm text-center">

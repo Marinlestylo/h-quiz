@@ -2,6 +2,8 @@
     <div class="text-3xl min-w-max mr-64 mb-6">
         Bienvue sur le mode Drill.
     </div>
+
+    <!-- Search bar coming from here : https://flowbite.com/docs/forms/search-input/ -->
     <div class="flex mb-6 max-w-3xl w-full">
         <div class="relative w-full">
             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

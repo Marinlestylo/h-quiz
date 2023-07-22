@@ -1,4 +1,5 @@
 <template>
+    <!-- DropdownMenu inpiration : https://flowbite.com/docs/components/dropdowns/ -->
     <Menu as="div" class="relative inline-block text-left">
         <div>
             <MenuButton class="text-white hover:text-gray-300 flex items-center">
