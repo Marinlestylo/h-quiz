@@ -36,7 +36,8 @@
                                     }}
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4 font-medium">
-                                        <RouterLink :to="`/update-question/${question.id}`" v-tooltip="'Modifier cette question'">
+                                        <RouterLink :to="`/update-question/${question.id}`"
+                                            v-tooltip="'Modifier cette question'">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor"
                                                 class="w-9 h-9 hover:cursor-pointer ml-2">
@@ -56,7 +57,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useQuestionStore } from '@/stores/question';
 import { RouterLink } from 'vue-router';
 
@@ -64,9 +65,7 @@ const questionStore = useQuestionStore();
 const questions = computed(() => questionStore.allQuestions);
 
 onMounted(async () => {
-    if (questions.value === null) {
-        await questionStore.fetchAllQuestions();
-    }
+    await questionStore.fetchAllQuestions();
 });
 
 </script>
