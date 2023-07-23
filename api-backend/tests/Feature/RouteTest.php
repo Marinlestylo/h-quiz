@@ -9,8 +9,6 @@ use \App\Models\User;
 
 class RouteTest extends TestCase
 {
-
-    // TODO : remove comments 
     protected function setUp(): void
     {
         parent::setUp();
@@ -42,9 +40,6 @@ class RouteTest extends TestCase
      */
     public function test_the_application_returns_a_200_on_teacher_route_as_teacher(): void
     {
-        // $this->seed(
-        //     \Database\Seeders\UserSeeder::class,
-        // );
         Auth::login(User::find(1));
         $response = $this->get('/api/quizzes');
 
@@ -56,9 +51,6 @@ class RouteTest extends TestCase
      */
     public function test_the_application_returns_a_403_on_teacher_route_as_student(): void
     {
-        // $this->seed(
-        //     \Database\Seeders\UserSeeder::class,
-        // );
         Auth::login(User::find(3));
         $response = $this->get('/api/quizzes');
 
@@ -70,9 +62,6 @@ class RouteTest extends TestCase
      */
     public function test_the_application_returns_a_200_on_student_only_route(): void
     {
-        // $this->seed(
-        //     \Database\Seeders\UserSeeder::class,
-        // );
         Auth::login(User::find(3));
         $response = $this->get('/api/user/activities');
 
@@ -84,9 +73,6 @@ class RouteTest extends TestCase
      */
     public function test_the_application_returns_a_403_on_student_only_route(): void
     {
-        // $this->seed(
-        //     \Database\Seeders\UserSeeder::class,
-        // );
         Auth::login(User::find(1));
         $response = $this->get('/api/user/activities');
 
@@ -99,11 +85,6 @@ class RouteTest extends TestCase
      */
     public function test_the_application_returns_a_200_after_trying_to_modify_roster(): void
     {
-        // $this->seed([
-        //     \Database\Seeders\UserSeeder::class,
-        //     \Database\Seeders\CourseSeeder::class,
-        //     \Database\Seeders\RosterSeeder::class,
-        // ]);
         Auth::login(User::find(1));
         $response = $this->delete('/api/rosters/student', ['roster_id' => 1, 'student_id' => 1]);
 
@@ -115,11 +96,6 @@ class RouteTest extends TestCase
      */
     public function test_the_application_returns_a_400_after_trying_to_modify_another_teacher_roster(): void
     {
-        // $this->seed([
-        //     \Database\Seeders\UserSeeder::class,
-        //     \Database\Seeders\CourseSeeder::class,
-        //     \Database\Seeders\RosterSeeder::class,
-        // ]);
         Auth::login(User::find(1));
         $response = $this->delete('/api/rosters/student', ['roster_id' => 2, 'student_id' => 1]);
 
