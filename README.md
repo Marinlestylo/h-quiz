@@ -5,7 +5,7 @@ Ce projet est réalisé dans le cadre de mon travail de Bachelor dans la Haute �
 
 Vous pouvez trouver le repository du projet original [ici](https://github.com/heig-vd-tin/heig-quiz).
 
-Le projet est actuellement hébergé [ici](https://h-quiz.heig-vd.site/)
+Le projet est actuellement hébergé [ici](https://h-quiz.heig-vd.site/).
 
 ## Installation
 Technologies utilisées dans ce projet :
