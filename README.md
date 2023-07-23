@@ -119,12 +119,12 @@ DB_USERNAME=
 DB_PASSWORD=
 
 KEYCLOAK_CLIENT_ID=
-KEYCLOAK_CLIENT_SECRET=
-KEYCLOAK_REALM_PUBLIC_KEY=
+KEYCLOAK_CLIENT_SECRET=(optionnel)
+KEYCLOAK_REALM_PUBLIC_KEY=(optionnel)
 KEYCLOAK_BASE_URL=
 KEYCLOAK_REALM=
 KEYCLOAK_REDIRECT_URI=
-KEYCLOAK_CACHE_OPENID=
+KEYCLOAK_CACHE_OPENID=(optionnel)
 
 CODE_COMPILER_URL=
 ```
@@ -149,6 +149,8 @@ Commande pour lancer le serveur :
 php artisan serve
 ```
 
+Le backend tourne mainantenant sur le port 8000.
+
 ## Lancer le frontend
 Rendez vous dans le dossier `frontend` et lancez la commande suivante :
 ```bash
@@ -158,6 +160,12 @@ Une fois les dépendance installée, vous pouvez lancer le serveur avec la comma
 ```bash
 npm run serve
 ```
+Le frontend tourne mainantenant sur le port 5173.
+
+Maintenant que le frontend et le backend sont lancés, vous pouvez vous rendre sur [http://localhost:5173](http://localhost:5173) et vous connecter.
+
+> **Note**  
+> Si vous mettez AUTOLOGIN=true dans le fichier .env du backend, vous serez automatiquement connecté avec le compte utilisateur ayant l'id n°1. Cela peut être utile pour le développement si vous n'avez pas de serveur Keycloak. Vous pouvez modifier ce comportement en allant dans le fichier `/api-backend/app/Providers/AppServiceProvider.php`.
 
 ## Déployement du projet
 Pour déployer le projet, il vous faudra ``build`` le frontend et le mettre dans le dossier `public` du backend. 
