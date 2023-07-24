@@ -7,6 +7,9 @@ Vous pouvez trouver le repository du projet original [ici](https://github.com/he
 
 Le projet est actuellement hébergé [ici](https://h-quiz.heig-vd.site/).
 
+## Architecture du projet
+Ce repository est composé de deux projet : le backend fait grâce à Laravel 10 et le frontend qui utilise la version 3 Vue.js. Ils se trouvent respectivement dans les dossiers [api-backend](/api-backend) et [frontend](/frontend).
+
 ## Installation
 Technologies utilisées dans ce projet :
 |   Technologie| version  |
