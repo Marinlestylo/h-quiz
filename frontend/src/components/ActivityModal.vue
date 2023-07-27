@@ -125,7 +125,7 @@ const activity = ref({
 });
 
 onMounted(async () => {
-    await rosterStore.fetchRosters(); //TODO : Utile ?
+    await rosterStore.fetchRosters();
     myRosters.value = rosters.value.filter(roster => roster.teacher.id === user.value.id);
 })
 

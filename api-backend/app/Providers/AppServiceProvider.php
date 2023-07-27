@@ -22,7 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //TODO: remove
         if (env('APP_AUTOLOGIN', false)){
             $user = User::find(1);
             if ($user) {

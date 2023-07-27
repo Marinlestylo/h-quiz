@@ -125,7 +125,6 @@
             corrigée automatiquement. Pour créer cette question, il vous suffit d'écrire le texte et de mettre "*-*" au
             moment où vous souhaiter qu'un trou apparaisse, comme montré dans les images ci-dessous.
           </div>
-          <!-- TODO : mettre screen -->
           <div class="flex mt-4 justify-around">
             <div class="flex-col">
               <div>
